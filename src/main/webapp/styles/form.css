@@ -1,0 +1,44 @@
+.container-form {
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+h4 {
+    font-size: 20px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #3c3c3c;
+    margin: 10px 0;
+}
+
+input[type="submit"] {
+    background-color: #3c3c3c;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: rgb(161, 161, 161);
+    color: #3c3c3c;
+}
