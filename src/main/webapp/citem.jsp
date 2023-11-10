@@ -13,7 +13,7 @@
 
 <div class="container-form">
     <h4>Добавить товар</h4>
-    <form id="itemForm" action="/item/create-item" method="post">
+    <form id="itemForm" action="/item?action=create-item" method="post">
         <input type="text" name="name" placeholder="Наименование товара" required/>
         <br/>
         <input type="text" name="description" placeholder="Описание товара" required/>
@@ -28,35 +28,11 @@
         <br/>
         <input type="submit" value="Добавить"/>
     </form>
+    <% if (request.getAttribute("generatedId") != null) { %>
+    <% Long id = (Long) request.getAttribute("generatedId"); %>
+    <p>Новый товар успешно добавлен. Присвоенный идентификатор id = <%=id%>.</p>
+    <% } %>
 </div>
-
-<script>
-    const sampleForm = document.getElementById("itemForm");
-
-    sampleForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        let form = e.currentTarget;
-        let url = form.action;
-        let formData = new FormData(form);
-        let responseData = await postFormFieldsAsJson({ url, formData });
-    });
-
-    async function postFormFieldsAsJson({ url, formData }) {
-        let formDataObject = Object.fromEntries(formData.entries());
-        let formDataJsonString = JSON.stringify(formDataObject);
-
-        let fetchOptions = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Accept: "application/json",
-            },
-            body: formDataJsonString,
-        };
-
-        await fetch(url, fetchOptions);
-    }
-</script>
 
 </body>
 </html>

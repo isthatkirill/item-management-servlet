@@ -17,7 +17,9 @@
         <junit.version>5.8.2</junit.version>
         <lombok.version>1.18.24</lombok.version>
         <jakarta.version>6.0.0</jakarta.version>
-        <jackson.version>2.15.2</jackson.version>
+        <h2.version>1.4.197</h2.version>
+        <postgresql.version>42.6.0</postgresql.version>
+        <tomcat.jdbc.version>10.1.7</tomcat.jdbc.version>
     </properties>
 
     <dependencies>
@@ -26,11 +28,6 @@
             <artifactId>jakarta.servlet-api</artifactId>
             <version>${jakarta.version}</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -48,6 +45,22 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat.jdbc.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

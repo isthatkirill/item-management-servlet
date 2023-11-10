@@ -1,15 +1,20 @@
 package isthatkirill.itemmanagement;
 
-import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import isthatkirill.itemmanagement.model.Item;
+import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.ItemService;
 import isthatkirill.itemmanagement.service.ItemServiceImpl;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/item/*")
 public class ItemServlet extends HttpServlet {
@@ -20,36 +25,44 @@ public class ItemServlet extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        itemService = new ItemServiceImpl();
+        itemService = new ItemServiceImpl(
+                new ItemRepository()
+        );
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String uri = request.getRequestURI();
-        logger.log(Level.INFO, "Get request was received at {0}", uri);
-
-        switch (uri) {
-            case "/item/create-item" -> request.getRequestDispatcher("/citem.jsp").forward(request, response);
-            default -> request.getRequestDispatcher("/main.jsp").forward(request, response);
+        String action = request.getParameter("action");
+        logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
+        if (action == null) {
+            List<Item> items = itemService.getAll();
+            request.setAttribute("items", items);
+            request.getRequestDispatcher("/main.jsp").forward(request, response);
+            return;
         }
 
-        logger.info(request.getRequestURI());
+        switch (action) {
+            case "create-item" -> request.getRequestDispatcher("/citem.jsp").forward(request, response);
+        }
 
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String uri = request.getRequestURI();
-        logger.log(Level.INFO, "Post request was received at {0}", uri);
-
-        switch (uri) {
-            case "/item/create-item" -> {
-                itemService.createItem(request);
-
-
-            }
+        String action = request.getParameter("action");
+        logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
+        if (action == null) {
+            request.getRequestDispatcher("/main.jsp").forward(request, response);
+            return;
         }
 
+        switch (action) {
+            case "create-item" -> {
+                Long generatedId = itemService.createItem(request);
+                request.setAttribute("generatedId", generatedId);
+                request.getRequestDispatcher("/citem.jsp").forward(request, response);
+            }
+        }
     }
 
 
