@@ -1,9 +1,13 @@
 package isthatkirill.itemmanagement;
 
+import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.model.Item;
+import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
+import isthatkirill.itemmanagement.service.CategoryService;
 import isthatkirill.itemmanagement.service.ItemService;
-import isthatkirill.itemmanagement.service.ItemServiceImpl;
+import isthatkirill.itemmanagement.service.impl.CategoryServiceImpl;
+import isthatkirill.itemmanagement.service.impl.ItemServiceImpl;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,17 +21,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/item/*")
-public class ItemServlet extends HttpServlet {
+public class ItemManagementServlet extends HttpServlet {
 
-    private final Logger logger = Logger.getLogger(ItemServlet.class.getName());
+    private final Logger logger = Logger.getLogger(ItemManagementServlet.class.getName());
     private ItemService itemService;
+    private CategoryService categoryService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        itemService = new ItemServiceImpl(
-                new ItemRepository()
-        );
+        itemService = new ItemServiceImpl(new ItemRepository(), new CategoryRepository());
+        categoryService = new CategoryServiceImpl(new CategoryRepository());
     }
 
     @Override
@@ -42,7 +46,8 @@ public class ItemServlet extends HttpServlet {
         }
 
         switch (action) {
-            case "create-item" -> request.getRequestDispatcher("/citem.jsp").forward(request, response);
+            case "create-item" -> request.getRequestDispatcher("/cItem.jsp").forward(request, response);
+            case "create-category" -> request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
         }
 
     }
@@ -58,9 +63,19 @@ public class ItemServlet extends HttpServlet {
 
         switch (action) {
             case "create-item" -> {
-                Long generatedId = itemService.createItem(request);
+                try {
+                    Long generatedId = itemService.createItem(request);
+                    request.setAttribute("generatedId", generatedId);
+                } catch (EntityNotFoundException e) {
+                    request.setAttribute("error", e.getMessage());
+                } finally {
+                    request.getRequestDispatcher("/cItem.jsp").forward(request, response);
+                }
+            }
+            case "create-category" -> {
+                Long generatedId = categoryService.createCategory(request);
                 request.setAttribute("generatedId", generatedId);
-                request.getRequestDispatcher("/citem.jsp").forward(request, response);
+                request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
             }
         }
     }

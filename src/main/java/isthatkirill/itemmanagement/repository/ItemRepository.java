@@ -7,7 +7,6 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,19 +14,6 @@ import java.util.List;
  */
 
 public class ItemRepository {
-
-    private Connection getNewConnection() throws SQLException {
-        return getDataSource().getConnection();
-    }
-
-    private DataSource getDataSource() {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setPortNumbers(new int[]{5432});
-        dataSource.setDatabaseName("item-managment");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("admin");
-        return dataSource;
-    }
 
     @SneakyThrows
     public Long create(Item item) {
@@ -47,8 +33,12 @@ public class ItemRepository {
 
         ResultSet key = statement.getGeneratedKeys();
         key.next();
+        Long generatedKey = key.getLong(1);
 
-        return key.getLong(1);
+        statement.close();
+        connection.close();
+
+        return generatedKey;
     }
 
     @SneakyThrows
@@ -57,7 +47,23 @@ public class ItemRepository {
         Connection connection = getNewConnection();
         PreparedStatement statement = connection.prepareStatement(query);
         ResultSet resultSet = statement.executeQuery();
-        return new ArrayList<>(ItemMapper.extractItemFromResultSet(resultSet));
+        List<Item> items = ItemMapper.extractItemFromResultSet(resultSet);
+        statement.close();
+        connection.close();
+        return items;
+    }
+
+    private Connection getNewConnection() throws SQLException {
+        return getDataSource().getConnection();
+    }
+
+    private DataSource getDataSource() {
+        PGSimpleDataSource dataSource = new PGSimpleDataSource();
+        dataSource.setPortNumbers(new int[]{5432});
+        dataSource.setDatabaseName("item-managment");
+        dataSource.setUser("postgres");
+        dataSource.setPassword("admin");
+        return dataSource;
     }
 
 }

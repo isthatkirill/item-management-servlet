@@ -97,3 +97,8 @@ h4 {
         font-size: 12px;
     }
 }
+
+.error-message {
+    color: red;
+    text-align: center;
+}

@@ -33,6 +33,11 @@
     <p>Новый товар успешно добавлен. Присвоенный идентификатор id = <%=id%>.</p>
     <% } %>
 </div>
+<div class="error-message">
+    <% if (request.getAttribute("error") != null) { %>
+    <%=request.getAttribute("error")%>
+    <% } %>
+</div>
 
 </body>
 </html>
