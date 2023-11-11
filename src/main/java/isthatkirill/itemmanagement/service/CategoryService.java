@@ -1,5 +1,6 @@
 package isthatkirill.itemmanagement.service;
 
+import isthatkirill.itemmanagement.model.Category;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -8,6 +9,12 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface CategoryService {
 
-    Long createCategory(HttpServletRequest request);
+    Long create(HttpServletRequest request);
+
+    Category getById(HttpServletRequest request);
+
+    void update(HttpServletRequest request);
+
+    void delete(HttpServletRequest request);
 
 }

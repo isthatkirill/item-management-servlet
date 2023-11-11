@@ -7,6 +7,8 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,6 +16,83 @@ import java.util.Optional;
  */
 
 public class CategoryRepository {
+
+    public Long create(Category category) {
+        String query = "INSERT INTO categories (name, description) VALUES (?, ?)";
+        try (Connection connection = getNewConnection();
+        PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, category.getName());
+            statement.setString(2, category.getDescription());
+            statement.executeUpdate();
+
+            ResultSet key = statement.getGeneratedKeys();
+            key.next();
+            return key.getLong(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @SneakyThrows
+    public Optional<Category> findById(Long id) {
+        String query = "SELECT * FROM categories WHERE id = ?";
+        try (Connection connection = getNewConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return CategoryMapper.extractCategoryFromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    @SneakyThrows
+    public void update(Category category) {
+        StringBuilder query = new StringBuilder("UPDATE categories SET ");
+        List<Object> values = new ArrayList<>();
+
+        if (category.getName() != null) {
+            query.append("name = ?, ");
+            values.add(category.getName());
+        }
+
+        if (category.getDescription() != null) {
+            query.append("description = ?, ");
+            values.add(category.getDescription());
+        }
+
+        if (values.isEmpty()) {
+            return;
+        }
+
+        query.delete(query.length() - 2, query.length());
+        query.append(" WHERE id = ?");
+        values.add(category.getId());
+
+        try (Connection connection = getNewConnection();
+        PreparedStatement statement = connection.prepareStatement(query.toString())) {
+            for (int i = 0; i < values.size(); i++) {
+                statement.setObject(i + 1, values.get(i));
+            }
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SneakyThrows
+    public void delete(Long id) {
+        String query = "DELETE FROM categories WHERE id = ?";
+        try (Connection connection = getNewConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        }
+    }
 
     private Connection getNewConnection() throws SQLException {
         return getDataSource().getConnection();
@@ -27,35 +106,4 @@ public class CategoryRepository {
         dataSource.setPassword("admin");
         return dataSource;
     }
-
-    @SneakyThrows
-    public Long create(Category category) {
-        String query = "INSERT INTO categories (name, description) VALUES (?, ?)";
-        Connection connection = getNewConnection();
-        PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-
-        statement.setString(1, category.getName());
-        statement.setString(2, category.getDescription());
-        statement.executeUpdate();
-
-        ResultSet key = statement.getGeneratedKeys();
-        key.next();
-        Long generatedKey = key.getLong(1);
-
-        statement.close();
-        connection.close();
-
-        return generatedKey;
-    }
-
-    @SneakyThrows
-    public Optional<Category> findById(Long id) {
-        String query = "SELECT * FROM categories WHERE id = ?";
-        Connection connection = getNewConnection();
-        PreparedStatement statement = connection.prepareStatement(query);
-        statement.setLong(1, id);
-        ResultSet resultSet = statement.executeQuery();
-        return CategoryMapper.extractCategoryFromResultSet(resultSet);
-    }
-
 }

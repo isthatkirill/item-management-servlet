@@ -15,7 +15,7 @@ public class Constants {
                     </button>
                     <div class="dropdown-content">
                         <a href="/item?action=create-item">Добавить товар</a>
-                        <a href="/item?action=get-item">Просмотреть информацию о товаре</a>
+                        <a href="/item?action=read-item">Просмотреть информацию о товаре</a>
                         <a href="/item?action=update-item">Изменить товар</a>
                         <a href="/item?action=delete-item">Удалить товар</a>
                     </div>
@@ -26,7 +26,7 @@ public class Constants {
                     </button>
                     <div class="dropdown-content">
                         <a href="/item?action=create-category">Добавить категорию</a>
-                        <a href="/item?action=get-category">Просмотреть информацию о категории</a>
+                        <a href="/item?action=read-category">Просмотреть информацию о категории</a>
                         <a href="/item?action=update-category">Изменить категорию</a>
                         <a href="/item?action=delete-category">Удалить категорию</a>
                     </div>

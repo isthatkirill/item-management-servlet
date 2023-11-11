@@ -27,15 +27,14 @@ public class ItemServiceImpl implements ItemService {
         this.categoryRepository = categoryRepository;
     }
 
-
     @Override
-    public Long createItem(HttpServletRequest request) {
+    public Long create(HttpServletRequest request) {
         Item item = ItemMapper.extractItemFromRequest(request);
-        checkIfCategoryExists(item.getCategoryId());
         item.setCreatedAt(LocalDateTime.now());
+        if ((item.getCategoryId() != null)) {
+            checkIfCategoryExists(item.getCategoryId());
+        }
         if (item.getStockUnits() == null) item.setStockUnits(0);
-        if (item.getBrand() == null) item.setBrand("N/A");
-        if (item.getCategoryId() == null) item.setCategoryId(-1L);
         return itemRepository.create(item);
     }
 

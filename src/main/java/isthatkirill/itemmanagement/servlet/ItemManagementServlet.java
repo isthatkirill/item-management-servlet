@@ -1,6 +1,7 @@
-package isthatkirill.itemmanagement;
+package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
+import isthatkirill.itemmanagement.model.Category;
 import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
@@ -48,6 +49,9 @@ public class ItemManagementServlet extends HttpServlet {
         switch (action) {
             case "create-item" -> request.getRequestDispatcher("/cItem.jsp").forward(request, response);
             case "create-category" -> request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
+            case "read-category" -> request.getRequestDispatcher("/rCategory.jsp").forward(request, response);
+            case "update-category" -> request.getRequestDispatcher("/uCategory.jsp").forward(request, response);
+            case "delete-category" -> request.getRequestDispatcher("/dCategory.jsp").forward(request, response);
         }
 
     }
@@ -64,7 +68,7 @@ public class ItemManagementServlet extends HttpServlet {
         switch (action) {
             case "create-item" -> {
                 try {
-                    Long generatedId = itemService.createItem(request);
+                    Long generatedId = itemService.create(request);
                     request.setAttribute("generatedId", generatedId);
                 } catch (EntityNotFoundException e) {
                     request.setAttribute("error", e.getMessage());
@@ -73,9 +77,39 @@ public class ItemManagementServlet extends HttpServlet {
                 }
             }
             case "create-category" -> {
-                Long generatedId = categoryService.createCategory(request);
+                Long generatedId = categoryService.create(request);
                 request.setAttribute("generatedId", generatedId);
                 request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
+            }
+            case "read-category" -> {
+                try {
+                    Category category = categoryService.getById(request);
+                    request.setAttribute("category", category);
+                } catch (EntityNotFoundException e) {
+                    request.setAttribute("error", e.getMessage());
+                } finally {
+                    request.getRequestDispatcher("/rCategory.jsp").forward(request, response);
+                }
+            }
+            case "update-category" -> {
+                try {
+                    categoryService.update(request);
+                    request.setAttribute("isSuccess", true);
+                } catch (EntityNotFoundException e) {
+                    request.setAttribute("error", e.getMessage());
+                } finally {
+                    request.getRequestDispatcher("/uCategory.jsp").forward(request, response);
+                }
+            }
+            case "delete-category" -> {
+                try {
+                    categoryService.delete(request);
+                    request.setAttribute("isSuccess", true);
+                } catch (EntityNotFoundException e) {
+                    request.setAttribute("error", e.getMessage());
+                } finally {
+                    request.getRequestDispatcher("/dCategory.jsp").forward(request, response);
+                }
             }
         }
     }

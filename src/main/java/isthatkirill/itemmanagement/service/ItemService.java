@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ItemService {
 
-    Long createItem(HttpServletRequest request);
+    Long create(HttpServletRequest request);
 
     List<Item> getAll();
 

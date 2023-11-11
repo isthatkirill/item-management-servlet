@@ -15,7 +15,7 @@
     <form id="itemForm" action="/item?action=create-category" method="post">
         <input type="text" name="name" placeholder="Название категории" required/>
         <br/>
-        <input type="text" name="description" placeholder="Описание катгеории" required/>
+        <input type="text" name="description" placeholder="Описание категории" required/>
         <br/>
         <input type="submit" value="Добавить"/>
     </form>

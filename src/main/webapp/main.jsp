@@ -51,8 +51,8 @@
     <td><%=item.getDescription()%></td>
     <td><%=item.getPurchasePrice()%></td>
     <td><%=item.getStockUnits()%></td>
-    <td><%=item.getCategoryId()==-1 ? "N/A" : item.getCategoryId()%></td>
-    <td><%=item.getBrand()%></td>
+    <td><%=item.getCategoryId() == 0 ? "N/A" : item.getCategoryId()%></td>
+    <td><%=item.getBrand() == null ? "N/A" : item.getBrand()%></td>
 </tr>
 <% } %>
 </tbody>
