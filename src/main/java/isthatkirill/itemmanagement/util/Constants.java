@@ -27,6 +27,7 @@ public class Constants {
                     <div class="dropdown-content">
                         <a href="/category?action=create">Добавить категорию</a>
                         <a href="/category?action=read">Просмотреть информацию о категории</a>
+                        <a href="/category?action=read-all">Просмотреть все категории</a>
                         <a href="/category?action=update">Изменить категорию</a>
                         <a href="/category?action=delete">Удалить категорию</a>
                     </div>

@@ -43,6 +43,17 @@ public class CategoryServlet extends HttpServlet {
         if (action == null) {
             request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
             return;
+        } else if (action.equals("read-all")) {
+            List<Category> categories = categoryService.getAll();
+            request.setAttribute("categories", categories);
+            request.getRequestDispatcher("/rAllCategory.jsp").forward(request, response);
+            return;
+        } else if (action.startsWith("button-delete-")) {
+            categoryService.deleteButton(Long.valueOf(action.substring(14)));
+            List<Category> categories = categoryService.getAll();
+            request.setAttribute("categories", categories);
+            request.getRequestDispatcher("/rAllCategory.jsp").forward(request, response);
+            return;
         }
 
         forwardRequest(action, request, response);
@@ -73,7 +84,7 @@ public class CategoryServlet extends HttpServlet {
                     request.setAttribute("isSuccess", true);
                 }
                 case "delete" -> {
-                    categoryService.delete(request);
+                    categoryService.deleteById(request);
                     request.setAttribute("isSuccess", true);
                 }
             }

@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Kirill Emelyanov
@@ -54,7 +55,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteButton(HttpServletRequest request) {
+    public void deleteById(HttpServletRequest request) {
         Long id = Long.valueOf(request.getParameter("id"));
         checkIfItemExists(id);
         itemRepository.delete(id);

@@ -17,7 +17,7 @@ public interface ItemService {
 
     void update(HttpServletRequest request);
 
-    void deleteButton(HttpServletRequest request);
+    void deleteById(HttpServletRequest request);
 
     void deleteButton(Long id);
 

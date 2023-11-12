@@ -63,8 +63,8 @@
     </td>
     <td><%=item.getBrand() == null ? "-" : item.getBrand()%>
     </td>
-    <td style="border: none"><a href="/item?action=button-delete-<%=item.getId()%>">
-        <img src="/images/delete.png" height="35px" width="35px">
+    <td style="border: none; width: 34px"><a href="/item?action=button-delete-<%=item.getId()%>">
+        <img src="/images/delete.png" height="30px" width="30px">
     </a>
     </td>
 </tr>

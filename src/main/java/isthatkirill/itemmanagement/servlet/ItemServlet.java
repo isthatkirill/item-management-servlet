@@ -75,7 +75,7 @@ public class ItemServlet extends HttpServlet {
                     request.setAttribute("isSuccess", true);
                 }
                 case "delete" -> {
-                    itemService.deleteButton(request);
+                    itemService.deleteById(request);
                     request.setAttribute("isSuccess", true);
                 }
             }

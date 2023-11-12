@@ -7,6 +7,8 @@ import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.service.CategoryService;
 import jakarta.servlet.http.HttpServletRequest;
 
+import java.util.List;
+
 /**
  * @author Kirill Emelyanov
  */
@@ -38,10 +40,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void delete(HttpServletRequest request) {
+    public void deleteById(HttpServletRequest request) {
         Long id = Long.valueOf(request.getParameter("id"));
         checkIfCategoryExists(id);
         categoryRepository.delete(id);
+    }
+
+    @Override
+    public void deleteButton(Long id) {
+        categoryRepository.delete(id);
+    }
+
+
+    @Override
+    public List<Category> getAll() {
+        return categoryRepository.findAll();
     }
 
     private Category checkIfCategoryExists(Long id) {

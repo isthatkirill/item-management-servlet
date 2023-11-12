@@ -1,13 +1,16 @@
 package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.CategoryMapper;
+import isthatkirill.itemmanagement.mapper.ItemMapper;
 import isthatkirill.itemmanagement.model.Category;
+import isthatkirill.itemmanagement.model.Item;
 import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -82,6 +85,19 @@ public class CategoryRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @SneakyThrows
+    public List<Category> findAll() {
+        String query = "SELECT * FROM categories";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            return CategoryMapper.extractCategoriesFromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
     @SneakyThrows
