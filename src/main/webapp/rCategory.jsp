@@ -13,7 +13,7 @@
 
 <div class="container-form">
     <h4>Получить информацию о категории</h4>
-    <form id="itemForm" action="/item?action=read-category" method="post">
+    <form action="/item?action=read-category" method="post">
         <input type="number" min="0" name="id" placeholder="Идентификатор категории" required/>
         <br/>
         <input type="submit" value="Получить"/>

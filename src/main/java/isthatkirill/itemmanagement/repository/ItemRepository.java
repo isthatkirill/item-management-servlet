@@ -2,12 +2,14 @@ package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.CategoryMapper;
 import isthatkirill.itemmanagement.mapper.ItemMapper;
+import isthatkirill.itemmanagement.model.Category;
 import isthatkirill.itemmanagement.model.Item;
 import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -78,6 +80,60 @@ public class ItemRepository {
             e.printStackTrace();
         }
         return Collections.emptyList();
+    }
+
+    @SneakyThrows
+    public void update(Item item) {
+        StringBuilder query = new StringBuilder("UPDATE items SET ");
+        List<Object> values = new ArrayList<>();
+
+        if (item.getName() != null) {
+            query.append("name = ?, ");
+            values.add(item.getName());
+        }
+
+        if (item.getDescription() != null) {
+            query.append("description = ?, ");
+            values.add(item.getDescription());
+        }
+
+        if (item.getCategoryId() != null) {
+            query.append("category_id = ?, ");
+            values.add(item.getCategoryId());
+        }
+
+        if (item.getBrand() != null) {
+            query.append("brand = ?, ");
+            values.add(item.getBrand());
+        }
+
+        if (values.isEmpty()) {
+            return;
+        }
+
+        query.delete(query.length() - 2, query.length());
+        query.append(" WHERE id = ?");
+        values.add(item.getId());
+
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query.toString())) {
+            for (int i = 0; i < values.size(); i++) {
+                statement.setObject(i + 1, values.get(i));
+            }
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SneakyThrows
+    public void delete(Long id) {
+        String query = "DELETE FROM items WHERE id = ?";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        }
     }
 
     private Connection getNewConnection() throws SQLException {

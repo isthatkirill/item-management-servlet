@@ -12,7 +12,7 @@
 
 <div class="container-form">
     <h4>Удалить категорию</h4>
-    <form id="itemForm" action="/item?action=delete-category" method="post">
+    <form action="/item?action=delete-category" method="post">
         <input type="number" min="0" name="id" placeholder="Идентификатор категории" required/>
         <br/>
         <input type="submit" value="Удалить"/>

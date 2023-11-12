@@ -27,8 +27,6 @@ public class ItemServiceImpl implements ItemService {
         this.categoryRepository = categoryRepository;
     }
 
-
-
     @Override
     public Long create(HttpServletRequest request) {
         Item item = ItemMapper.extractItemFromRequest(request);
@@ -44,6 +42,24 @@ public class ItemServiceImpl implements ItemService {
     public Item getById(HttpServletRequest request) {
         return checkIfItemExists(Long.valueOf(request.getParameter("id")));
     }
+
+    @Override
+    public void update(HttpServletRequest request) {
+        Item item = ItemMapper.extractItemFromRequest(request);
+        checkIfItemExists(item.getId());
+        if (item.getCategoryId() != null) {
+            checkIfCategoryExists(item.getCategoryId());
+        }
+        itemRepository.update(item);
+    }
+
+    @Override
+    public void delete(HttpServletRequest request) {
+        Long id = Long.valueOf(request.getParameter("id"));
+        checkIfItemExists(id);
+        itemRepository.delete(id);
+    }
+
 
     @Override
     public List<Item> getAll() {

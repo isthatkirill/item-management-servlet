@@ -24,6 +24,9 @@ public class ItemMapper {
 
     public static Item extractItemFromRequest(HttpServletRequest request) {
         Item item = new Item();
+        String id = request.getParameter("id");
+        if (id != null && !id.isBlank()) item.setId(Long.valueOf(id));
+
         String name = request.getParameter("name");
         if (name != null && !name.isBlank()) item.setName(decode(name));
 

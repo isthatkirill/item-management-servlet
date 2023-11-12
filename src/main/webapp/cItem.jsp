@@ -13,7 +13,7 @@
 
 <div class="container-form">
     <h4>Добавить товар</h4>
-    <form id="itemForm" action="/item?action=create-item" method="post">
+    <form action="/item?action=create-item" method="post">
         <input type="text" name="name" placeholder="Наименование товара" required/>
         <br/>
         <input type="text" name="description" placeholder="Описание товара" required/>

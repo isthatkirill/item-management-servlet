@@ -16,6 +16,10 @@ public interface ItemService {
 
     Item getById(HttpServletRequest request);
 
+    void update(HttpServletRequest request);
+
+    void delete(HttpServletRequest request);
+
     List<Item> getAll();
 
 }
