@@ -42,12 +42,7 @@ public class ItemServlet extends HttpServlet {
             return;
         }
 
-        switch (action) {
-            case "create" -> request.getRequestDispatcher("/cItem.jsp").forward(request, response);
-            case "read" -> request.getRequestDispatcher("/rItem.jsp").forward(request, response);
-            case "update" -> request.getRequestDispatcher("/uItem.jsp").forward(request, response);
-            case "delete" -> request.getRequestDispatcher("/dItem.jsp").forward(request, response);
-        }
+        forwardRequest(action, request, response);
 
     }
 
@@ -60,46 +55,53 @@ public class ItemServlet extends HttpServlet {
             return;
         }
 
-        switch (action) {
-            case "create" -> {
-                try {
+        try {
+            switch (action) {
+                case "create" -> {
                     Long generatedId = itemService.create(request);
                     request.setAttribute("generatedId", generatedId);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/cItem.jsp").forward(request, response);
                 }
-            }
-            case "read" -> {
-                try {
+                case "read" -> {
                     Item item = itemService.getById(request);
                     request.setAttribute("item", item);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/rItem.jsp").forward(request, response);
                 }
-            }
-            case "update" -> {
-                try {
+                case "update" -> {
                     itemService.update(request);
                     request.setAttribute("isSuccess", true);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/uItem.jsp").forward(request, response);
                 }
-            }
-            case "delete" -> {
-                try {
+                case "delete" -> {
                     itemService.delete(request);
                     request.setAttribute("isSuccess", true);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/dItem.jsp").forward(request, response);
                 }
+            }
+        } catch (EntityNotFoundException e) {
+            request.setAttribute("error", e.getMessage());
+        } finally {
+            forwardRequest(action, request, response);
+        }
+    }
+
+    private void forwardRequest(String action, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String jspPath = getJspPath(action);
+        request.getRequestDispatcher(jspPath).forward(request, response);
+    }
+
+    private String getJspPath(String action) {
+        switch (action) {
+            case "create" -> {
+                return "/cItem.jsp";
+            }
+            case "read" -> {
+                return "/rItem.jsp";
+            }
+            case "update" -> {
+                return "/uItem.jsp";
+            }
+            case "delete" -> {
+                return "/dItem.jsp";
+            }
+            default -> {
+                return "/error.jsp";
             }
         }
     }

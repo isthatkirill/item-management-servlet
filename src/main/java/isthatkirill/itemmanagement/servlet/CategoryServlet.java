@@ -45,12 +45,7 @@ public class CategoryServlet extends HttpServlet {
             return;
         }
 
-        switch (action) {
-            case "create" -> request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
-            case "read" -> request.getRequestDispatcher("/rCategory.jsp").forward(request, response);
-            case "update" -> request.getRequestDispatcher("/uCategory.jsp").forward(request, response);
-            case "delete" -> request.getRequestDispatcher("/dCategory.jsp").forward(request, response);
-        }
+        forwardRequest(action, request, response);
 
     }
 
@@ -63,42 +58,55 @@ public class CategoryServlet extends HttpServlet {
             return;
         }
 
-        switch (action) {
-            case "create" -> {
-                Long generatedId = categoryService.create(request);
-                request.setAttribute("generatedId", generatedId);
-                request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
-            }
-            case "read" -> {
-                try {
+        try {
+            switch (action) {
+                case "create" -> {
+                    Long generatedId = categoryService.create(request);
+                    request.setAttribute("generatedId", generatedId);
+                }
+                case "read" -> {
                     Category category = categoryService.getById(request);
                     request.setAttribute("category", category);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/rCategory.jsp").forward(request, response);
                 }
-            }
-            case "update" -> {
-                try {
+                case "update" -> {
                     categoryService.update(request);
                     request.setAttribute("isSuccess", true);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/uCategory.jsp").forward(request, response);
                 }
-            }
-            case "delete" -> {
-                try {
+                case "delete" -> {
                     categoryService.delete(request);
                     request.setAttribute("isSuccess", true);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/dCategory.jsp").forward(request, response);
                 }
+            }
+        } catch (EntityNotFoundException e) {
+            request.setAttribute("error", e.getMessage());
+        } finally {
+            forwardRequest(action, request, response);
+        }
+    }
+
+    private void forwardRequest(String action, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String jspPath = getJspPath(action);
+        request.getRequestDispatcher(jspPath).forward(request, response);
+    }
+
+    private String getJspPath(String action) {
+        switch (action) {
+            case "create" -> {
+                return "/cCategory.jsp";
+            }
+            case "read" -> {
+                return "/rCategory.jsp";
+            }
+            case "update" -> {
+                return "/uCategory.jsp";
+            }
+            case "delete" -> {
+                return "/dCategory.jsp";
+            }
+            default -> {
+                return "/error.jsp";
             }
         }
     }
+
 }
