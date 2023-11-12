@@ -54,9 +54,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void delete(HttpServletRequest request) {
+    public void deleteButton(HttpServletRequest request) {
         Long id = Long.valueOf(request.getParameter("id"));
         checkIfItemExists(id);
+        itemRepository.delete(id);
+    }
+
+    @Override
+    public void deleteButton(Long id) {
         itemRepository.delete(id);
     }
 

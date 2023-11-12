@@ -63,6 +63,10 @@
     </td>
     <td><%=item.getBrand() == null ? "-" : item.getBrand()%>
     </td>
+    <td style="border: none"><a href="/item?action=button-delete-<%=item.getId()%>">
+        <img src="/images/delete.png" height="35px" width="35px">
+    </a>
+    </td>
 </tr>
 <% } %>
 </tbody>

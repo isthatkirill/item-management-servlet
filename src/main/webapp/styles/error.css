@@ -1,0 +1,8 @@
+h1 {
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.34);
+    color: black;
+    font-family: Arial, sans-serif;
+    font-size: 4em;
+    font-weight: bold;
+}

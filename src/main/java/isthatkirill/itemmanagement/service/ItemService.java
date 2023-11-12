@@ -1,6 +1,5 @@
 package isthatkirill.itemmanagement.service;
 
-import isthatkirill.itemmanagement.model.Category;
 import isthatkirill.itemmanagement.model.Item;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -18,7 +17,9 @@ public interface ItemService {
 
     void update(HttpServletRequest request);
 
-    void delete(HttpServletRequest request);
+    void deleteButton(HttpServletRequest request);
+
+    void deleteButton(Long id);
 
     List<Item> getAll();
 

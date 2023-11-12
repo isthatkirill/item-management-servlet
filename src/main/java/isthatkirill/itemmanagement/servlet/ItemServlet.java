@@ -5,7 +5,6 @@ import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.ItemService;
-import isthatkirill.itemmanagement.service.impl.CategoryServiceImpl;
 import isthatkirill.itemmanagement.service.impl.ItemServiceImpl;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -34,8 +33,14 @@ public class ItemServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
-        logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
+        logger.log(Level.INFO, "Get request was received with parameter action = {0}", action);
         if (action == null) {
+            List<Item> items = itemService.getAll();
+            request.setAttribute("items", items);
+            request.getRequestDispatcher("/main.jsp").forward(request, response);
+            return;
+        } else if (action.startsWith("button-delete-")) {
+            itemService.deleteButton(Long.valueOf(action.substring(14)));
             List<Item> items = itemService.getAll();
             request.setAttribute("items", items);
             request.getRequestDispatcher("/main.jsp").forward(request, response);
@@ -70,7 +75,7 @@ public class ItemServlet extends HttpServlet {
                     request.setAttribute("isSuccess", true);
                 }
                 case "delete" -> {
-                    itemService.delete(request);
+                    itemService.deleteButton(request);
                     request.setAttribute("isSuccess", true);
                 }
             }
