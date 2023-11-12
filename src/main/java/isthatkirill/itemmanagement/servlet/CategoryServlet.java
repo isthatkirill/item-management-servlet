@@ -2,12 +2,9 @@ package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.model.Category;
-import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
-import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.CategoryService;
 import isthatkirill.itemmanagement.service.impl.CategoryServiceImpl;
-import isthatkirill.itemmanagement.service.impl.ItemServiceImpl;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

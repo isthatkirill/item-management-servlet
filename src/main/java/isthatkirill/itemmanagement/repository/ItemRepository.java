@@ -1,8 +1,6 @@
 package isthatkirill.itemmanagement.repository;
 
-import isthatkirill.itemmanagement.mapper.CategoryMapper;
 import isthatkirill.itemmanagement.mapper.ItemMapper;
-import isthatkirill.itemmanagement.model.Category;
 import isthatkirill.itemmanagement.model.Item;
 import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
@@ -25,7 +23,7 @@ public class ItemRepository {
         String query = "INSERT INTO items (name, description, purchase_price, sale_price, stock_units, brand, created_at, category_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection connection = getNewConnection();
-        PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, item.getName());
             statement.setString(2, item.getDescription());
             statement.setNull(3, Types.DECIMAL);
@@ -73,7 +71,7 @@ public class ItemRepository {
     public List<Item> findAll() {
         String query = "SELECT * FROM items";
         try (Connection connection = getNewConnection();
-        PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
             return ItemMapper.extractItemsFromResultSet(resultSet);
         } catch (SQLException e) {

@@ -1,7 +1,5 @@
 package isthatkirill.itemmanagement.exception;
 
-import isthatkirill.itemmanagement.model.Category;
-
 /**
  * @author Kirill Emelyanov
  */
