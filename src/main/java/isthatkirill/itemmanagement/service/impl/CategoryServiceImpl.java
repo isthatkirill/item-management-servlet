@@ -44,7 +44,6 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.delete(id);
     }
 
-
     private Category checkIfCategoryExists(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Категория с id = %s " +

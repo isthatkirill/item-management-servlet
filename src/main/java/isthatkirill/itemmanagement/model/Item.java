@@ -19,7 +19,8 @@ public class Item {
     Long id;
     String name;
     String description;
-    Double purchasePrice;
+    Double averagePurchasePrice;
+    Double averageSalePrice;
     Integer stockUnits;
     Long categoryId;
     String brand;

@@ -27,6 +27,8 @@ public class ItemServiceImpl implements ItemService {
         this.categoryRepository = categoryRepository;
     }
 
+
+
     @Override
     public Long create(HttpServletRequest request) {
         Item item = ItemMapper.extractItemFromRequest(request);
@@ -34,8 +36,13 @@ public class ItemServiceImpl implements ItemService {
         if ((item.getCategoryId() != null)) {
             checkIfCategoryExists(item.getCategoryId());
         }
-        if (item.getStockUnits() == null) item.setStockUnits(0);
+        item.setStockUnits(0);
         return itemRepository.create(item);
+    }
+
+    @Override
+    public Item getById(HttpServletRequest request) {
+        return checkIfItemExists(Long.valueOf(request.getParameter("id")));
     }
 
     @Override
@@ -47,6 +54,12 @@ public class ItemServiceImpl implements ItemService {
         categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Категория с id = %s " +
                         "не найдена. Проверьте правильность вводимых данных.", id)));
+    }
+
+    private Item checkIfItemExists(Long id) {
+        return itemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Товар с id = %s " +
+                        "не найден. Проверьте правильность вводимых данных.", id)));
     }
 
 }

@@ -18,10 +18,6 @@
         <br/>
         <input type="text" name="description" placeholder="Описание товара" required/>
         <br/>
-        <input type="number" step="0.01" min="0" name="purchasePrice" placeholder="Цена закупки" required/>
-        <br/>
-        <input type="number" min="0" name="stockUnits" placeholder="Начальный остаток на складе (по умолч. 0)"/>
-        <br/>
         <input type="number" name="categoryId" min="0" placeholder="Номер категории"/>
         <br/>
         <input type="text" name="brand" placeholder="Производитель/бренд"/>

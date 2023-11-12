@@ -48,6 +48,7 @@ public class ItemManagementServlet extends HttpServlet {
 
         switch (action) {
             case "create-item" -> request.getRequestDispatcher("/cItem.jsp").forward(request, response);
+            case "read-item" -> request.getRequestDispatcher("/rItem.jsp").forward(request, response);
             case "create-category" -> request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
             case "read-category" -> request.getRequestDispatcher("/rCategory.jsp").forward(request, response);
             case "update-category" -> request.getRequestDispatcher("/uCategory.jsp").forward(request, response);
@@ -74,6 +75,16 @@ public class ItemManagementServlet extends HttpServlet {
                     request.setAttribute("error", e.getMessage());
                 } finally {
                     request.getRequestDispatcher("/cItem.jsp").forward(request, response);
+                }
+            }
+            case "read-item" -> {
+                try {
+                    Item item = itemService.getById(request);
+                    request.setAttribute("item", item);
+                } catch (EntityNotFoundException e) {
+                    request.setAttribute("error", e.getMessage());
+                } finally {
+                    request.getRequestDispatcher("/rItem.jsp").forward(request, response);
                 }
             }
             case "create-category" -> {

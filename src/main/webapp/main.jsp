@@ -13,7 +13,6 @@
 
 <%=Constants.COMMON_NAVBAR%>
 
-
 <h4>Перечень всех товаров, хранящихся на складе</h4>
 
 <table>
@@ -22,7 +21,8 @@
         <th>Идентификатор</th>
         <th>Наименование</th>
         <th>Описание</th>
-        <th>Цена закупки</th>
+        <th>Средняя цена закупки</th>
+        <th>Средняя цена продажи</th>
         <th>Остаток на складе</th>
         <th>Номер категории</th>
         <th>Производитель</th>
@@ -38,6 +38,7 @@
         <td>-</td>
         <td>-</td>
         <td>-</td>
+        <td>-</td>
     </tr>
     </tbody>
 </table>
@@ -46,13 +47,22 @@
 <tbody>
 <% for (Item item : items) { %>
 <tr>
-    <td><%=item.getId()%></td>
-    <td><%=item.getName()%></td>
-    <td><%=item.getDescription()%></td>
-    <td><%=item.getPurchasePrice()%></td>
-    <td><%=item.getStockUnits()%></td>
-    <td><%=item.getCategoryId() == 0 ? "N/A" : item.getCategoryId()%></td>
-    <td><%=item.getBrand() == null ? "N/A" : item.getBrand()%></td>
+    <td><%=item.getId()%>
+    </td>
+    <td><%=item.getName()%>
+    </td>
+    <td><%=item.getDescription()%>
+    </td>
+    <td><%=item.getAveragePurchasePrice() == 0 ? "-" : item.getAveragePurchasePrice()%>
+    </td>
+    <td><%=item.getAverageSalePrice() == 0 ? "-" : item.getAverageSalePrice()%>
+    </td>
+    <td><%=item.getStockUnits()%>
+    </td>
+    <td><%=item.getCategoryId() == 0 ? "-" : item.getCategoryId()%>
+    </td>
+    <td><%=item.getBrand() == null ? "-" : item.getBrand()%>
+    </td>
 </tr>
 <% } %>
 </tbody>
