@@ -14,7 +14,7 @@
 
 <div class="container-form">
     <h4>Получить информацию о товаре</h4>
-    <form action="/item?action=read-item" method="post">
+    <form action="/item?action=read" method="post">
         <input type="number" min="0" name="id" placeholder="Идентификатор товара" required/>
         <br/>
         <input type="submit" value="Получить"/>

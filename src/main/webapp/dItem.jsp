@@ -12,7 +12,7 @@
 
 <div class="container-form">
   <h4>Удалить товар</h4>
-  <form action="/item?action=delete-item" method="post">
+  <form action="/item?action=delete" method="post">
     <input type="number" min="0" name="id" placeholder="Идентификатор товара" required/>
     <br/>
     <input type="submit" value="Удалить"/>

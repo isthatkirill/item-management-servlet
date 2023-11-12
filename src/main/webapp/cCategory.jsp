@@ -12,7 +12,7 @@
 
 <div class="container-form">
     <h4>Добавить категорию</h4>
-    <form action="/item?action=create-category" method="post">
+    <form action="/category?action=create" method="post">
         <input type="text" name="name" placeholder="Название категории" required/>
         <br/>
         <input type="text" name="description" placeholder="Описание категории" required/>

@@ -13,7 +13,7 @@
 
 <div class="container-form">
   <h4>Обновить товар</h4>
-  <form action="/item?action=update-item" method="post">
+  <form action="/item?action=update" method="post">
     <input type="number" min="0" name="id" placeholder="Идентификатор товара" required/>
     <br/>
     <input type="text" name="name" placeholder="Наименование товара"/>

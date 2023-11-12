@@ -12,7 +12,7 @@
 
 <div class="container-form">
   <h4>Обновить категорию</h4>
-  <form action="/item?action=update-category" method="post">
+  <form action="/category?action=update" method="post">
     <input type="number" min="0" name="id" placeholder="Идентификатор категории" required/>
     <br/>
     <input type="text" name="name" placeholder="Название категории"/>

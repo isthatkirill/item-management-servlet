@@ -1,11 +1,9 @@
 package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
-import isthatkirill.itemmanagement.model.Category;
 import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
-import isthatkirill.itemmanagement.service.CategoryService;
 import isthatkirill.itemmanagement.service.ItemService;
 import isthatkirill.itemmanagement.service.impl.CategoryServiceImpl;
 import isthatkirill.itemmanagement.service.impl.ItemServiceImpl;
@@ -22,17 +20,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/item/*")
-public class ItemManagementServlet extends HttpServlet {
+public class ItemServlet extends HttpServlet {
 
-    private final Logger logger = Logger.getLogger(ItemManagementServlet.class.getName());
+    private final Logger logger = Logger.getLogger(ItemServlet.class.getName());
     private ItemService itemService;
-    private CategoryService categoryService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         itemService = new ItemServiceImpl(new ItemRepository(), new CategoryRepository());
-        categoryService = new CategoryServiceImpl(new CategoryRepository());
     }
 
     @Override
@@ -47,14 +43,10 @@ public class ItemManagementServlet extends HttpServlet {
         }
 
         switch (action) {
-            case "create-item" -> request.getRequestDispatcher("/cItem.jsp").forward(request, response);
-            case "read-item" -> request.getRequestDispatcher("/rItem.jsp").forward(request, response);
-            case "update-item" -> request.getRequestDispatcher("/uItem.jsp").forward(request, response);
-            case "delete-item" -> request.getRequestDispatcher("/dItem.jsp").forward(request, response);
-            case "create-category" -> request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
-            case "read-category" -> request.getRequestDispatcher("/rCategory.jsp").forward(request, response);
-            case "update-category" -> request.getRequestDispatcher("/uCategory.jsp").forward(request, response);
-            case "delete-category" -> request.getRequestDispatcher("/dCategory.jsp").forward(request, response);
+            case "create" -> request.getRequestDispatcher("/cItem.jsp").forward(request, response);
+            case "read" -> request.getRequestDispatcher("/rItem.jsp").forward(request, response);
+            case "update" -> request.getRequestDispatcher("/uItem.jsp").forward(request, response);
+            case "delete" -> request.getRequestDispatcher("/dItem.jsp").forward(request, response);
         }
 
     }
@@ -69,7 +61,7 @@ public class ItemManagementServlet extends HttpServlet {
         }
 
         switch (action) {
-            case "create-item" -> {
+            case "create" -> {
                 try {
                     Long generatedId = itemService.create(request);
                     request.setAttribute("generatedId", generatedId);
@@ -79,7 +71,7 @@ public class ItemManagementServlet extends HttpServlet {
                     request.getRequestDispatcher("/cItem.jsp").forward(request, response);
                 }
             }
-            case "read-item" -> {
+            case "read" -> {
                 try {
                     Item item = itemService.getById(request);
                     request.setAttribute("item", item);
@@ -89,7 +81,7 @@ public class ItemManagementServlet extends HttpServlet {
                     request.getRequestDispatcher("/rItem.jsp").forward(request, response);
                 }
             }
-            case "update-item" -> {
+            case "update" -> {
                 try {
                     itemService.update(request);
                     request.setAttribute("isSuccess", true);
@@ -99,7 +91,7 @@ public class ItemManagementServlet extends HttpServlet {
                     request.getRequestDispatcher("/uItem.jsp").forward(request, response);
                 }
             }
-            case "delete-item" -> {
+            case "delete" -> {
                 try {
                     itemService.delete(request);
                     request.setAttribute("isSuccess", true);
@@ -107,41 +99,6 @@ public class ItemManagementServlet extends HttpServlet {
                     request.setAttribute("error", e.getMessage());
                 } finally {
                     request.getRequestDispatcher("/dItem.jsp").forward(request, response);
-                }
-            }
-            case "create-category" -> {
-                Long generatedId = categoryService.create(request);
-                request.setAttribute("generatedId", generatedId);
-                request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
-            }
-            case "read-category" -> {
-                try {
-                    Category category = categoryService.getById(request);
-                    request.setAttribute("category", category);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/rCategory.jsp").forward(request, response);
-                }
-            }
-            case "update-category" -> {
-                try {
-                    categoryService.update(request);
-                    request.setAttribute("isSuccess", true);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/uCategory.jsp").forward(request, response);
-                }
-            }
-            case "delete-category" -> {
-                try {
-                    categoryService.delete(request);
-                    request.setAttribute("isSuccess", true);
-                } catch (EntityNotFoundException e) {
-                    request.setAttribute("error", e.getMessage());
-                } finally {
-                    request.getRequestDispatcher("/dCategory.jsp").forward(request, response);
                 }
             }
         }
