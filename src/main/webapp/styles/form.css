@@ -22,6 +22,15 @@ select {
     color: white;
 }
 
+select {
+    width: 107%;
+}
+
+select option {
+    padding: 10px 20px; /* настройте нужные значения отступов */
+}
+
+
 hr {
     border: none;
     border-top: 1px solid #3c3c3c;

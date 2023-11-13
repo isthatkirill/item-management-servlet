@@ -1,4 +1,6 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
+<%@ page import="isthatkirill.itemmanagement.model.Category" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -18,8 +20,15 @@
         <br/>
         <input type="text" name="description" placeholder="Описание товара" required/>
         <br/>
-        <input type="number" name="categoryId" min="0" placeholder="Номер категории"/>
-        <br/>
+        <select name="categoryId">
+            <option value="" selected>Выберите категорию</option>
+            <% if (request.getAttribute("categories") != null) { %>
+            <% List<Category> categories = (List<Category>) request.getAttribute("categories"); %>
+            <% for (Category category : categories) { %>
+            <option value="<%=category.getId()%>"><%=category.getName()%> (id = <%=category.getId()%>)</option>
+            <% } %>
+            <% } %>
+        </select>
         <input type="text" name="brand" placeholder="Производитель/бренд"/>
         <br/>
         <input type="submit" value="Добавить"/>

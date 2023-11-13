@@ -1,6 +1,7 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
 <%@ page import="isthatkirill.itemmanagement.model.Item" %>
 <%@ page import="java.util.List" %>
+<%@ page import="isthatkirill.itemmanagement.model.Category" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -22,20 +23,32 @@
         <br/>
         <input type="text" name="description" placeholder="Описание товара"/>
         <br/>
-        <input type="number" name="categoryId" min="0" placeholder="Номер категории"/>
+        <select name="categoryId">
+            <option value="" selected>Выберите категорию</option>
+            <% if (request.getAttribute("categories") != null) { %>
+            <% List<Category> categories = (List<Category>) request.getAttribute("categories"); %>
+                <% for (Category category : categories) { %>
+            <option value="<%=category.getId()%>"><%=category.getName()%> (id = <%=category.getId()%>)</option>
+            <% } %>
+            <% } %>
+        </select>
         <br/>
         <input type="text" name="brand" placeholder="Производитель/бренд"/>
         <br/>
         <input type="submit" value="Обновить"/>
     </form>
+</div>
+
+<div class="ok-message">
     <% if (request.getAttribute("isSuccess") != null) { %>
-    <p>Товар успешно обновлен.</p>
+    Товар успешно обновлен.
     <% } %>
-    <div class="error-message">
-        <% if (request.getAttribute("error") != null) { %>
-        <%=request.getAttribute("error")%>
-        <% } %>
-    </div>
+</div>
+
+<div class="error-message">
+    <% if (request.getAttribute("error") != null) { %>
+    <%=request.getAttribute("error")%>
+    <% } %>
 </div>
 
 <h4>Перечень всех товаров, хранящихся на складе</h4>

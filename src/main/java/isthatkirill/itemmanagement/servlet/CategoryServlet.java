@@ -38,7 +38,7 @@ public class CategoryServlet extends HttpServlet {
         String action = request.getParameter("action");
         logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
-            request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/category/cCategory.jsp").forward(request, response);
             return;
         } else if (action.equals("update")) {
             List<Category> categories = categoryService.getAll();
@@ -58,7 +58,7 @@ public class CategoryServlet extends HttpServlet {
         String action = request.getParameter("action");
         logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
-            request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/category/cCategory.jsp").forward(request, response);
             return;
         }
 
@@ -75,13 +75,15 @@ public class CategoryServlet extends HttpServlet {
                 case "update" -> {
                     categoryService.update(request);
                     request.setAttribute("isSuccess", true);
-                    List<Category> categories = categoryService.getAll();
-                    request.setAttribute("categories", categories);
                 }
             }
         } catch (EntityNotFoundException e) {
             request.setAttribute("error", e.getMessage());
         } finally {
+            if (action.equals("update")) {
+                List<Category> categories = categoryService.getAll();
+                request.setAttribute("categories", categories);
+            }
             forwardRequest(action, request, response);
         }
     }
@@ -93,20 +95,20 @@ public class CategoryServlet extends HttpServlet {
 
     private String getJspPath(String action) {
         if (action.startsWith("button-delete-")) {
-            return "/uCategory.jsp";
+            return "/jsp/category/uCategory.jsp";
         }
         switch (action) {
             case "create" -> {
-                return "/cCategory.jsp";
+                return "/jsp/category/cCategory.jsp";
             }
             case "read" -> {
-                return "/rCategory.jsp";
+                return "/jsp/category/rCategory.jsp";
             }
             case "update" -> {
-                return "/uCategory.jsp";
+                return "/jsp/category/uCategory.jsp";
             }
             default -> {
-                return "/error.jsp";
+                return "/jsp/error/error.jsp";
             }
         }
     }

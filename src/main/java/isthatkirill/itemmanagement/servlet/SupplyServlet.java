@@ -37,7 +37,7 @@ public class SupplyServlet extends HttpServlet {
         String action = request.getParameter("action");
         logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
-            request.getRequestDispatcher("/cSupply.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/supply/cSupply.jsp").forward(request, response);
             return;
         }
 
@@ -50,7 +50,7 @@ public class SupplyServlet extends HttpServlet {
         String action = request.getParameter("action");
         logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
-            request.getRequestDispatcher("/cSupply.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/supply/cSupply.jsp").forward(request, response);
             return;
         }
 
@@ -80,13 +80,13 @@ public class SupplyServlet extends HttpServlet {
     private String getJspPath(String action) {
         switch (action) {
             case "create" -> {
-                return "/cSupply.jsp";
+                return "/jsp/supply/cSupply.jsp";
             }
             case "update" -> {
-                return "/uSupply.jsp";
+                return "/jsp/supply/uSupply.jsp";
             }
             default -> {
-                return "/error.jsp";
+                return "/jsp/supply/error.jsp";
             }
         }
     }

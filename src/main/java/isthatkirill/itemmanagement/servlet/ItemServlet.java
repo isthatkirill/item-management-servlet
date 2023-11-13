@@ -1,10 +1,13 @@
 package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
+import isthatkirill.itemmanagement.model.Category;
 import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
+import isthatkirill.itemmanagement.service.CategoryService;
 import isthatkirill.itemmanagement.service.ItemService;
+import isthatkirill.itemmanagement.service.impl.CategoryServiceImpl;
 import isthatkirill.itemmanagement.service.impl.ItemServiceImpl;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -23,11 +26,13 @@ public class ItemServlet extends HttpServlet {
 
     private final Logger logger = Logger.getLogger(ItemServlet.class.getName());
     private ItemService itemService;
+    private CategoryService categoryService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         itemService = new ItemServiceImpl(new ItemRepository(), new CategoryRepository());
+        categoryService = new CategoryServiceImpl(new CategoryRepository());
     }
 
     @Override
@@ -37,7 +42,7 @@ public class ItemServlet extends HttpServlet {
         if (action == null) {
             List<Item> items = itemService.getAll();
             request.setAttribute("items", items);
-            request.getRequestDispatcher("/main.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/main.jsp").forward(request, response);
             return;
         } else if (action.startsWith("button-delete-")) {
             itemService.deleteButton(Long.valueOf(action.substring(14)));
@@ -45,7 +50,12 @@ public class ItemServlet extends HttpServlet {
             request.setAttribute("items", items);
         } else if (action.equals("update")) {
             List<Item> items = itemService.getAll();
+            List<Category> categories = categoryService.getAll();
             request.setAttribute("items", items);
+            request.setAttribute("categories", categories);
+        } else if (action.equals("create")) {
+            List<Category> categories = categoryService.getAll();
+            request.setAttribute("categories", categories);
         }
 
         forwardRequest(action, request, response);
@@ -59,7 +69,7 @@ public class ItemServlet extends HttpServlet {
         if (action == null) {
             List<Item> items = itemService.getAll();
             request.setAttribute("items", items);
-            request.getRequestDispatcher("/main.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/main.jsp").forward(request, response);
             return;
         }
 
@@ -76,13 +86,17 @@ public class ItemServlet extends HttpServlet {
                 case "update" -> {
                     itemService.update(request);
                     request.setAttribute("isSuccess", true);
-                    List<Item> items = itemService.getAll();
-                    request.setAttribute("items", items);
                 }
             }
         } catch (EntityNotFoundException e) {
             request.setAttribute("error", e.getMessage());
         } finally {
+            if (action.equals("update") || action.equals("create")) {
+                List<Category> categories = categoryService.getAll();
+                List<Item> items = itemService.getAll();
+                request.setAttribute("items", items);
+                request.setAttribute("categories", categories);
+            }
             forwardRequest(action, request, response);
         }
     }
@@ -94,20 +108,20 @@ public class ItemServlet extends HttpServlet {
 
     private String getJspPath(String action) {
         if (action.startsWith("button-delete-")) {
-            return "/uItem.jsp";
+            return "/jsp/item/uItem.jsp";
         }
         switch (action) {
             case "create" -> {
-                return "/cItem.jsp";
+                return "/jsp/item/cItem.jsp";
             }
             case "read" -> {
-                return "/rItem.jsp";
+                return "/jsp/item/rItem.jsp";
             }
             case "update" -> {
-                return "/uItem.jsp";
+                return "/jsp/item/uItem.jsp";
             }
             default -> {
-                return "/error.jsp";
+                return "/jsp/error/error.jsp";
             }
         }
     }
