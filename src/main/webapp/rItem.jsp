@@ -43,9 +43,9 @@
         </td>
         <td><%=item.getDescription()%>
         </td>
-        <td><%=item.getAveragePurchasePrice() == 0? "-" : item.getAveragePurchasePrice()%>
+        <td><%=item.getAveragePurchasePrice() == 0 ? "-" : String.format("%.2f", item.getAveragePurchasePrice())%>
         </td>
-        <td><%=item.getAverageSalePrice() == 0 ? "-" : item.getAverageSalePrice()%>
+        <td><%=item.getAverageSalePrice() == 0 ? "-" : String.format("%.2f", item.getAverageSalePrice())%>
         </td>
         <td><%=item.getStockUnits()%>
         </td>

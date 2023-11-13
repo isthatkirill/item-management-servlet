@@ -1,10 +1,14 @@
 package isthatkirill.itemmanagement.util;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * @author Kirill Emelyanov
  */
 
 public class Constants {
+
+    public static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
     public static String COMMON_NAVBAR = """
             <div class="navbar">
@@ -46,8 +50,8 @@ public class Constants {
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-content">
-                        <a href="/item?action=create-receipt">Добавить поступление</a>
-                        <a href="/item?action=update-receipt">Изменить поступление</a>
+                        <a href="/supply?action=create">Добавить поступление</a>
+                        <a href="/supply?action=update">Изменить поступление</a>
                     </div>
                 </div>
                 <div class="dropdown">

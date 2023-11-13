@@ -56,6 +56,8 @@ public class ItemServlet extends HttpServlet {
         String action = request.getParameter("action");
         logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
+            List<Item> items = itemService.getAll();
+            request.setAttribute("items", items);
             request.getRequestDispatcher("/main.jsp").forward(request, response);
             return;
         }
