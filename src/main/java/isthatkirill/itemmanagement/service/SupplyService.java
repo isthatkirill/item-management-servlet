@@ -10,4 +10,6 @@ public interface SupplyService {
 
     Long create(HttpServletRequest request);
 
+    void update(HttpServletRequest request);
+
 }

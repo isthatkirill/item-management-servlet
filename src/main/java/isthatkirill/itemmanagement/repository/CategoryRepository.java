@@ -87,7 +87,7 @@ public class CategoryRepository {
 
     @SneakyThrows
     public List<Category> findAll() {
-        String query = "SELECT * FROM categories";
+        String query = "SELECT * FROM categories ORDER BY id ASC";
         try (Connection connection = getNewConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();

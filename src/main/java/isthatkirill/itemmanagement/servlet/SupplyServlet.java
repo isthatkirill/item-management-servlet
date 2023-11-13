@@ -59,7 +59,10 @@ public class SupplyServlet extends HttpServlet {
                 case "create" -> {
                     Long generatedId = supplyService.create(request);
                     request.setAttribute("generatedId", generatedId);
-                    request.getRequestDispatcher("/cSupply.jsp").forward(request, response);
+                }
+                case "update" -> {
+                    supplyService.update(request);
+                    request.setAttribute("isSuccess", true);
                 }
             }
         } catch (EntityNotFoundException e) {

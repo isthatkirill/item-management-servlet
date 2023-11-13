@@ -43,8 +43,9 @@ public class ItemServlet extends HttpServlet {
             itemService.deleteButton(Long.valueOf(action.substring(14)));
             List<Item> items = itemService.getAll();
             request.setAttribute("items", items);
-            request.getRequestDispatcher("/main.jsp").forward(request, response);
-            return;
+        } else if (action.equals("update")) {
+            List<Item> items = itemService.getAll();
+            request.setAttribute("items", items);
         }
 
         forwardRequest(action, request, response);
@@ -75,10 +76,8 @@ public class ItemServlet extends HttpServlet {
                 case "update" -> {
                     itemService.update(request);
                     request.setAttribute("isSuccess", true);
-                }
-                case "delete" -> {
-                    itemService.deleteById(request);
-                    request.setAttribute("isSuccess", true);
+                    List<Item> items = itemService.getAll();
+                    request.setAttribute("items", items);
                 }
             }
         } catch (EntityNotFoundException e) {
@@ -94,6 +93,9 @@ public class ItemServlet extends HttpServlet {
     }
 
     private String getJspPath(String action) {
+        if (action.startsWith("button-delete-")) {
+            return "/uItem.jsp";
+        }
         switch (action) {
             case "create" -> {
                 return "/cItem.jsp";
@@ -103,9 +105,6 @@ public class ItemServlet extends HttpServlet {
             }
             case "update" -> {
                 return "/uItem.jsp";
-            }
-            case "delete" -> {
-                return "/dItem.jsp";
             }
             default -> {
                 return "/error.jsp";

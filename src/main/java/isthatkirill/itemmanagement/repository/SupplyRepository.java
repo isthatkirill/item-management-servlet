@@ -1,11 +1,18 @@
 package isthatkirill.itemmanagement.repository;
 
+import isthatkirill.itemmanagement.mapper.ItemMapper;
+import isthatkirill.itemmanagement.mapper.SupplyMapper;
 import isthatkirill.itemmanagement.model.Category;
+import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.model.Supply;
+import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Kirill Emelyanov
@@ -47,6 +54,117 @@ public class SupplyRepository {
         }
 
         return 0D;
+    }
+
+    public Integer findAllUnits (Long itemId) {
+        String query = "SELECT SUM(amount) AS stock_units FROM supplies WHERE item_id = ?";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, itemId);
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("stock_units");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public void update(Item item) {
+        StringBuilder query = new StringBuilder("UPDATE items SET ");
+        List<Object> values = new ArrayList<>();
+
+        if (item.getName() != null) {
+            query.append("name = ?, ");
+            values.add(item.getName());
+        }
+
+        if (item.getDescription() != null) {
+            query.append("description = ?, ");
+            values.add(item.getDescription());
+        }
+
+        if (item.getCategoryId() != null) {
+            query.append("category_id = ?, ");
+            values.add(item.getCategoryId());
+        }
+
+        if (item.getBrand() != null) {
+            query.append("brand = ?, ");
+            values.add(item.getBrand());
+        }
+
+        if (values.isEmpty()) {
+            return;
+        }
+
+        query.delete(query.length() - 2, query.length());
+        query.append(" WHERE id = ?");
+        values.add(item.getId());
+
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query.toString())) {
+            for (int i = 0; i < values.size(); i++) {
+                statement.setObject(i + 1, values.get(i));
+            }
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(Supply supply) {
+        StringBuilder query = new StringBuilder("UPDATE supplies SET ");
+        List<Object> values = new ArrayList<>();
+
+        if (supply.getCompany() != null) {
+            query.append("company = ?, ");
+            values.add(supply.getCompany());
+        }
+
+        if (supply.getPrice() != null) {
+            query.append("price = ?, ");
+            values.add(supply.getPrice());
+        }
+
+        if (supply.getReceivedAt() != null) {
+            query.append("received_at = ?, ");
+            values.add(supply.getReceivedAt());
+        }
+
+        if (values.isEmpty()) {
+            return;
+        }
+
+        query.delete(query.length() - 2, query.length());
+        query.append(" WHERE id = ?");
+        values.add(supply.getId());
+
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query.toString())) {
+            for (int i = 0; i < values.size(); i++) {
+                statement.setObject(i + 1, values.get(i));
+            }
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @SneakyThrows
+    public Optional<Supply> findById(Long id) {
+        String query = "SELECT * FROM supplies WHERE id = ?";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return SupplyMapper.extractSupplyFromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
     }
 
     private Connection getNewConnection() throws SQLException {

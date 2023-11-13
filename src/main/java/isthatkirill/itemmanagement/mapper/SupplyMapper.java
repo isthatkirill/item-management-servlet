@@ -1,13 +1,19 @@
 package isthatkirill.itemmanagement.mapper;
 
 import isthatkirill.itemmanagement.model.Category;
+import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.model.Supply;
 import isthatkirill.itemmanagement.util.Constants;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.ResultSet;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Kirill Emelyanov
@@ -39,6 +45,33 @@ public class SupplyMapper {
         String receivedAt = request.getParameter("receivedAt");
         if (receivedAt != null && !receivedAt.isBlank()) supply.setReceivedAt(LocalDateTime.parse(receivedAt, Constants.FORMATTER));
 
+        return supply;
+    }
+
+    @SneakyThrows
+    public static List<Supply> extractSuppliesFromResultSet(ResultSet resultSet) {
+        List<Supply> supplies = new ArrayList<>();
+        while (resultSet.next()) {
+            supplies.add(mapResultSetToSupply(resultSet));
+        }
+        return supplies;
+    }
+
+    @SneakyThrows
+    public static Optional<Supply> extractSupplyFromResultSet(ResultSet resultSet) {
+        if (!resultSet.next()) return Optional.empty();
+        return Optional.of(mapResultSetToSupply(resultSet));
+    }
+
+    @SneakyThrows
+    private static Supply mapResultSetToSupply(ResultSet resultSet) {
+        Supply supply = new Supply();
+        supply.setId(resultSet.getLong("id"));
+        supply.setCompany(resultSet.getString("company"));
+        supply.setReceivedAt(resultSet.getTimestamp("received_at").toLocalDateTime());
+        supply.setAmount(resultSet.getLong("amount"));
+        supply.setPrice(resultSet.getDouble("price"));
+        supply.setItemId(resultSet.getLong("item_id"));
         return supply;
     }
 

@@ -16,7 +16,7 @@
   <form action="/supply?action=create" method="post">
     <input type="text" name="company" placeholder="Поставщик товара"/>
     <br/>
-    <input type="text" name="receivedAt" placeholder="Время отправления (дд-ММ-гггг чч:мм)"
+    <input type="text" name="receivedAt" placeholder="Дата поставки (дд-ММ-гггг чч:мм)"
            pattern="(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[1,2])-(19|20)\d{2} ([01][0-9]|2[0-3]):([0-5][0-9])" required/>
     <br/>
     <input type="number" name="amount" min="0" placeholder="Количество (шт.)" required/>

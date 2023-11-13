@@ -69,7 +69,7 @@ public class ItemRepository {
 
     @SneakyThrows
     public List<Item> findAll() {
-        String query = "SELECT * FROM items";
+        String query = "SELECT * FROM items ORDER BY id ASC";
         try (Connection connection = getNewConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
@@ -125,12 +125,13 @@ public class ItemRepository {
     }
 
     @SneakyThrows
-    public void updatePurchasePrice(Double currentAveragePrice, Long itemId) {
-        String query = "UPDATE items SET purchase_price = ? WHERE id = ?";
+    public void update(Double currentAveragePrice, Integer stockUnits, Long itemId) {
+        String query = "UPDATE items SET purchase_price = ?, stock_units = ? WHERE id = ?";
         try (Connection connection = getNewConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setDouble(1, currentAveragePrice);
-            statement.setLong(2, itemId);
+            statement.setInt(2, stockUnits);
+            statement.setLong(3, itemId);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

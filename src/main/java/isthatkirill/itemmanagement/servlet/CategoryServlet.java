@@ -40,17 +40,13 @@ public class CategoryServlet extends HttpServlet {
         if (action == null) {
             request.getRequestDispatcher("/cCategory.jsp").forward(request, response);
             return;
-        } else if (action.equals("read-all")) {
+        } else if (action.equals("update")) {
             List<Category> categories = categoryService.getAll();
             request.setAttribute("categories", categories);
-            request.getRequestDispatcher("/rAllCategory.jsp").forward(request, response);
-            return;
         } else if (action.startsWith("button-delete-")) {
             categoryService.deleteButton(Long.valueOf(action.substring(14)));
             List<Category> categories = categoryService.getAll();
             request.setAttribute("categories", categories);
-            request.getRequestDispatcher("/rAllCategory.jsp").forward(request, response);
-            return;
         }
 
         forwardRequest(action, request, response);
@@ -79,10 +75,8 @@ public class CategoryServlet extends HttpServlet {
                 case "update" -> {
                     categoryService.update(request);
                     request.setAttribute("isSuccess", true);
-                }
-                case "delete" -> {
-                    categoryService.deleteById(request);
-                    request.setAttribute("isSuccess", true);
+                    List<Category> categories = categoryService.getAll();
+                    request.setAttribute("categories", categories);
                 }
             }
         } catch (EntityNotFoundException e) {
@@ -98,6 +92,9 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private String getJspPath(String action) {
+        if (action.startsWith("button-delete-")) {
+            return "/uCategory.jsp";
+        }
         switch (action) {
             case "create" -> {
                 return "/cCategory.jsp";
@@ -107,9 +104,6 @@ public class CategoryServlet extends HttpServlet {
             }
             case "update" -> {
                 return "/uCategory.jsp";
-            }
-            case "delete" -> {
-                return "/dCategory.jsp";
             }
             default -> {
                 return "/error.jsp";

@@ -29,15 +29,36 @@ public class SupplyServiceImpl implements SupplyService {
         Long itemId = supply.getItemId();
         checkIfItemExists(itemId);
         Long generatedId = supplyRepository.create(supply);
-        Double currentAveragePrice = supplyRepository.findAveragePurchasePrice(itemId);
-        itemRepository.updatePurchasePrice(currentAveragePrice, itemId);
+        recalculateItemFields(itemId);
         return generatedId;
     }
+
+    @Override
+    public void update(HttpServletRequest request) {
+        Supply supply = SupplyMapper.extractSupplyFromRequest(request);
+        Supply oldSupply = checkIfSupplyExists(supply.getId());
+        supplyRepository.update(supply);
+        recalculateItemFields(oldSupply.getItemId());
+    }
+
+    private void recalculateItemFields(Long itemId) {
+        //TODO SUPPLIES - SALES = STOCK UNITS
+        Double currentAveragePrice = supplyRepository.findAveragePurchasePrice(itemId);
+        Integer stockUnits = supplyRepository.findAllUnits(itemId);
+        itemRepository.update(currentAveragePrice, stockUnits, itemId);
+    }
+
 
     private Item checkIfItemExists(Long id) {
         return itemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Товар с id = %s " +
                         "не найден. Проверьте правильность вводимых данных.", id)));
+    }
+
+    private Supply checkIfSupplyExists(Long id) {
+        return supplyRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Поступление с id = %s " +
+                        "не найдено. Проверьте правильность вводимых данных.", id)));
     }
 
 }

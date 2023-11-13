@@ -21,7 +21,6 @@ public class Constants {
                         <a href="/item?action=create">Добавить товар</a>
                         <a href="/item?action=read">Просмотреть информацию о товаре</a>
                         <a href="/item?action=update">Изменить товар</a>
-                        <a href="/item?action=delete">Удалить товар</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -31,9 +30,7 @@ public class Constants {
                     <div class="dropdown-content">
                         <a href="/category?action=create">Добавить категорию</a>
                         <a href="/category?action=read">Просмотреть информацию о категории</a>
-                        <a href="/category?action=read-all">Просмотреть все категории</a>
                         <a href="/category?action=update">Изменить категорию</a>
-                        <a href="/category?action=delete">Удалить категорию</a>
                     </div>
                 </div>
                 <div class="dropdown">
