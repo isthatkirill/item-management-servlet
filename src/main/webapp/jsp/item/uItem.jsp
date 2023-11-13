@@ -17,23 +17,30 @@
 <div class="container-form">
     <h4>Редактировать товар</h4>
     <form action="/item?action=update" method="post">
-        <input type="number" min="0" name="id" placeholder="Идентификатор товара" required/>
+        <select name="id" required>
+            <option value="" selected>Выберите товар</option>
+            <% if (request.getAttribute("items") != null) { %>
+            <% List<Item> items = (List<Item>) request.getAttribute("items"); %>
+            <% for (Item item : items) { %>
+            <option value="<%=item.getId()%>"><%=item.getName()%> (id = <%=item.getId()%>)</option>
+            <% } %>
+            <% } %>
+        </select>
+        <input type="text" name="name" placeholder="Новое наименование товара"/>
         <br/>
-        <input type="text" name="name" placeholder="Наименование товара"/>
-        <br/>
-        <input type="text" name="description" placeholder="Описание товара"/>
+        <input type="text" name="description" placeholder="Новое описание товара"/>
         <br/>
         <select name="categoryId">
-            <option value="" selected>Выберите категорию</option>
+            <option value="" selected>Выберите новую категорию</option>
             <% if (request.getAttribute("categories") != null) { %>
             <% List<Category> categories = (List<Category>) request.getAttribute("categories"); %>
-                <% for (Category category : categories) { %>
+            <% for (Category category : categories) { %>
             <option value="<%=category.getId()%>"><%=category.getName()%> (id = <%=category.getId()%>)</option>
             <% } %>
             <% } %>
         </select>
         <br/>
-        <input type="text" name="brand" placeholder="Производитель/бренд"/>
+        <input type="text" name="brand" placeholder="Новый производитель/бренд"/>
         <br/>
         <input type="submit" value="Обновить"/>
     </form>

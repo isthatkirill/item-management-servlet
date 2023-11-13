@@ -46,17 +46,11 @@ public class ItemServlet extends HttpServlet {
             return;
         } else if (action.startsWith("button-delete-")) {
             itemService.deleteButton(Long.valueOf(action.substring(14)));
-            List<Item> items = itemService.getAll();
-            request.setAttribute("items", items);
-        } else if (action.equals("update")) {
-            List<Item> items = itemService.getAll();
-            List<Category> categories = categoryService.getAll();
-            request.setAttribute("items", items);
-            request.setAttribute("categories", categories);
-        } else if (action.equals("create")) {
-            List<Category> categories = categoryService.getAll();
-            request.setAttribute("categories", categories);
         }
+        List<Item> items = itemService.getAll();
+        List<Category> categories = categoryService.getAll();
+        request.setAttribute("items", items);
+        request.setAttribute("categories", categories);
 
         forwardRequest(action, request, response);
 
@@ -93,10 +87,10 @@ public class ItemServlet extends HttpServlet {
         } finally {
             if (action.equals("update") || action.equals("create")) {
                 List<Category> categories = categoryService.getAll();
-                List<Item> items = itemService.getAll();
-                request.setAttribute("items", items);
                 request.setAttribute("categories", categories);
             }
+            List<Item> items = itemService.getAll();
+            request.setAttribute("items", items);
             forwardRequest(action, request, response);
         }
     }

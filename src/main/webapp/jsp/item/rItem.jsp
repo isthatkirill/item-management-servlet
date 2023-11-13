@@ -1,6 +1,7 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
 <%@ page import="isthatkirill.itemmanagement.model.Category" %>
 <%@ page import="isthatkirill.itemmanagement.model.Item" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -15,8 +16,15 @@
 <div class="container-form">
     <h4>Получить информацию о товаре</h4>
     <form action="/item?action=read" method="post">
-        <input type="number" min="0" name="id" placeholder="Идентификатор товара" required/>
-        <br/>
+        <select name="id" required>
+            <option value="" selected>Выберите товар</option>
+            <% if (request.getAttribute("items") != null) { %>
+            <% List<Item> items = (List<Item>) request.getAttribute("items"); %>
+            <% for (Item item : items) { %>
+            <option value="<%=item.getId()%>"><%=item.getName()%> (id = <%=item.getId()%>)</option>
+            <% } %>
+            <% } %>
+        </select>
         <input type="submit" value="Получить"/>
     </form>
 </div>
