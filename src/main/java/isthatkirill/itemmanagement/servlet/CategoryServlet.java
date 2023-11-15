@@ -36,7 +36,7 @@ public class CategoryServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
-        logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
+        logger.log(Level.INFO, "Get request was received with parameter action = {0}", action);
         if (action == null) {
             request.getRequestDispatcher("/jsp/category/cCategory.jsp").forward(request, response);
             return;

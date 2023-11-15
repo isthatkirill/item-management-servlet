@@ -29,20 +29,7 @@
         <th>Производитель</th>
     </tr>
     </thead>
-    <% if (request.getAttribute("items") == null) { %>
-    <tbody>
-    <tr>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-    </tbody>
-</table>
-<% } else { %>
+<% if (request.getAttribute("items") != null) { %>
 <% List<ItemExtended> items = (List<ItemExtended>) request.getAttribute("items"); %>
 <tbody>
 <% for (ItemExtended item : items) { %>
@@ -66,8 +53,8 @@
 </tr>
 <% } %>
 </tbody>
-</table>
 <% } %>
+</table>
 
 </body>
 </html>

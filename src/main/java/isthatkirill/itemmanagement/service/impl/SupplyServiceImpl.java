@@ -31,7 +31,7 @@ public class SupplyServiceImpl implements SupplyService {
         Long itemId = supply.getItemId();
         checkIfItemExists(itemId);
         Long generatedId = supplyRepository.create(supply);
-        recalculateItemFields(itemId);
+        recalculateItemFields(itemId, supply.getAmount());
         return generatedId;
     }
 
@@ -40,7 +40,7 @@ public class SupplyServiceImpl implements SupplyService {
         Supply supply = SupplyMapper.extractSupplyFromRequest(request);
         Supply oldSupply = checkIfSupplyExistsAndGet(supply.getId());
         supplyRepository.update(supply);
-        recalculateItemFields(oldSupply.getItemId());
+        recalculateItemFields(oldSupply.getItemId(), 0L);
     }
 
     @Override
@@ -48,14 +48,10 @@ public class SupplyServiceImpl implements SupplyService {
         return supplyRepository.findAllExtended();
     }
 
-
-    private void recalculateItemFields(Long itemId) {
-        //TODO SUPPLIES - SALES = STOCK UNITS
+    private void recalculateItemFields(Long itemId, Long amount) {
         Double currentAveragePrice = supplyRepository.findAveragePurchasePrice(itemId);
-        Integer stockUnits = supplyRepository.findAllUnits(itemId);
-        itemRepository.update(currentAveragePrice, stockUnits, itemId);
+        itemRepository.updateWithNewSupplyData(currentAveragePrice, Math.toIntExact(amount), itemId);
     }
-
 
     private void checkIfItemExists(Long id) {
         if (!itemRepository.existsById(id)) {

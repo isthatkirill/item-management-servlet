@@ -1,6 +1,5 @@
 package isthatkirill.itemmanagement.service;
 
-import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.model.ItemExtended;
 import isthatkirill.itemmanagement.model.ItemShort;
 import jakarta.servlet.http.HttpServletRequest;

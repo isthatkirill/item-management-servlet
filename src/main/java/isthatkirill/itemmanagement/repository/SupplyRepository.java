@@ -1,14 +1,13 @@
 package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.SupplyMapper;
-import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.model.Supply;
 import isthatkirill.itemmanagement.model.SupplyExtended;
-import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,14 +20,14 @@ import java.util.Optional;
 public class SupplyRepository {
 
     public Long create(Supply supply) {
-        String query = "INSERT INTO supplies (company, received_at, amount, price, item_id) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO supplies (company, amount, price, item_id, created_at) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = getNewConnection();
              PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, supply.getCompany());
-            statement.setTimestamp(2, Timestamp.valueOf(supply.getReceivedAt()));
-            statement.setLong(3, supply.getAmount());
-            statement.setDouble(4, supply.getPrice());
-            statement.setLong(5, supply.getItemId());
+            statement.setLong(2, supply.getAmount());
+            statement.setDouble(3, supply.getPrice());
+            statement.setLong(4, supply.getItemId());
+            statement.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
             statement.executeUpdate();
 
             ResultSet key = statement.getGeneratedKeys();
@@ -47,8 +46,7 @@ public class SupplyRepository {
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, itemId);
             ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return resultSet.getDouble("average_price");
+            if (resultSet.next()) return resultSet.getDouble("average_price");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,7 +66,7 @@ public class SupplyRepository {
         return Collections.emptyList();
     }
 
-    public Integer findAllUnits (Long itemId) {
+    public Integer findAllUnits(Long itemId) {
         String query = "SELECT SUM(amount) AS stock_units FROM supplies WHERE item_id = ?";
         try (Connection connection = getNewConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -83,49 +81,6 @@ public class SupplyRepository {
         return 0;
     }
 
-    public void update(Item item) {
-        StringBuilder query = new StringBuilder("UPDATE items SET ");
-        List<Object> values = new ArrayList<>();
-
-        if (item.getName() != null) {
-            query.append("name = ?, ");
-            values.add(item.getName());
-        }
-
-        if (item.getDescription() != null) {
-            query.append("description = ?, ");
-            values.add(item.getDescription());
-        }
-
-        if (item.getCategoryId() != null) {
-            query.append("category_id = ?, ");
-            values.add(item.getCategoryId());
-        }
-
-        if (item.getBrand() != null) {
-            query.append("brand = ?, ");
-            values.add(item.getBrand());
-        }
-
-        if (values.isEmpty()) {
-            return;
-        }
-
-        query.delete(query.length() - 2, query.length());
-        query.append(" WHERE id = ?");
-        values.add(item.getId());
-
-        try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query.toString())) {
-            for (int i = 0; i < values.size(); i++) {
-                statement.setObject(i + 1, values.get(i));
-            }
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void update(Supply supply) {
         StringBuilder query = new StringBuilder("UPDATE supplies SET ");
         List<Object> values = new ArrayList<>();
@@ -138,11 +93,6 @@ public class SupplyRepository {
         if (supply.getPrice() != null) {
             query.append("price = ?, ");
             values.add(supply.getPrice());
-        }
-
-        if (supply.getReceivedAt() != null) {
-            query.append("received_at = ?, ");
-            values.add(supply.getReceivedAt());
         }
 
         if (values.isEmpty()) {

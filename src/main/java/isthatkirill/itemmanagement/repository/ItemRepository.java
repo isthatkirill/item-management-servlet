@@ -4,7 +4,6 @@ import isthatkirill.itemmanagement.mapper.ItemMapper;
 import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.model.ItemExtended;
 import isthatkirill.itemmanagement.model.ItemShort;
-import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
@@ -65,6 +64,22 @@ public class ItemRepository {
         }
 
         return Optional.empty();
+    }
+
+    public Long findStockById(Long id) {
+        String query = "SELECT stock_units FROM items WHERE id = ?";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getLong("stock_units");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return 0L;
     }
 
     public boolean existsById(Long id) {
@@ -148,8 +163,21 @@ public class ItemRepository {
         }
     }
 
-    public void update(Double currentAveragePrice, Integer stockUnits, Long itemId) {
-        String query = "UPDATE items SET purchase_price = ?, stock_units = ? WHERE id = ?";
+    public void updateWithNewSupplyData(Double currentAveragePrice, Integer stockUnits, Long itemId) {
+        String query = "UPDATE items SET purchase_price = ?, stock_units = stock_units + ? WHERE id = ?";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setDouble(1, currentAveragePrice);
+            statement.setInt(2, stockUnits);
+            statement.setLong(3, itemId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateWithNewSaleData(Double currentAveragePrice, Integer stockUnits, Long itemId) {
+        String query = "UPDATE items SET sale_price = ?, stock_units = stock_units - ? WHERE id = ?";
         try (Connection connection = getNewConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setDouble(1, currentAveragePrice);

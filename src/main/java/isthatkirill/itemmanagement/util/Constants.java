@@ -38,8 +38,8 @@ public class Constants {
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-content">
-                        <a href="/item?action=create-sale">Добавить продажу</a>
-                        <a href="/item?action=update-sale">Изменить продажу</a>
+                        <a href="/sale?action=create">Добавить продажу</a>
+                        <a href="/sale?action=update">Изменить продажу</a>
                     </div>
                 </div>
                 <div class="dropdown">

@@ -2,7 +2,6 @@ package isthatkirill.itemmanagement.mapper;
 
 import isthatkirill.itemmanagement.model.Supply;
 import isthatkirill.itemmanagement.model.SupplyExtended;
-import isthatkirill.itemmanagement.util.Constants;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 
@@ -10,7 +9,6 @@ import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,9 +39,6 @@ public class SupplyMapper {
 
         String itemId = request.getParameter("itemId");
         if (itemId != null && !itemId.isBlank()) supply.setItemId(Long.valueOf(itemId));
-
-        String receivedAt = request.getParameter("receivedAt");
-        if (receivedAt != null && !receivedAt.isBlank()) supply.setReceivedAt(LocalDateTime.parse(receivedAt, Constants.FORMATTER));
 
         return supply;
     }
@@ -81,10 +76,10 @@ public class SupplyMapper {
     private static void mapCommonFields(ResultSet resultSet, Supply supply) throws SQLException {
         supply.setId(resultSet.getLong("id"));
         supply.setCompany(resultSet.getString("company"));
-        supply.setReceivedAt(resultSet.getTimestamp("received_at").toLocalDateTime());
         supply.setAmount(resultSet.getLong("amount"));
         supply.setPrice(resultSet.getDouble("price"));
         supply.setItemId(resultSet.getLong("item_id"));
+        supply.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
     }
 
 

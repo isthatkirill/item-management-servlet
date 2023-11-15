@@ -1,15 +1,15 @@
 package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
+import isthatkirill.itemmanagement.exception.NotEnoughItemException;
 import isthatkirill.itemmanagement.model.ItemShort;
-import isthatkirill.itemmanagement.model.SupplyExtended;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
-import isthatkirill.itemmanagement.repository.SupplyRepository;
+import isthatkirill.itemmanagement.repository.SaleRepository;
 import isthatkirill.itemmanagement.service.ItemService;
-import isthatkirill.itemmanagement.service.SupplyService;
+import isthatkirill.itemmanagement.service.SaleService;
 import isthatkirill.itemmanagement.service.impl.ItemServiceImpl;
-import isthatkirill.itemmanagement.service.impl.SupplyServiceImpl;
+import isthatkirill.itemmanagement.service.impl.SaleServiceImpl;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,17 +26,17 @@ import java.util.logging.Logger;
  * @author Kirill Emelyanov
  */
 
-@WebServlet(urlPatterns = "/supply/*")
-public class SupplyServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/sale/*")
+public class SaleServlet extends HttpServlet {
 
-    private final Logger logger = Logger.getLogger(SupplyServlet.class.getName());
-    private SupplyService supplyService;
+    private final Logger logger = Logger.getLogger(SaleServlet.class.getName());
+    private SaleService saleService;
     private ItemService itemService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        supplyService = new SupplyServiceImpl(new SupplyRepository(), new ItemRepository());
+        saleService = new SaleServiceImpl(new SaleRepository(), new ItemRepository());
         itemService = new ItemServiceImpl(new ItemRepository(), new CategoryRepository());
     }
 
@@ -45,14 +45,15 @@ public class SupplyServlet extends HttpServlet {
         String action = request.getParameter("action");
         logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
-            request.getRequestDispatcher("/jsp/supply/cSupply.jsp").forward(request, response);
+            List<ItemShort> items = itemService.getAllShort();
+            request.setAttribute("items", items);
+            request.getRequestDispatcher("/jsp/sale/cSale.jsp").forward(request, response);
             return;
         } else if (action.equals("create")) {
             List<ItemShort> items = itemService.getAllShort();
             request.setAttribute("items", items);
         } else if (action.equals("update")) {
-            List<SupplyExtended> supplies = supplyService.getAllExtended();
-            request.setAttribute("supplies", supplies);
+
         }
 
 
@@ -65,28 +66,28 @@ public class SupplyServlet extends HttpServlet {
         String action = request.getParameter("action");
         logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
-            request.getRequestDispatcher("/jsp/supply/cSupply.jsp").forward(request, response);
+            request.getRequestDispatcher("/jsp/sale/cSale.jsp").forward(request, response);
             return;
         }
 
         try {
             switch (action) {
                 case "create" -> {
-                    Long generatedId = supplyService.create(request);
-                    List<ItemShort> items = itemService.getAllShort();
-                    request.setAttribute("items", items);
+                    Long generatedId = saleService.create(request);;
                     request.setAttribute("generatedId", generatedId);
                 }
                 case "update" -> {
-                    supplyService.update(request);
+                    /*supplyService.update(request);
                     List<SupplyExtended> supplies = supplyService.getAllExtended();
                     request.setAttribute("supplies", supplies);
-                    request.setAttribute("isSuccess", true);
+                    request.setAttribute("isSuccess", true);*/
                 }
             }
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | NotEnoughItemException e) {
             request.setAttribute("error", e.getMessage());
         } finally {
+            List<ItemShort> items = itemService.getAllShort();
+            request.setAttribute("items", items);
             forwardRequest(action, request, response);
         }
     }
@@ -99,10 +100,10 @@ public class SupplyServlet extends HttpServlet {
     private String getJspPath(String action) {
         switch (action) {
             case "create" -> {
-                return "/jsp/supply/cSupply.jsp";
+                return "/jsp/sale/cSale.jsp";
             }
             case "update" -> {
-                return "/jsp/supply/uSupply.jsp";
+                return "/jsp/sale/uSale.jsp";
             }
             default -> {
                 return "/jsp/error/error.jsp";

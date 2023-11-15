@@ -1,11 +1,7 @@
 package isthatkirill.itemmanagement.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
@@ -16,15 +12,14 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Supply {
+public class Sale {
 
     Long id;
-    String company;
-    LocalDateTime createdAt;
     Long amount;
     Double price;
+    LocalDateTime createdAt;
     Long itemId;
-
+    
 }

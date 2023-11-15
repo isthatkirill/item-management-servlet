@@ -55,16 +55,7 @@
         <th>Описание</th>
     </tr>
     </thead>
-    <% if (request.getAttribute("categories") == null) { %>
-    <tbody>
-    <tr>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-    </tr>
-    </tbody>
-</table>
-<% } else { %>
+<% if (request.getAttribute("categories") != null)  { %>
 <% List<Category> categories = (List<Category>) request.getAttribute("categories"); %>
 <tbody>
 <% for (Category category : categories) { %>
@@ -82,8 +73,8 @@
 </tr>
 <% } %>
 </tbody>
-</table>
 <% } %>
+</table>
 
 
 </body>

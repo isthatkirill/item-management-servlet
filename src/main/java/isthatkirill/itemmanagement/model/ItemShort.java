@@ -2,7 +2,6 @@ package isthatkirill.itemmanagement.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.SuperBuilder;
 
 /**
  * @author Kirill Emelyanov

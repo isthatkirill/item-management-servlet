@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Добавить поступление</title>
+  <title>Добавить продажу</title>
   <link rel="stylesheet" type="text/css" href="/styles/main.css">
   <link rel="stylesheet" type="text/css" href="/styles/form.css">
 </head>
@@ -15,13 +15,11 @@
 <%=Constants.COMMON_NAVBAR%>
 
 <div class="container-form">
-  <h4>Добавить поступление</h4>
-  <form action="/supply?action=create" method="post">
-    <input type="text" name="company" placeholder="Поставщик товара"/>
-    <br/>
+  <h4>Добавить продажу</h4>
+  <form action="/sale?action=create" method="post">
     <input type="number" name="amount" min="1" placeholder="Количество (шт.)" required/>
     <br/>
-    <input type="number" step="0.01" min="0" name="price" placeholder="Цена закупки" required/>
+    <input type="number" step="0.01" min="0" name="price" placeholder="Цена продажи" required/>
     <br/>
     <select name="itemId" required>
       <option value="" selected>Выберите товар</option>
@@ -36,7 +34,7 @@
   </form>
   <% if (request.getAttribute("generatedId") != null) { %>
   <% Long id = (Long) request.getAttribute("generatedId"); %>
-  <p>Новое поступление успешно добавлено. Присвоенный идентификатор id = <%=id%>.</p>
+  <p>Новая продажа успешно добавлена. Присвоенный идентификатор id = <%=id%>.</p>
   <% } %>
 </div>
 <div class="error-message">
