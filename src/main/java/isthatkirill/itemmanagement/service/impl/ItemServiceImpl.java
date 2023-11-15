@@ -3,6 +3,8 @@ package isthatkirill.itemmanagement.service.impl;
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.mapper.ItemMapper;
 import isthatkirill.itemmanagement.model.Item;
+import isthatkirill.itemmanagement.model.ItemExtended;
+import isthatkirill.itemmanagement.model.ItemShort;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.ItemService;
@@ -38,14 +40,14 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item getById(HttpServletRequest request) {
-        return checkIfItemExists(Long.valueOf(request.getParameter("id")));
+    public ItemExtended getById(HttpServletRequest request) {
+        return checkIfItemExistsAndGet(Long.valueOf(request.getParameter("id")));
     }
 
     @Override
     public void update(HttpServletRequest request) {
         Item item = ItemMapper.extractItemFromRequest(request);
-        checkIfItemExists(item.getId());
+        checkIfItemExistsAndGet(item.getId());
         if (item.getCategoryId() != null) {
             checkIfCategoryExists(item.getCategoryId());
         }
@@ -64,22 +66,35 @@ public class ItemServiceImpl implements ItemService {
         itemRepository.delete(id);
     }
 
+    @Override
+    public List<ItemExtended> getAllExtended() {
+        return itemRepository.findAllExtended();
+    }
 
     @Override
-    public List<Item> getAll() {
-        return itemRepository.findAll();
+    public List<ItemShort> getAllShort() {
+        return itemRepository.findAllShort();
     }
 
     private void checkIfCategoryExists(Long id) {
-        categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Категория с id = %s " +
-                        "не найдена. Проверьте правильность вводимых данных.", id)));
+        if (!categoryRepository.existsById(id)) {
+            throw new EntityNotFoundException(String.format("Категория с id = %s " +
+                    "не найдена. Проверьте правильность вводимых данных.", id));
+        }
     }
 
-    private Item checkIfItemExists(Long id) {
+    private ItemExtended checkIfItemExistsAndGet(Long id) {
         return itemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Товар с id = %s " +
                         "не найден. Проверьте правильность вводимых данных.", id)));
     }
+
+    private void checkIfItemExists(Long id) {
+        if (!itemRepository.existsById(id)) {
+            throw new EntityNotFoundException(String.format("Товар с id = %s " +
+                    "не найден. Проверьте правильность вводимых данных.", id));
+        }
+    }
+
 
 }

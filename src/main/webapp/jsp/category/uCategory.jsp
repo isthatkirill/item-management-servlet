@@ -15,11 +15,19 @@
 <div class="container-form">
     <h4>Редактировать категорию</h4>
     <form action="/category?action=update" method="post">
-        <input type="number" min="0" name="id" placeholder="Идентификатор категории" required/>
+        <select style="width: 100%" name="id" required>
+            <option value="" selected>Выберите категорию</option>
+            <% if (request.getAttribute("categories") != null) { %>
+            <% List<Category> categories = (List<Category>) request.getAttribute("categories"); %>
+            <% for (Category category : categories) { %>
+            <option value="<%=category.getId()%>"><%=category.getName()%> (id = <%=category.getId()%>)</option>
+            <% } %>
+            <% } %>
+        </select>
         <br/>
-        <input type="text" name="name" placeholder="Название категории"/>
+        <input type="text" name="name" placeholder="Новое название категории"/>
         <br/>
-        <input type="text" name="description" placeholder="Описание категории"/>
+        <input type="text" name="description" placeholder="Новое описание категории"/>
         <br/>
         <input type="submit" value="Обновить"/>
     </form>

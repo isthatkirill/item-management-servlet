@@ -4,8 +4,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDateTime;
-
 /**
  * @author Kirill Emelyanov
  */
@@ -13,15 +11,11 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SuperBuilder
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Supply {
+public class ItemShort {
 
     Long id;
-    String company;
-    LocalDateTime receivedAt;
-    Long amount;
-    Double price;
-    Long itemId;
+    String name;
 
 }

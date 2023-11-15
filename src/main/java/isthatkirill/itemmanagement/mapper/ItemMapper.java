@@ -1,6 +1,8 @@
 package isthatkirill.itemmanagement.mapper;
 
 import isthatkirill.itemmanagement.model.Item;
+import isthatkirill.itemmanagement.model.ItemExtended;
+import isthatkirill.itemmanagement.model.ItemShort;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 
@@ -42,23 +44,40 @@ public class ItemMapper {
     }
 
     @SneakyThrows
-    public static List<Item> extractItemsFromResultSet(ResultSet resultSet) {
-        List<Item> items = new ArrayList<>();
+    public static List<ItemExtended> extractItemsExtendedFromResultSet(ResultSet resultSet) {
+        List<ItemExtended> items = new ArrayList<>();
         while (resultSet.next()) {
-            items.add(mapResultSetToItem(resultSet));
+            items.add(mapResultSetToItemExtended(resultSet));
         }
         return items;
     }
 
     @SneakyThrows
-    public static Optional<Item> extractItemFromResultSet(ResultSet resultSet) {
-        if (!resultSet.next()) return Optional.empty();
-        return Optional.of(mapResultSetToItem(resultSet));
+    public static List<ItemShort> extractItemsShortFromResultSet(ResultSet resultSet) {
+        List<ItemShort> items = new ArrayList<>();
+        while (resultSet.next()) {
+            items.add(mapResultSetToItemShort(resultSet));
+        }
+        return items;
     }
 
     @SneakyThrows
-    private static Item mapResultSetToItem(ResultSet resultSet) {
-        Item item = new Item();
+    public static Optional<ItemExtended> extractItemExtendedFromResultSet(ResultSet resultSet) {
+        if (!resultSet.next()) return Optional.empty();
+        return Optional.of(mapResultSetToItemExtended(resultSet));
+    }
+
+    @SneakyThrows
+    private static ItemShort mapResultSetToItemShort(ResultSet resultSet) {
+        ItemShort item = new ItemShort();
+        item.setId(resultSet.getLong("id"));
+        item.setName(resultSet.getString("name"));
+        return item;
+    }
+
+    @SneakyThrows
+    private static ItemExtended mapResultSetToItemExtended(ResultSet resultSet) {
+        ItemExtended item = new ItemExtended();
         item.setId(resultSet.getLong("id"));
         item.setName(resultSet.getString("name"));
         item.setDescription(resultSet.getString("description"));
@@ -68,6 +87,7 @@ public class ItemMapper {
         item.setBrand(resultSet.getString("brand"));
         item.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
         item.setCategoryId(resultSet.getLong("category_id"));
+        item.setCategoryName(resultSet.getString("category_name"));
         return item;
     }
 

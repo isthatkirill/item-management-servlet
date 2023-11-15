@@ -1,4 +1,7 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
+<%@ page import="isthatkirill.itemmanagement.model.Item" %>
+<%@ page import="java.util.List" %>
+<%@ page import="isthatkirill.itemmanagement.model.ItemShort" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -23,8 +26,15 @@
     <br/>
     <input type="number" step="0.01" min="0" name="price" placeholder="Цена закупки" required/>
     <br/>
-    <input type="number" name="itemId" min="0" placeholder="Номер товара" required/>
-    <br/>
+    <select name="itemId" required>
+      <option value="" selected>Выберите товар</option>
+      <% if (request.getAttribute("items") != null) { %>
+      <% List<ItemShort> items = (List<ItemShort>) request.getAttribute("items"); %>
+      <% for (ItemShort item : items) { %>
+      <option value="<%=item.getId()%>"><%=item.getName()%> (id = <%=item.getId()%>)</option>
+      <% } %>
+      <% } %>
+    </select>
     <input type="submit" value="Добавить"/>
   </form>
   <% if (request.getAttribute("generatedId") != null) { %>

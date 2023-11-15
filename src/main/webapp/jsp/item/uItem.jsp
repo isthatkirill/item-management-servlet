@@ -2,6 +2,7 @@
 <%@ page import="isthatkirill.itemmanagement.model.Item" %>
 <%@ page import="java.util.List" %>
 <%@ page import="isthatkirill.itemmanagement.model.Category" %>
+<%@ page import="isthatkirill.itemmanagement.model.ItemExtended" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -20,8 +21,8 @@
         <select name="id" required>
             <option value="" selected>Выберите товар</option>
             <% if (request.getAttribute("items") != null) { %>
-            <% List<Item> items = (List<Item>) request.getAttribute("items"); %>
-            <% for (Item item : items) { %>
+            <% List<ItemExtended> items = (List<ItemExtended>) request.getAttribute("items"); %>
+            <% for (ItemExtended item : items) { %>
             <option value="<%=item.getId()%>"><%=item.getName()%> (id = <%=item.getId()%>)</option>
             <% } %>
             <% } %>
@@ -69,7 +70,7 @@
         <th>Средняя цена закупки</th>
         <th>Средняя цена продажи</th>
         <th>Остаток на складе</th>
-        <th>Номер категории</th>
+        <th>Категория</th>
         <th>Производитель</th>
     </tr>
     </thead>
@@ -88,9 +89,9 @@
     </tbody>
 </table>
 <% } else { %>
-<% List<Item> items = (List<Item>) request.getAttribute("items"); %>
+<% List<ItemExtended> items = (List<ItemExtended>) request.getAttribute("items"); %>
 <tbody>
-<% for (Item item : items) { %>
+<% for (ItemExtended item : items) { %>
 <tr>
     <td><%=item.getId()%>
     </td>
@@ -104,7 +105,7 @@
     </td>
     <td><%=item.getStockUnits()%>
     </td>
-    <td><%=item.getCategoryId() == 0 ? "-" : item.getCategoryId()%>
+    <td><%=item.getCategoryId() == 0 || item.getCategoryName() == null ? "-" : item.getCategoryName() + " (id=" + item.getCategoryId() + ")"%>
     </td>
     <td><%=item.getBrand() == null ? "-" : item.getBrand()%>
     </td>

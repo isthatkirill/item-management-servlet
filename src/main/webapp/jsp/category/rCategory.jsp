@@ -1,5 +1,6 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
 <%@ page import="isthatkirill.itemmanagement.model.Category" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,8 +15,15 @@
 <div class="container-form">
     <h4>Получить информацию о категории</h4>
     <form action="/category?action=read" method="post">
-        <input type="number" min="0" name="id" placeholder="Идентификатор категории" required/>
-        <br/>
+        <select style="width: 100%" name="id" required>
+            <option value="" selected>Выберите категорию</option>
+            <% if (request.getAttribute("categories") != null) { %>
+            <% List<Category> categories = (List<Category>) request.getAttribute("categories"); %>
+            <% for (Category category : categories) { %>
+            <option value="<%=category.getId()%>"><%=category.getName()%> (id = <%=category.getId()%>)</option>
+            <% } %>
+            <% } %>
+        </select>
         <input type="submit" value="Получить"/>
     </form>
 </div>

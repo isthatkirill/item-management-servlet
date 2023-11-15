@@ -36,7 +36,6 @@ public class CategoryRepository {
         return null;
     }
 
-    @SneakyThrows
     public Optional<Category> findById(Long id) {
         String query = "SELECT * FROM categories WHERE id = ?";
         try (Connection connection = getNewConnection();
@@ -51,7 +50,20 @@ public class CategoryRepository {
         return Optional.empty();
     }
 
-    @SneakyThrows
+    public boolean existsById(Long id) {
+        String query = "SELECT 1 FROM categories WHERE id = ?";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public void update(Category category) {
         StringBuilder query = new StringBuilder("UPDATE categories SET ");
         List<Object> values = new ArrayList<>();

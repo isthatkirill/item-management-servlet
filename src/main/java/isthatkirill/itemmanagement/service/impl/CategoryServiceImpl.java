@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category getById(HttpServletRequest request) {
-        return checkIfCategoryExists(Long.valueOf(request.getParameter("id")));
+        return checkIfCategoryExistsAndGet(Long.valueOf(request.getParameter("id")));
     }
 
     @Override
@@ -57,10 +57,17 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAll();
     }
 
-    private Category checkIfCategoryExists(Long id) {
+    private Category checkIfCategoryExistsAndGet(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Категория с id = %s " +
                         "не найдена. Проверьте правильность вводимых данных.", id)));
+    }
+
+    private void checkIfCategoryExists(Long id) {
+        if (!categoryRepository.existsById(id)) {
+            throw new EntityNotFoundException(String.format("Категория с id = %s " +
+                    "не найдена. Проверьте правильность вводимых данных.", id));
+        }
     }
 
 }

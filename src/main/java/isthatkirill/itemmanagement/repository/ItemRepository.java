@@ -2,6 +2,8 @@ package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.ItemMapper;
 import isthatkirill.itemmanagement.model.Item;
+import isthatkirill.itemmanagement.model.ItemExtended;
+import isthatkirill.itemmanagement.model.ItemShort;
 import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
 
@@ -18,7 +20,6 @@ import java.util.Optional;
 
 public class ItemRepository {
 
-    @SneakyThrows
     public Long create(Item item) {
         String query = "INSERT INTO items (name, description, purchase_price, sale_price, stock_units, brand, created_at, category_id) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -52,14 +53,13 @@ public class ItemRepository {
         return null;
     }
 
-    @SneakyThrows
-    public Optional<Item> findById(Long id) {
-        String query = "SELECT * FROM items WHERE id = ?";
+    public Optional<ItemExtended> findById(Long id) {
+        String query = "SELECT i.*, c.name as category_name FROM items i LEFT JOIN categories c ON i.category_id = c.id WHERE i.id = ?";
         try (Connection connection = getNewConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
-            return ItemMapper.extractItemFromResultSet(resultSet);
+            return ItemMapper.extractItemExtendedFromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -67,20 +67,44 @@ public class ItemRepository {
         return Optional.empty();
     }
 
-    @SneakyThrows
-    public List<Item> findAll() {
-        String query = "SELECT * FROM items ORDER BY id ASC";
+    public boolean existsById(Long id) {
+        String query = "SELECT 1 FROM items WHERE id = ?";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public List<ItemExtended> findAllExtended() {
+        String query = "SELECT i.*, c.name as category_name FROM items i LEFT JOIN categories c ON i.category_id = c.id ORDER BY i.id ASC";
         try (Connection connection = getNewConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
-            return ItemMapper.extractItemsFromResultSet(resultSet);
+            return ItemMapper.extractItemsExtendedFromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return Collections.emptyList();
     }
 
-    @SneakyThrows
+    public List<ItemShort> findAllShort() {
+        String query = "SELECT id, name FROM items ORDER BY id ASC";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            return ItemMapper.extractItemsShortFromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
     public void update(Item item) {
         StringBuilder query = new StringBuilder("UPDATE items SET ");
         List<Object> values = new ArrayList<>();
@@ -124,7 +148,6 @@ public class ItemRepository {
         }
     }
 
-    @SneakyThrows
     public void update(Double currentAveragePrice, Integer stockUnits, Long itemId) {
         String query = "UPDATE items SET purchase_price = ?, stock_units = ? WHERE id = ?";
         try (Connection connection = getNewConnection();
@@ -138,13 +161,14 @@ public class ItemRepository {
         }
     }
 
-    @SneakyThrows
     public void delete(Long id) {
         String query = "DELETE FROM items WHERE id = ?";
         try (Connection connection = getNewConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setLong(1, id);
             statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 

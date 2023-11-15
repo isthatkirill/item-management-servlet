@@ -40,14 +40,12 @@ public class CategoryServlet extends HttpServlet {
         if (action == null) {
             request.getRequestDispatcher("/jsp/category/cCategory.jsp").forward(request, response);
             return;
-        } else if (action.equals("update")) {
-            List<Category> categories = categoryService.getAll();
-            request.setAttribute("categories", categories);
         } else if (action.startsWith("button-delete-")) {
             categoryService.deleteButton(Long.valueOf(action.substring(14)));
-            List<Category> categories = categoryService.getAll();
-            request.setAttribute("categories", categories);
+
         }
+        List<Category> categories = categoryService.getAll();
+        request.setAttribute("categories", categories);
 
         forwardRequest(action, request, response);
 
@@ -80,7 +78,7 @@ public class CategoryServlet extends HttpServlet {
         } catch (EntityNotFoundException e) {
             request.setAttribute("error", e.getMessage());
         } finally {
-            if (action.equals("update")) {
+            if (action.equals("update") || action.equals("read")) {
                 List<Category> categories = categoryService.getAll();
                 request.setAttribute("categories", categories);
             }

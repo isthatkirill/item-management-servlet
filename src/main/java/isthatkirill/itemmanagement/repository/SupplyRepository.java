@@ -1,16 +1,16 @@
 package isthatkirill.itemmanagement.repository;
 
-import isthatkirill.itemmanagement.mapper.ItemMapper;
 import isthatkirill.itemmanagement.mapper.SupplyMapper;
-import isthatkirill.itemmanagement.model.Category;
 import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.model.Supply;
+import isthatkirill.itemmanagement.model.SupplyExtended;
 import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +54,18 @@ public class SupplyRepository {
         }
 
         return 0D;
+    }
+
+    public List<SupplyExtended> findAllExtended() {
+        String query = "SELECT s.*, i.name as item_name FROM supplies s LEFT JOIN items i ON i.id = s.item_id ORDER BY s.id ASC;";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            return SupplyMapper.extractSuppliesExtendedFromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
     public Integer findAllUnits (Long itemId) {
@@ -152,7 +164,6 @@ public class SupplyRepository {
         }
     }
 
-    @SneakyThrows
     public Optional<Supply> findById(Long id) {
         String query = "SELECT * FROM supplies WHERE id = ?";
         try (Connection connection = getNewConnection();

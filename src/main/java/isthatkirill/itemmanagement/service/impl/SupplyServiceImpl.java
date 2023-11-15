@@ -2,12 +2,14 @@ package isthatkirill.itemmanagement.service.impl;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.mapper.SupplyMapper;
-import isthatkirill.itemmanagement.model.Item;
 import isthatkirill.itemmanagement.model.Supply;
+import isthatkirill.itemmanagement.model.SupplyExtended;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.repository.SupplyRepository;
 import isthatkirill.itemmanagement.service.SupplyService;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
  * @author Kirill Emelyanov
@@ -36,10 +38,16 @@ public class SupplyServiceImpl implements SupplyService {
     @Override
     public void update(HttpServletRequest request) {
         Supply supply = SupplyMapper.extractSupplyFromRequest(request);
-        Supply oldSupply = checkIfSupplyExists(supply.getId());
+        Supply oldSupply = checkIfSupplyExistsAndGet(supply.getId());
         supplyRepository.update(supply);
         recalculateItemFields(oldSupply.getItemId());
     }
+
+    @Override
+    public List<SupplyExtended> getAllExtended() {
+        return supplyRepository.findAllExtended();
+    }
+
 
     private void recalculateItemFields(Long itemId) {
         //TODO SUPPLIES - SALES = STOCK UNITS
@@ -49,13 +57,14 @@ public class SupplyServiceImpl implements SupplyService {
     }
 
 
-    private Item checkIfItemExists(Long id) {
-        return itemRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Товар с id = %s " +
-                        "не найден. Проверьте правильность вводимых данных.", id)));
+    private void checkIfItemExists(Long id) {
+        if (!itemRepository.existsById(id)) {
+            throw new EntityNotFoundException(String.format("Товар с id = %s " +
+                    "не найден. Проверьте правильность вводимых данных.", id));
+        }
     }
 
-    private Supply checkIfSupplyExists(Long id) {
+    private Supply checkIfSupplyExistsAndGet(Long id) {
         return supplyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Поступление с id = %s " +
                         "не найдено. Проверьте правильность вводимых данных.", id)));
