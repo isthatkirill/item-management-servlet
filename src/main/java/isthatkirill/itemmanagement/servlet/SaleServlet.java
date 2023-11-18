@@ -3,6 +3,7 @@ package isthatkirill.itemmanagement.servlet;
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.exception.NotEnoughItemException;
 import isthatkirill.itemmanagement.model.item.ItemShort;
+import isthatkirill.itemmanagement.model.sale.SaleExtended;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.repository.SaleRepository;
@@ -53,7 +54,8 @@ public class SaleServlet extends HttpServlet {
             List<ItemShort> items = itemService.getAllShort();
             request.setAttribute("items", items);
         } else if (action.equals("update")) {
-
+            List<SaleExtended> sales = saleService.getAllExtended();
+            request.setAttribute("sales", sales);
         }
 
 
@@ -73,21 +75,23 @@ public class SaleServlet extends HttpServlet {
         try {
             switch (action) {
                 case "create" -> {
-                    Long generatedId = saleService.create(request);;
+                    Long generatedId = saleService.create(request);
+                    List<ItemShort> items = itemService.getAllShort();
+                    request.setAttribute("items", items);
                     request.setAttribute("generatedId", generatedId);
                 }
                 case "update" -> {
-                    /*supplyService.update(request);
-                    List<SupplyExtended> supplies = supplyService.getAllExtended();
-                    request.setAttribute("supplies", supplies);
-                    request.setAttribute("isSuccess", true);*/
+                    saleService.update(request);
+                    request.setAttribute("isSuccess", true);
                 }
             }
         } catch (EntityNotFoundException | NotEnoughItemException e) {
             request.setAttribute("error", e.getMessage());
         } finally {
-            List<ItemShort> items = itemService.getAllShort();
-            request.setAttribute("items", items);
+            if (action.equals("update")) {
+                List<SaleExtended> sales = saleService.getAllExtended();
+                request.setAttribute("sales", sales);
+            }
             forwardRequest(action, request, response);
         }
     }

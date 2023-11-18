@@ -3,11 +3,16 @@ package isthatkirill.itemmanagement.service.impl;
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.exception.NotEnoughItemException;
 import isthatkirill.itemmanagement.mapper.SaleMapper;
+import isthatkirill.itemmanagement.mapper.SupplyMapper;
 import isthatkirill.itemmanagement.model.sale.Sale;
+import isthatkirill.itemmanagement.model.sale.SaleExtended;
+import isthatkirill.itemmanagement.model.supply.Supply;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.repository.SaleRepository;
 import isthatkirill.itemmanagement.service.SaleService;
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.util.List;
 
 /**
  * @author Kirill Emelyanov
@@ -15,8 +20,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class SaleServiceImpl implements SaleService {
 
-    private SaleRepository saleRepository;
-    private ItemRepository itemRepository;
+    private final SaleRepository saleRepository;
+    private final ItemRepository itemRepository;
 
     public SaleServiceImpl(SaleRepository saleRepository, ItemRepository itemRepository) {
         this.saleRepository = saleRepository;
@@ -34,6 +39,25 @@ public class SaleServiceImpl implements SaleService {
         return generatedId;
     }
 
+    @Override
+    public void update(HttpServletRequest request) {
+        Sale sale = SaleMapper.extractSaleFromRequest(request);
+        Sale oldSale = checkIfSaleExistsAndGet(sale.getId());
+        Long itemId = oldSale.getItemId();
+        Long amountDifference = sale.getAmount() - oldSale.getAmount();
+        if (amountDifference > 0) {
+            checkIfEnoughItems(itemId, amountDifference);
+        }
+        saleRepository.update(sale);
+        recalculateItemFields(itemId, amountDifference);
+    }
+
+
+    @Override
+    public List<SaleExtended> getAllExtended() {
+        return saleRepository.findAllExtended();
+    }
+
     private void recalculateItemFields(Long itemId, Long amount) {
         Double currentAveragePrice = saleRepository.findAverageSalePrice(itemId);
         itemRepository.updateWithNewSaleData(currentAveragePrice, Math.toIntExact(amount), itemId);
@@ -46,10 +70,16 @@ public class SaleServiceImpl implements SaleService {
         }
     }
 
-    private void checkIfItemExists(Long id) {
-        if (!itemRepository.existsById(id)) {
+    private Sale checkIfSaleExistsAndGet(Long saleId) {
+        return saleRepository.findById(saleId)
+                .orElseThrow(() ->  new EntityNotFoundException(String.format("Продажа с id = %s " +
+                        "не найден. Проверьте правильность вводимых данных.", saleId)));
+    }
+
+    private void checkIfItemExists(Long itemId) {
+        if (!itemRepository.existsById(itemId)) {
             throw new EntityNotFoundException(String.format("Товар с id = %s " +
-                    "не найден. Проверьте правильность вводимых данных.", id));
+                    "не найден. Проверьте правильность вводимых данных.", itemId));
         }
     }
 }

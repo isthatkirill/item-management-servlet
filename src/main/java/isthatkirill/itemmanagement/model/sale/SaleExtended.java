@@ -1,10 +1,11 @@
 package isthatkirill.itemmanagement.model.sale;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
 
 /**
  * @author Kirill Emelyanov
@@ -15,12 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Sale {
+public class SaleExtended extends Sale {
 
-    Long id;
-    Long amount;
-    Double price;
-    LocalDateTime createdAt;
-    Long itemId;
-    
+    String itemName;
+
 }

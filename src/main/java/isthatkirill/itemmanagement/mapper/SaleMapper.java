@@ -1,7 +1,17 @@
 package isthatkirill.itemmanagement.mapper;
 
 import isthatkirill.itemmanagement.model.sale.Sale;
+import isthatkirill.itemmanagement.model.sale.SaleExtended;
+import isthatkirill.itemmanagement.model.supply.Supply;
+import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.SneakyThrows;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Kirill Emelyanov
@@ -28,6 +38,44 @@ public class SaleMapper {
         if (itemId != null && !itemId.isBlank()) sale.setItemId(Long.valueOf(itemId));
 
         return sale;
+    }
+
+    @SneakyThrows
+    public static List<SaleExtended> extractSalesExtendedFromResultSet(ResultSet resultSet) {
+        List<SaleExtended> sales = new ArrayList<>();
+        while (resultSet.next()) {
+            sales.add(mapResultSetToSaleExtended(resultSet));
+        }
+        return sales;
+    }
+
+    @SneakyThrows
+    public static Optional<Sale> extractSaleFromResultSet(ResultSet resultSet) {
+        if (!resultSet.next()) return Optional.empty();
+        return Optional.of(mapResultSetToSale(resultSet));
+    }
+
+    @SneakyThrows
+    private static SaleExtended mapResultSetToSaleExtended(ResultSet resultSet) {
+        SaleExtended sale = new SaleExtended();
+        mapCommonFields(resultSet, sale);
+        sale.setItemName(resultSet.getString("item_name"));
+        return sale;
+    }
+
+    @SneakyThrows
+    private static Sale mapResultSetToSale(ResultSet resultSet) {
+        Sale sale = new Sale();
+        mapCommonFields(resultSet, sale);
+        return sale;
+    }
+
+    private static void mapCommonFields(ResultSet resultSet, Sale sale) throws SQLException {
+        sale.setId(resultSet.getLong("id"));
+        sale.setAmount(resultSet.getLong("amount"));
+        sale.setPrice(resultSet.getDouble("price"));
+        sale.setItemId(resultSet.getLong("item_id"));
+        sale.setCreatedAt(resultSet.getTimestamp("created_at").toLocalDateTime());
     }
 
 }

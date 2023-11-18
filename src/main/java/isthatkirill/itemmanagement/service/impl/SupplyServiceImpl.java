@@ -17,8 +17,8 @@ import java.util.List;
 
 public class SupplyServiceImpl implements SupplyService {
 
-    private SupplyRepository supplyRepository;
-    private ItemRepository itemRepository;
+    private final SupplyRepository supplyRepository;
+    private final ItemRepository itemRepository;
 
     public SupplyServiceImpl(SupplyRepository supplyRepository, ItemRepository itemRepository) {
         this.supplyRepository = supplyRepository;

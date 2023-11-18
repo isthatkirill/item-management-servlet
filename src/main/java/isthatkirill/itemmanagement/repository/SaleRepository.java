@@ -1,11 +1,20 @@
 package isthatkirill.itemmanagement.repository;
 
+import isthatkirill.itemmanagement.mapper.SaleMapper;
+import isthatkirill.itemmanagement.mapper.SupplyMapper;
 import isthatkirill.itemmanagement.model.sale.Sale;
+import isthatkirill.itemmanagement.model.sale.SaleExtended;
+import isthatkirill.itemmanagement.model.supply.Supply;
+import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Kirill Emelyanov
@@ -51,6 +60,65 @@ public class SaleRepository {
         }
 
         return 0D;
+    }
+
+    public List<SaleExtended> findAllExtended() {
+        String query = "SELECT s.*, i.name as item_name FROM sales s LEFT JOIN items i ON i.id = s.item_id ORDER BY s.id ASC;";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            return SaleMapper.extractSalesExtendedFromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public Optional<Sale> findById(Long id) {
+        String query = "SELECT * FROM sales WHERE id = ?";
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            return SaleMapper.extractSaleFromResultSet(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
+
+    public void update(Sale sale) {
+        StringBuilder query = new StringBuilder("UPDATE sales SET ");
+        List<Object> values = new ArrayList<>();
+
+        if (sale.getPrice() != null) {
+            query.append("price = ?, ");
+            values.add(sale.getPrice());
+        }
+
+        if (sale.getAmount() != null) {
+            query.append("amount = ?, ");
+            values.add(sale.getAmount());
+        }
+
+        if (values.isEmpty()) {
+            return;
+        }
+
+        query.delete(query.length() - 2, query.length());
+        query.append(" WHERE id = ?");
+        values.add(sale.getId());
+
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query.toString())) {
+            for (int i = 0; i < values.size(); i++) {
+                statement.setObject(i + 1, values.get(i));
+            }
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private Connection getNewConnection() throws SQLException {
