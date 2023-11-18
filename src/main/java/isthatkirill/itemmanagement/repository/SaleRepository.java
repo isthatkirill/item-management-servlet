@@ -1,6 +1,6 @@
 package isthatkirill.itemmanagement.repository;
 
-import isthatkirill.itemmanagement.model.Sale;
+import isthatkirill.itemmanagement.model.sale.Sale;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;

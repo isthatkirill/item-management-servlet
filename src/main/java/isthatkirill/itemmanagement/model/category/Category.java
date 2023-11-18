@@ -1,4 +1,4 @@
-package isthatkirill.itemmanagement.model;
+package isthatkirill.itemmanagement.model.category;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;

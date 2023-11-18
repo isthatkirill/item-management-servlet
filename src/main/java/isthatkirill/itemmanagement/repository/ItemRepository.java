@@ -1,9 +1,9 @@
 package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.ItemMapper;
-import isthatkirill.itemmanagement.model.Item;
-import isthatkirill.itemmanagement.model.ItemExtended;
-import isthatkirill.itemmanagement.model.ItemShort;
+import isthatkirill.itemmanagement.model.item.Item;
+import isthatkirill.itemmanagement.model.item.ItemExtended;
+import isthatkirill.itemmanagement.model.item.ItemShort;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;

@@ -1,6 +1,6 @@
 package isthatkirill.itemmanagement.mapper;
 
-import isthatkirill.itemmanagement.model.Category;
+import isthatkirill.itemmanagement.model.category.Category;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 

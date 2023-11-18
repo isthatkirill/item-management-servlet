@@ -2,9 +2,9 @@ package isthatkirill.itemmanagement.service.impl;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.mapper.ItemMapper;
-import isthatkirill.itemmanagement.model.Item;
-import isthatkirill.itemmanagement.model.ItemExtended;
-import isthatkirill.itemmanagement.model.ItemShort;
+import isthatkirill.itemmanagement.model.item.Item;
+import isthatkirill.itemmanagement.model.item.ItemExtended;
+import isthatkirill.itemmanagement.model.item.ItemShort;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.ItemService;
@@ -55,14 +55,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteById(HttpServletRequest request) {
-        Long id = Long.valueOf(request.getParameter("id"));
-        checkIfItemExists(id);
-        itemRepository.delete(id);
-    }
-
-    @Override
-    public void deleteButton(Long id) {
+    public void deleteById(Long id) {
         itemRepository.delete(id);
     }
 

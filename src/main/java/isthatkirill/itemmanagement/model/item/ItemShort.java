@@ -1,9 +1,7 @@
-package isthatkirill.itemmanagement.model;
+package isthatkirill.itemmanagement.model.item;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.time.LocalDateTime;
 
 /**
  * @author Kirill Emelyanov
@@ -14,12 +12,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Sale {
+public class ItemShort {
 
     Long id;
-    Long amount;
-    Double price;
-    LocalDateTime createdAt;
-    Long itemId;
-    
+    String name;
+
 }

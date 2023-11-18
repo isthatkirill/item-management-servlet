@@ -1,4 +1,4 @@
-package isthatkirill.itemmanagement.model;
+package isthatkirill.itemmanagement.model.supply;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

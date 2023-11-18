@@ -106,3 +106,59 @@ h4 {
     color: black;
     text-align: center;
 }
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+}
+
+.overlay.show {
+    display: block;
+}
+
+.custom-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    border-radius: 10px;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.custom-dialog.show {
+    opacity: 1;
+}
+
+.custom-dialog p {
+    margin-bottom: 15px;
+}
+
+.custom-dialog button {
+    margin-right: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.dialog-button {
+    display: inline-block;
+    width: auto;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: white;
+    cursor: pointer;
+}

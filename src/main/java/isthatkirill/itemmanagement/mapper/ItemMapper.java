@@ -1,8 +1,8 @@
 package isthatkirill.itemmanagement.mapper;
 
-import isthatkirill.itemmanagement.model.Item;
-import isthatkirill.itemmanagement.model.ItemExtended;
-import isthatkirill.itemmanagement.model.ItemShort;
+import isthatkirill.itemmanagement.model.item.Item;
+import isthatkirill.itemmanagement.model.item.ItemExtended;
+import isthatkirill.itemmanagement.model.item.ItemShort;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 

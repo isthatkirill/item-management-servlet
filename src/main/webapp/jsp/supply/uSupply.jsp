@@ -1,7 +1,7 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
-<%@ page import="isthatkirill.itemmanagement.model.Supply" %>
+<%@ page import="isthatkirill.itemmanagement.model.supply.Supply" %>
 <%@ page import="java.util.List" %>
-<%@ page import="isthatkirill.itemmanagement.model.SupplyExtended" %>
+<%@ page import="isthatkirill.itemmanagement.model.supply.SupplyExtended" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>

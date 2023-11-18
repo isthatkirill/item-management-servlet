@@ -12,7 +12,8 @@ h4 {
 
 input[type="text"],
 input[type="number"],
-select {
+select,
+.dialog-button {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -29,7 +30,6 @@ select {
 select option {
     padding: 10px 20px; /* настройте нужные значения отступов */
 }
-
 
 hr {
     border: none;

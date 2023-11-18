@@ -2,7 +2,7 @@ package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.exception.NotEnoughItemException;
-import isthatkirill.itemmanagement.model.ItemShort;
+import isthatkirill.itemmanagement.model.item.ItemShort;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.repository.SaleRepository;

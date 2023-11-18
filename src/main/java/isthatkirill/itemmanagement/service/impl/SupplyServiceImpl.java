@@ -2,8 +2,8 @@ package isthatkirill.itemmanagement.service.impl;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.mapper.SupplyMapper;
-import isthatkirill.itemmanagement.model.Supply;
-import isthatkirill.itemmanagement.model.SupplyExtended;
+import isthatkirill.itemmanagement.model.supply.Supply;
+import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.repository.SupplyRepository;
 import isthatkirill.itemmanagement.service.SupplyService;

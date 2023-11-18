@@ -1,6 +1,6 @@
 package isthatkirill.itemmanagement.mapper;
 
-import isthatkirill.itemmanagement.model.Sale;
+import isthatkirill.itemmanagement.model.sale.Sale;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**

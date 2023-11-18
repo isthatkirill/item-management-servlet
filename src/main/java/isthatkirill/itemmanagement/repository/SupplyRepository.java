@@ -1,8 +1,8 @@
 package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.SupplyMapper;
-import isthatkirill.itemmanagement.model.Supply;
-import isthatkirill.itemmanagement.model.SupplyExtended;
+import isthatkirill.itemmanagement.model.supply.Supply;
+import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;

@@ -1,7 +1,7 @@
 package isthatkirill.itemmanagement.service;
 
-import isthatkirill.itemmanagement.model.ItemExtended;
-import isthatkirill.itemmanagement.model.ItemShort;
+import isthatkirill.itemmanagement.model.item.ItemExtended;
+import isthatkirill.itemmanagement.model.item.ItemShort;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -18,9 +18,7 @@ public interface ItemService {
 
     void update(HttpServletRequest request);
 
-    void deleteById(HttpServletRequest request);
-
-    void deleteButton(Long id);
+    void deleteById(Long id);
 
     List<ItemExtended> getAllExtended();
 

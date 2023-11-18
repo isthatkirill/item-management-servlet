@@ -1,4 +1,4 @@
-package isthatkirill.itemmanagement.model;
+package isthatkirill.itemmanagement.model.supply;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,16 +18,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Item {
+public class Supply {
 
     Long id;
-    String name;
-    String description;
-    Double averagePurchasePrice;
-    Double averageSalePrice;
-    Integer stockUnits;
-    Long categoryId;
-    String brand;
+    String company;
     LocalDateTime createdAt;
+    Long amount;
+    Double price;
+    Long itemId;
 
 }

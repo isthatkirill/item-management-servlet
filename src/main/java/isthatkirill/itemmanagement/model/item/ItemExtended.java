@@ -1,4 +1,4 @@
-package isthatkirill.itemmanagement.model;
+package isthatkirill.itemmanagement.model.item;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
 
 /**
  * @author Kirill Emelyanov
@@ -18,13 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @SuperBuilder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Supply {
+public class ItemExtended extends Item {
 
-    Long id;
-    String company;
-    LocalDateTime createdAt;
-    Long amount;
-    Double price;
-    Long itemId;
+    String categoryName;
 
 }

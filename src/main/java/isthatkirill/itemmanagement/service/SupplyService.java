@@ -1,6 +1,6 @@
 package isthatkirill.itemmanagement.service;
 
-import isthatkirill.itemmanagement.model.SupplyExtended;
+import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;

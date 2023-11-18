@@ -1,8 +1,8 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
-<%@ page import="isthatkirill.itemmanagement.model.Item" %>
+<%@ page import="isthatkirill.itemmanagement.model.item.Item" %>
 <%@ page import="java.util.List" %>
-<%@ page import="isthatkirill.itemmanagement.model.Category" %>
-<%@ page import="isthatkirill.itemmanagement.model.ItemExtended" %>
+<%@ page import="isthatkirill.itemmanagement.model.category.Category" %>
+<%@ page import="isthatkirill.itemmanagement.model.item.ItemExtended" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -10,6 +10,7 @@
     <title>Редактировать товар</title>
     <link rel="stylesheet" type="text/css" href="/styles/main.css">
     <link rel="stylesheet" type="text/css" href="/styles/form.css">
+    <script src="/scripts/dialog.js" defer></script>
 </head>
 <body>
 
@@ -95,14 +96,16 @@
     </td>
     <td><%=item.getBrand() == null ? "-" : item.getBrand()%>
     </td>
-    <td style="border: none; width: 34px"><a href="/item?action=button-delete-<%=item.getId()%>">
-        <img src="/images/delete.png" height="30px" width="30px">
-    </a>
+    <td style="border: none; width: 34px">
+        <a href="#" class="delete-link" data-item-id="<%=item.getId()%>">
+            <img src="/images/delete.png" height="30px" width="30px">
+        </a>
     </td>
 </tr>
 <% } %>
 </tbody>
 <% } %>
 </table>
+
 </body>
 </html>

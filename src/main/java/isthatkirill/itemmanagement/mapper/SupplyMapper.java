@@ -1,7 +1,7 @@
 package isthatkirill.itemmanagement.mapper;
 
-import isthatkirill.itemmanagement.model.Supply;
-import isthatkirill.itemmanagement.model.SupplyExtended;
+import isthatkirill.itemmanagement.model.supply.Supply;
+import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.SneakyThrows;
 

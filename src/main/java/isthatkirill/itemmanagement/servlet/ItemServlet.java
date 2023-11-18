@@ -1,9 +1,9 @@
 package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
-import isthatkirill.itemmanagement.model.Category;
-import isthatkirill.itemmanagement.model.Item;
-import isthatkirill.itemmanagement.model.ItemExtended;
+import isthatkirill.itemmanagement.model.category.Category;
+import isthatkirill.itemmanagement.model.item.Item;
+import isthatkirill.itemmanagement.model.item.ItemExtended;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.CategoryService;
@@ -46,7 +46,7 @@ public class ItemServlet extends HttpServlet {
             request.getRequestDispatcher("/jsp/main.jsp").forward(request, response);
             return;
         } else if (action.startsWith("button-delete-")) {
-            itemService.deleteButton(Long.valueOf(action.substring(14)));
+            itemService.deleteById(Long.valueOf(action.substring(14)));
         }
         List<ItemExtended> items = itemService.getAllExtended();
         List<Category> categories = categoryService.getAll();

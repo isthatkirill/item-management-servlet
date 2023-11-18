@@ -3,7 +3,7 @@ package isthatkirill.itemmanagement.service.impl;
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.exception.NotEnoughItemException;
 import isthatkirill.itemmanagement.mapper.SaleMapper;
-import isthatkirill.itemmanagement.model.Sale;
+import isthatkirill.itemmanagement.model.sale.Sale;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.repository.SaleRepository;
 import isthatkirill.itemmanagement.service.SaleService;

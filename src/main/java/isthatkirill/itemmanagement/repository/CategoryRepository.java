@@ -1,7 +1,7 @@
 package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.CategoryMapper;
-import isthatkirill.itemmanagement.model.Category;
+import isthatkirill.itemmanagement.model.category.Category;
 import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
 

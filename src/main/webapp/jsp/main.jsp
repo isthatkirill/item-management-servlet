@@ -1,8 +1,8 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
-<%@ page import="isthatkirill.itemmanagement.model.Item" %>
+<%@ page import="isthatkirill.itemmanagement.model.item.Item" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="isthatkirill.itemmanagement.model.ItemExtended" %>
+<%@ page import="isthatkirill.itemmanagement.model.item.ItemExtended" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>

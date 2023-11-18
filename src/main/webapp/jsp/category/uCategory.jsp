@@ -1,5 +1,5 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
-<%@ page import="isthatkirill.itemmanagement.model.Category" %>
+<%@ page import="isthatkirill.itemmanagement.model.category.Category" %>
 <%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
@@ -7,6 +7,7 @@
     <title>Редактировать категорию</title>
     <link rel="stylesheet" type="text/css" href="/styles/main.css">
     <link rel="stylesheet" type="text/css" href="/styles/form.css">
+    <script src="/scripts/dialog.js" defer></script>
 </head>
 <body>
 
@@ -66,7 +67,8 @@
     </td>
     <td><%=category.getDescription()%>
     </td>
-    <td style="border: none; width: 34px"><a href="/category?action=button-delete-<%=category.getId()%>">
+    <td style="border: none; width: 34px">
+        <a href="#" class="delete-link" data-category-id="<%=category.getId()%>">
         <img src="/images/delete.png" height="30px" width="30px">
     </a>
     </td>

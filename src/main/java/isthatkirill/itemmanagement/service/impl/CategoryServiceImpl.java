@@ -2,7 +2,7 @@ package isthatkirill.itemmanagement.service.impl;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.mapper.CategoryMapper;
-import isthatkirill.itemmanagement.model.Category;
+import isthatkirill.itemmanagement.model.category.Category;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.service.CategoryService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -40,14 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void deleteById(HttpServletRequest request) {
-        Long id = Long.valueOf(request.getParameter("id"));
-        checkIfCategoryExists(id);
-        categoryRepository.delete(id);
-    }
-
-    @Override
-    public void deleteButton(Long id) {
+    public void deleteById(Long id) {
         categoryRepository.delete(id);
     }
 
