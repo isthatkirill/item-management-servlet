@@ -3,7 +3,7 @@ package isthatkirill.itemmanagement.repository;
 import isthatkirill.itemmanagement.mapper.SupplyMapper;
 import isthatkirill.itemmanagement.model.supply.Supply;
 import isthatkirill.itemmanagement.model.supply.SupplyExtended;
-import org.postgresql.ds.PGSimpleDataSource;
+import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -18,6 +18,12 @@ import java.util.Optional;
  */
 
 public class SupplyRepository {
+
+    private final DataSource dataSource;
+
+    public SupplyRepository() {
+        dataSource = ConnectionHelper.getDataSource();
+    }
 
     public Long create(Supply supply) {
         String query = "INSERT INTO supplies (company, amount, price, item_id, created_at) VALUES (?, ?, ?, ?, ?)";
@@ -129,16 +135,7 @@ public class SupplyRepository {
     }
 
     private Connection getNewConnection() throws SQLException {
-        return getDataSource().getConnection();
-    }
-
-    private DataSource getDataSource() {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setPortNumbers(new int[]{5432});
-        dataSource.setDatabaseName("item-managment");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("admin");
-        return dataSource;
+        return dataSource.getConnection();
     }
 
 }

@@ -4,7 +4,7 @@ import isthatkirill.itemmanagement.mapper.ItemMapper;
 import isthatkirill.itemmanagement.model.item.Item;
 import isthatkirill.itemmanagement.model.item.ItemExtended;
 import isthatkirill.itemmanagement.model.item.ItemShort;
-import org.postgresql.ds.PGSimpleDataSource;
+import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -18,6 +18,13 @@ import java.util.Optional;
  */
 
 public class ItemRepository {
+
+    private final DataSource dataSource;
+
+    public ItemRepository() {
+        dataSource = ConnectionHelper.getDataSource();
+    }
+
 
     public Long create(Item item) {
         String query = "INSERT INTO items (name, description, purchase_price, sale_price, stock_units, brand, created_at, category_id) " +
@@ -201,16 +208,7 @@ public class ItemRepository {
     }
 
     private Connection getNewConnection() throws SQLException {
-        return getDataSource().getConnection();
-    }
-
-    private DataSource getDataSource() {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setPortNumbers(new int[]{5432});
-        dataSource.setDatabaseName("item-managment");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("admin");
-        return dataSource;
+        return dataSource.getConnection();
     }
 
 }

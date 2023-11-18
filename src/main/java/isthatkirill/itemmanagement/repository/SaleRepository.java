@@ -1,7 +1,7 @@
 package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.model.sale.Sale;
-import org.postgresql.ds.PGSimpleDataSource;
+import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -12,6 +12,12 @@ import java.time.LocalDateTime;
  */
 
 public class SaleRepository {
+
+    private final DataSource dataSource;
+
+    public SaleRepository() {
+        dataSource = ConnectionHelper.getDataSource();
+    }
 
     public Long create(Sale sale) {
         String query = "INSERT INTO sales (amount, price, item_id, created_at) VALUES (?, ?, ?, ?)";
@@ -48,17 +54,7 @@ public class SaleRepository {
     }
 
     private Connection getNewConnection() throws SQLException {
-        return getDataSource().getConnection();
+        return dataSource.getConnection();
     }
-
-    private DataSource getDataSource() {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setPortNumbers(new int[]{5432});
-        dataSource.setDatabaseName("item-managment");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("admin");
-        return dataSource;
-    }
-
 
 }

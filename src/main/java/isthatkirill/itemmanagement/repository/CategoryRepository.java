@@ -2,8 +2,8 @@ package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.CategoryMapper;
 import isthatkirill.itemmanagement.model.category.Category;
+import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 import lombok.SneakyThrows;
-import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -17,6 +17,13 @@ import java.util.Optional;
  */
 
 public class CategoryRepository {
+
+    private final DataSource dataSource;
+
+    public CategoryRepository() {
+        dataSource = ConnectionHelper.getDataSource();
+    }
+
 
     public Long create(Category category) {
         String query = "INSERT INTO categories (name, description) VALUES (?, ?)";
@@ -121,15 +128,7 @@ public class CategoryRepository {
     }
 
     private Connection getNewConnection() throws SQLException {
-        return getDataSource().getConnection();
+        return dataSource.getConnection();
     }
 
-    private DataSource getDataSource() {
-        PGSimpleDataSource dataSource = new PGSimpleDataSource();
-        dataSource.setPortNumbers(new int[]{5432});
-        dataSource.setDatabaseName("item-managment");
-        dataSource.setUser("postgres");
-        dataSource.setPassword("admin");
-        return dataSource;
-    }
 }
