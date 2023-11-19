@@ -20,10 +20,12 @@
         <br/>
         <input type="submit" value="Добавить"/>
     </form>
-    <% if (request.getAttribute("generatedId") != null) { %>
-    <% Long id = (Long) request.getAttribute("generatedId"); %>
-    <p>Новая категория успешно добавлена. Присвоенный идентификатор id = <%=id%>.</p>
-    <% } %>
+    <div class="ok-message">
+        <% if (request.getAttribute("generatedId") != null) { %>
+        <% Long id = (Long) request.getAttribute("generatedId"); %>
+        <p class="">Новая категория успешно добавлена. Присвоенный идентификатор id = <%=id%>.</p>
+        <% } %>
+    </div>
 </div>
 
 </body>

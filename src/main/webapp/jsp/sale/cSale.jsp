@@ -33,10 +33,12 @@
     </select>
     <input type="submit" value="Добавить"/>
   </form>
-  <% if (request.getAttribute("generatedId") != null) { %>
-  <% Long id = (Long) request.getAttribute("generatedId"); %>
-  <p>Новая продажа успешно добавлена. Присвоенный идентификатор id = <%=id%>.</p>
-  <% } %>
+  <div class="ok-message">
+    <% if (request.getAttribute("generatedId") != null) { %>
+    <% Long id = (Long) request.getAttribute("generatedId"); %>
+    <p>Новая продажа успешно добавлена. Присвоенный идентификатор id = <%=id%>.</p>
+    <% } %>
+  </div>
 </div>
 <div class="error-message">
   <% if (request.getAttribute("error") != null) { %>

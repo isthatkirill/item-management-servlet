@@ -4,6 +4,8 @@ import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.model.category.Category;
 import isthatkirill.itemmanagement.model.item.Item;
 import isthatkirill.itemmanagement.model.item.ItemExtended;
+import isthatkirill.itemmanagement.model.item.enums.SortOrder;
+import isthatkirill.itemmanagement.model.item.enums.SortType;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.CategoryService;
@@ -41,14 +43,20 @@ public class ItemServlet extends HttpServlet {
         String action = request.getParameter("action");
         logger.log(Level.INFO, "Get request was received with parameter action = {0}", action);
         if (action == null) {
-            List<ItemExtended> items = itemService.getAllExtended();
+            String sortBy = request.getParameter("sortBy");
+            String sortOrder = request.getParameter("sortOrder");
+            if (!SortType.contains(sortBy) || !SortOrder.contains(sortOrder)) {
+                sortBy = null;
+                sortOrder = null;
+            }
+            List<ItemExtended> items = itemService.getAllExtended(sortBy, sortOrder);
             request.setAttribute("items", items);
             request.getRequestDispatcher("/jsp/main.jsp").forward(request, response);
             return;
         } else if (action.startsWith("button-delete-")) {
             itemService.deleteById(Long.valueOf(action.substring(14)));
         }
-        List<ItemExtended> items = itemService.getAllExtended();
+        List<ItemExtended> items = itemService.getAllExtended(null, null);
         List<Category> categories = categoryService.getAll();
         request.setAttribute("items", items);
         request.setAttribute("categories", categories);
@@ -62,7 +70,7 @@ public class ItemServlet extends HttpServlet {
         String action = request.getParameter("action");
         logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
-            List<ItemExtended> items = itemService.getAllExtended();
+            List<ItemExtended> items = itemService.getAllExtended(null, null);
             request.setAttribute("items", items);
             request.getRequestDispatcher("/jsp/main.jsp").forward(request, response);
             return;
@@ -90,7 +98,7 @@ public class ItemServlet extends HttpServlet {
                 List<Category> categories = categoryService.getAll();
                 request.setAttribute("categories", categories);
             }
-            List<ItemExtended> items = itemService.getAllExtended();
+            List<ItemExtended> items = itemService.getAllExtended(null, null);
             request.setAttribute("items", items);
             forwardRequest(action, request, response);
         }

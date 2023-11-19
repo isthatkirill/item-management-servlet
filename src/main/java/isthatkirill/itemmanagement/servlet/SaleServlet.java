@@ -76,8 +76,6 @@ public class SaleServlet extends HttpServlet {
             switch (action) {
                 case "create" -> {
                     Long generatedId = saleService.create(request);
-                    List<ItemShort> items = itemService.getAllShort();
-                    request.setAttribute("items", items);
                     request.setAttribute("generatedId", generatedId);
                 }
                 case "update" -> {
@@ -91,6 +89,9 @@ public class SaleServlet extends HttpServlet {
             if (action.equals("update")) {
                 List<SaleExtended> sales = saleService.getAllExtended();
                 request.setAttribute("sales", sales);
+            } else if (action.equals("create")) {
+                List<ItemShort> items = itemService.getAllShort();
+                request.setAttribute("items", items);
             }
             forwardRequest(action, request, response);
         }

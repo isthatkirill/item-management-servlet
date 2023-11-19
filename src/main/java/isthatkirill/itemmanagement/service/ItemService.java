@@ -20,7 +20,7 @@ public interface ItemService {
 
     void deleteById(Long id);
 
-    List<ItemExtended> getAllExtended();
+    List<ItemExtended> getAllExtended(String sortBy, String sortOrder);
 
     List<ItemShort> getAllShort();
 

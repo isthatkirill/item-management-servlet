@@ -78,6 +78,10 @@ th {
     background-color: #e6d6ff;
 }
 
+th:hover {
+    cursor: pointer;
+}
+
 :root {
     font-size: 16px;
 }
@@ -280,6 +284,10 @@ input:checked + .slider:before {
 }
 
 .dark-theme .delete-icon {
+    color: white;
+}
+
+.dark-theme .ok-message {
     color: white;
 }
 

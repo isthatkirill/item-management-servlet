@@ -60,8 +60,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemExtended> getAllExtended() {
-        return itemRepository.findAllExtended();
+    public List<ItemExtended> getAllExtended(String sortBy, String sortOrder) {
+        return itemRepository.findAllExtended(sortBy, sortOrder);
     }
 
     @Override

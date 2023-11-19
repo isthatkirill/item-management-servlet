@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="isthatkirill.itemmanagement.model.item.ItemExtended" %>
+<%@ page import="isthatkirill.itemmanagement.model.item.enums.SortType" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -10,6 +11,7 @@
     <title>ItemManagement</title>
     <link rel="stylesheet" type="text/css" href="/styles/main.css">
     <script src="/scripts/theme.js" defer></script>
+    <script src="/scripts/sort.js" defer></script>
 </head>
 <body>
 
@@ -20,14 +22,14 @@
 <table>
     <thead>
     <tr>
-        <th>Идентификатор</th>
-        <th>Наименование</th>
-        <th>Описание</th>
-        <th>Средняя цена закупки</th>
-        <th>Средняя цена продажи</th>
-        <th>Остаток на складе</th>
-        <th>Категория</th>
-        <th>Производитель</th>
+        <th data-sort="<%=SortType.SORT_BY_ID.getValue()%>" title="Сортировка по идентификатору">Идентификатор</th>
+        <th data-sort="<%=SortType.SORT_BY_NAME.getValue()%>" title="Сортировка по наименованию">Наименование</th>
+        <th data-sort="<%=SortType.SORT_BY_DESCRIPTION.getValue()%>" title="Сортировка по описанию">Описание</th>
+        <th data-sort="<%=SortType.SORT_BY_PURCHASE_PRICE.getValue()%>" title="Сортировка по средней цене закупки">Средняя цена закупки</th>
+        <th data-sort="<%=SortType.SORT_BY_SALE_PRICE.getValue()%>" title="Сортировка по средней цене продажи">Средняя цена продажи</th>
+        <th data-sort="<%=SortType.SORT_BY_STOCK_UNITS.getValue()%>" title="Сортировка по остатку на складе">Остаток на складе</th>
+        <th data-sort="<%=SortType.SORT_BY_CATEGORY_ID.getValue()%>" title="Сортировка по категории">Категория</th>
+        <th data-sort="<%=SortType.SORT_BY_BRAND.getValue()%>" title="Сортировка по производителю">Производитель</th>
     </tr>
     </thead>
 <% if (request.getAttribute("items") != null) { %>
@@ -56,6 +58,9 @@
 </tbody>
 <% } %>
 </table>
+
+
+
 
 </body>
 </html>

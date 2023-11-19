@@ -33,12 +33,11 @@
         <br/>
         <input type="submit" value="Обновить"/>
     </form>
-</div>
-
-<div class="ok-message">
-    <% if (request.getAttribute("isSuccess") != null) { %>
-    Категория успешно обновлена.
-    <% } %>
+    <div class="ok-message">
+        <% if (request.getAttribute("isSuccess") != null) { %>
+        Категория успешно обновлена.
+        <% } %>
+    </div>
 </div>
 
 <div class="error-message">

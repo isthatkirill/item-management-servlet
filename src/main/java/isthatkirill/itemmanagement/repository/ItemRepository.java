@@ -103,10 +103,15 @@ public class ItemRepository {
         return false;
     }
 
-    public List<ItemExtended> findAllExtended() {
-        String query = "SELECT i.*, c.name as category_name FROM items i LEFT JOIN categories c ON i.category_id = c.id ORDER BY i.id ASC";
+    public List<ItemExtended> findAllExtended(String sortBy, String sortOrder) {
+        StringBuilder query = new StringBuilder("SELECT i.*, c.name as category_name FROM items i LEFT JOIN categories c ON i.category_id = c.id ");
+        if (sortBy == null || sortOrder == null) {
+            query.append("ORDER BY id ASC");
+        } else {
+            query.append( "ORDER BY ").append(sortBy).append(" ").append(sortOrder);
+        }
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(query.toString())) {
             ResultSet resultSet = statement.executeQuery();
             return ItemMapper.extractItemsExtendedFromResultSet(resultSet);
         } catch (SQLException e) {
