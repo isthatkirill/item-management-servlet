@@ -107,8 +107,17 @@ h4 {
 }
 
 .ok-message {
-    color: black;
-    text-align: center;
+    display: none;
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 20px;
+    padding: 10px;
+    background-color: #84ccea;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid #4A90E2;
 }
 
 .overlay {
@@ -276,6 +285,13 @@ input:checked + .slider:before {
     border: 2px solid white;
     padding: 8px;
     text-align: left;
+}
+
+.dark-theme .ok-message {
+    background-color: #a8a8a8;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 1px solid #6a6a6a;
 }
 
 .dark-theme th {

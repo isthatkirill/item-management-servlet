@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="/styles/form.css">
     <script src="/scripts/dialog.js" defer></script>
     <script src="/scripts/theme.js" defer></script>
+    <script src="/scripts/updateMessage.js" defer></script>
 </head>
 <body>
 
@@ -47,12 +48,13 @@
         <br/>
         <input type="submit" value="Обновить"/>
     </form>
-</div>
 
-<div class="ok-message">
     <% if (request.getAttribute("isSuccess") != null) { %>
-    Товар успешно обновлен.
+    <div class="ok-message" id="popupMessage">
+        Товар успешно обновлен.
+    </div>
     <% } %>
+
 </div>
 
 <div class="error-message">
