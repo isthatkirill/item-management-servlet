@@ -8,9 +8,9 @@ import java.time.format.DateTimeFormatter;
 
 public class Constants {
 
-    public static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 
-    public static String COMMON_NAVBAR = """
+    public static final String COMMON_NAVBAR = """
             <div class="navbar">
                 <a href="/item">Главная</a>
                 <div class="dropdown">
@@ -34,21 +34,21 @@ public class Constants {
                     </div>
                 </div>
                 <div class="dropdown">
-                    <button class="dropbtn">Продажи
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="/sale?action=create">Добавить продажу</a>
-                        <a href="/sale?action=update">Изменить продажу</a>
-                    </div>
-                </div>
-                <div class="dropdown">
                     <button class="dropbtn">Поступления
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-content">
                         <a href="/supply?action=create">Добавить поступление</a>
                         <a href="/supply?action=update">Изменить поступление</a>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="dropbtn">Продажи
+                        <i class="fa fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-content">
+                        <a href="/sale?action=create">Добавить продажу</a>
+                        <a href="/sale?action=update">Изменить продажу</a>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -60,6 +60,12 @@ public class Constants {
                         <a href="/item?action=report">Сгенерировать отчет о наличии</a>
                     </div>
                 </div>
+                <div class="theme-toggle">
+                        <label class="switch">
+                            <input type="checkbox" onclick="toggleTheme()" id="themeToggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
             </div>
             """;
 

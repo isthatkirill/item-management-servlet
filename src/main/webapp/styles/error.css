@@ -6,3 +6,8 @@ h1 {
     font-size: 4em;
     font-weight: bold;
 }
+
+.dark-theme h1 {
+    text-shadow: 2px 2px 4px grey;
+    color: white;
+}

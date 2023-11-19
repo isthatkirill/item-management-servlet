@@ -1,6 +1,6 @@
 .navbar {
     overflow: hidden;
-    background-color: #333;
+    background: linear-gradient(90deg, #87CEEB, #6BB7E6, #4A90E2);
     font-family: Arial;
 }
 
@@ -9,7 +9,7 @@
     font-size: 16px;
     color: white;
     text-align: center;
-    padding: 14px 16px;
+    padding: 15px 16px;
     text-decoration: none;
 }
 
@@ -23,7 +23,7 @@
     border: none;
     outline: none;
     color: white;
-    padding: 14px 16px;
+    padding: 15px 16px;
     background-color: inherit;
     font-family: inherit;
     margin: 0;
@@ -33,7 +33,7 @@
     transition-property: background-color;
     transition-duration: 1s;
     transition-timing-function: ease-out;
-    background-color: #6e6c78;
+    background-color: lightblue;
 }
 
 .dropdown-content {
@@ -47,7 +47,7 @@
 
 .dropdown-content a {
     float: none;
-    color: #3b3a3d;
+    color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -55,7 +55,7 @@
 }
 
 .dropdown-content a:hover {
-    background-color: #ddd;
+    background-color: lightblue;
 }
 
 .dropdown:hover .dropdown-content {
@@ -75,7 +75,7 @@ th, td {
 }
 
 th {
-    background-color: #dadada;
+    background-color: #e6d6ff;
 }
 
 :root {
@@ -162,3 +162,124 @@ h4 {
     color: white;
     cursor: pointer;
 }
+
+.theme-toggle {
+    float: left;
+    padding: 14px 16px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 20px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    border-radius: 20px;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    border-radius: 50%;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(20px);
+    -ms-transform: translateX(20px);
+    transform: translateX(20px);
+}
+
+.delete-icon {
+    font-size: 20px;
+    color: black;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+    text-decoration: none;
+}
+
+.delete-icon:hover {
+    transform: scale(1.1);
+}
+
+.dark-theme {
+    background-color: black;
+}
+
+.light-theme {
+    background-color: white;
+}
+
+.dark-theme .navbar {
+    background: linear-gradient(90deg, #A9A9A9, #808080, #696969);
+    color: white;
+}
+.dark-theme .body-cl {
+    background-color: black;
+}
+
+.dark-theme h4 {
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.34);
+    color: white;
+}
+
+.dark-theme .dropdown-content a:hover {
+    background-color: lightblue;
+}
+
+.dark-theme .navbar a:hover, .dark-theme .dropdown:hover .dropbtn {
+    background-color: lightblue;
+}
+
+.dark-theme .dropdown-content a {
+    color: black;
+}
+
+.dark-theme th, .dark-theme td {
+    color: white;
+    border: 2px solid white;
+    padding: 8px;
+    text-align: left;
+}
+
+.dark-theme th {
+    font-weight: bold;
+    background-color: #A9A9A9;
+}
+
+.dark-theme .delete-icon {
+    color: white;
+}
+

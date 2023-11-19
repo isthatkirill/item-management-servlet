@@ -5,6 +5,7 @@
     <title>Добавить категорию</title>
     <link rel="stylesheet" type="text/css" href="/styles/main.css">
     <link rel="stylesheet" type="text/css" href="/styles/form.css">
+    <script src="/scripts/theme.js" defer></script>
 </head>
 <body>
 

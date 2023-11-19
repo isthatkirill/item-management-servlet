@@ -7,6 +7,7 @@
     <title>Редактировать категорию</title>
     <link rel="stylesheet" type="text/css" href="/styles/main.css">
     <link rel="stylesheet" type="text/css" href="/styles/form.css">
+    <script src="/scripts/theme.js" defer></script>
     <script src="/scripts/dialog.js" defer></script>
 </head>
 <body>
@@ -68,9 +69,9 @@
     <td><%=category.getDescription()%>
     </td>
     <td style="border: none; width: 34px">
-        <a href="#" class="delete-link" data-category-id="<%=category.getId()%>">
-        <img src="/images/delete.png" height="30px" width="30px">
-    </a>
+        <a style="text-decoration: none;" href="#" class="delete-link" data-category-id="<%=category.getId()%>">
+            <div class="delete-icon">&#10006;</div>
+        </a>
     </td>
 </tr>
 <% } %>

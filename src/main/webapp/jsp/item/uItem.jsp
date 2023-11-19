@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="/styles/main.css">
     <link rel="stylesheet" type="text/css" href="/styles/form.css">
     <script src="/scripts/dialog.js" defer></script>
+    <script src="/scripts/theme.js" defer></script>
 </head>
 <body>
 
@@ -97,8 +98,8 @@
     <td><%=item.getBrand() == null ? "-" : item.getBrand()%>
     </td>
     <td style="border: none; width: 34px">
-        <a href="#" class="delete-link" data-item-id="<%=item.getId()%>">
-            <img src="/images/delete.png" height="30px" width="30px">
+        <a style="text-decoration: none;" href="#" class="delete-link" data-item-id="<%=item.getId()%>">
+            <div class="delete-icon">&#10006;</div>
         </a>
     </td>
 </tr>

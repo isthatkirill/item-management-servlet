@@ -19,7 +19,13 @@ select,
     margin-bottom: 10px;
     border: none;
     border-radius: 5px;
-    background-color: #333;
+    background-color: #84ccea;
+    color: white;
+}
+
+input[type="text"]::placeholder,
+input[type="number"]::placeholder,
+select::placeholder {
     color: white;
 }
 
@@ -28,18 +34,18 @@ select {
 }
 
 select option {
-    padding: 10px 20px; /* настройте нужные значения отступов */
+    padding: 10px 20px;
 }
 
 hr {
     border: none;
-    border-top: 1px solid #3c3c3c;
+    border-top: 1px solid #84ccea;
     margin: 10px 0;
 }
 
 input[type="submit"] {
-    background-color: #3c3c3c;
-    color: rgb(255, 255, 255);
+    background-color: #84ccea;
+    color: white;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -48,6 +54,29 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-    background-color: rgb(161, 161, 161);
-    color: #3c3c3c;
+    background-color: #4A90E2;
+    color: white;
+}
+
+
+.dark-theme input[type="text"],
+.dark-theme input[type="number"],
+.dark-theme select,
+.dark-theme .dialog-button {
+    background-color: #a8a8a8;
+    color: white;
+}
+
+
+.dark-theme hr {
+    border-top: 1px solid #a8a8a8;
+}
+
+.dark-theme input[type="submit"] {
+    background-color: #a8a8a8;
+
+}
+
+.dark-theme input[type="submit"]:hover {
+    background-color: #6a6a6a;
 }
