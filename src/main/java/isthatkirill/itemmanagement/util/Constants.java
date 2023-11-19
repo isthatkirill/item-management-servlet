@@ -56,8 +56,8 @@ public class Constants {
                         <i class="fa fa-caret-down"></i>
                     </button>
                     <div class="dropdown-content">
-                        <a href="/item?action=report">Сгенерировать отчет о продажах</a>
-                        <a href="/item?action=report">Сгенерировать отчет о наличии</a>
+                        <a href="/report?action=sales">Сгенерировать отчет о продажах</a>
+                        <a href="/report?action=stock">Сгенерировать отчет о наличии</a>
                     </div>
                 </div>
                 <div class="theme-toggle">

@@ -59,6 +59,73 @@ input[type="submit"]:hover {
 }
 
 
+.checkbox-group {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.checkbox-group input[type="checkbox"] {
+    padding-top: 10px;
+    display: none;
+}
+
+.checkbox-group label {
+    text-align: left;
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+    display: block;
+    line-height: 1.8;
+    color: #333;
+    vertical-align: middle;
+    margin-bottom: 5px;
+}
+
+.checkbox-group label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #4b90e1;
+    background-color: white;
+    transition: background-color 0.3s ease-in-out, border 0.3s ease-in-out;
+    box-sizing: border-box;
+}
+
+.checkbox-group input[type="checkbox"]:checked + label:before {
+    background-color: #3498db;
+    border: 2px solid #3498db;
+}
+
+.checkbox-group input[type="checkbox"]:checked + label {
+    color: #3498db;
+}
+
+.checkbox-group label:hover:before {
+    border: 2px solid #2980b9;
+}
+
+.checkbox-group label:hover {
+    color: #2980b9;
+}
+
+fieldset {
+    border: 2px solid #3498db;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+legend {
+    text-align: right;
+    color: #3498db;
+    padding: 5px;
+    background-color: inherit;
+}
+
 .dark-theme input[type="text"],
 .dark-theme input[type="number"],
 .dark-theme select,
@@ -66,7 +133,6 @@ input[type="submit"]:hover {
     background-color: #a8a8a8;
     color: white;
 }
-
 
 .dark-theme hr {
     border-top: 1px solid #a8a8a8;
@@ -79,4 +145,40 @@ input[type="submit"]:hover {
 
 .dark-theme input[type="submit"]:hover {
     background-color: #6a6a6a;
+}
+
+.dark-theme label {
+    color: #a7a7a7;
+}
+
+.dark-theme .checkbox-group label:before {
+    border: 2px solid #a7a7a7;
+    background-color: black;
+}
+
+.dark-theme .checkbox-group input[type="checkbox"]:checked + label:before {
+    background-color: goldenrod;
+    border: 2px solid goldenrod;
+}
+
+.dark-theme .checkbox-group input[type="checkbox"]:checked + label {
+    color: goldenrod;
+}
+
+.dark-theme .checkbox-group label:hover:before {
+    border: 2px solid goldenrod;
+}
+
+.dark-theme .checkbox-group label:hover {
+    color: goldenrod;
+}
+
+.dark-theme fieldset {
+    border: 2px solid #a7a7a7;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.dark-theme legend {
+    color: #a7a7a7;
 }
