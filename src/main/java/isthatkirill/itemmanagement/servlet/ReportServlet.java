@@ -1,5 +1,9 @@
 package isthatkirill.itemmanagement.servlet;
 
+import isthatkirill.itemmanagement.repository.ItemRepository;
+import isthatkirill.itemmanagement.service.ReportService;
+import isthatkirill.itemmanagement.service.impl.ReportServiceImpl;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,22 +21,24 @@ import java.util.logging.Logger;
 @WebServlet(urlPatterns = "/report/*")
 public class ReportServlet extends HttpServlet {
 
-    private final Logger logger = Logger.getLogger(ReportServlet.class.getName());
-
+    private ReportService reportService;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = request.getParameter("action");
-        logger.log(Level.INFO, "Get request was received with parameter action = {0}", action);
-        if (action == null || action.equals("stock")) {
-            request.getRequestDispatcher("/jsp/report/reportStock.jsp").forward(request, response);
-        } else {
-
-        }
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        reportService = new ReportServiceImpl(new ItemRepository());
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/jsp/report/reportStock.jsp").forward(request, response);
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = reportService.process(request);
+        request.setAttribute("path", path);
+        request.getRequestDispatcher("/jsp/report/reportStock.jsp").forward(request, response);
     }
 }

@@ -133,6 +133,10 @@ legend {
     background-color: inherit;
 }
 
+.highlight {
+    background-color: lightblue;
+}
+
 .dark-theme input[type="text"],
 .dark-theme input[type="number"],
 .dark-theme select {

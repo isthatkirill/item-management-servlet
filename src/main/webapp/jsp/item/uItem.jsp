@@ -78,36 +78,36 @@
         <th>Производитель</th>
     </tr>
     </thead>
-<% if (request.getAttribute("items") != null){ %>
-<% List<ItemExtended> items = (List<ItemExtended>) request.getAttribute("items"); %>
-<tbody>
-<% for (ItemExtended item : items) { %>
-<tr>
-    <td><%=item.getId()%>
-    </td>
-    <td><%=item.getName()%>
-    </td>
-    <td><%=item.getDescription()%>
-    </td>
-    <td><%=item.getAveragePurchasePrice() == 0 ? "-" : String.format("%.2f", item.getAveragePurchasePrice())%>
-    </td>
-    <td><%=item.getAverageSalePrice() == 0 ? "-" : String.format("%.2f", item.getAverageSalePrice())%>
-    </td>
-    <td><%=item.getStockUnits()%>
-    </td>
-    <td><%=item.getCategoryId() == 0 || item.getCategoryName() == null ? "-" : item.getCategoryName() + " (id=" + item.getCategoryId() + ")"%>
-    </td>
-    <td><%=item.getBrand() == null ? "-" : item.getBrand()%>
-    </td>
-    <td style="border: none; width: 34px">
-        <a style="text-decoration: none;" href="#" class="delete-link" data-item-id="<%=item.getId()%>">
-            <div class="delete-icon">&#10006;</div>
-        </a>
-    </td>
-</tr>
-<% } %>
-</tbody>
-<% } %>
+    <% if (request.getAttribute("items") != null) { %>
+    <% List<ItemExtended> items = (List<ItemExtended>) request.getAttribute("items"); %>
+    <tbody>
+    <% for (ItemExtended item : items) { %>
+    <tr>
+        <td><%=item.getId()%>
+        </td>
+        <td><%=item.getName()%>
+        </td>
+        <td><%=item.getDescription()%>
+        </td>
+        <td><%=item.getAveragePurchasePrice() == 0 ? "-" : String.format("%.2f", item.getAveragePurchasePrice())%>
+        </td>
+        <td><%=item.getAverageSalePrice() == 0 ? "-" : String.format("%.2f", item.getAverageSalePrice())%>
+        </td>
+        <td><%=item.getStockUnits()%>
+        </td>
+        <td><%=item.getCategoryId() == 0 || item.getCategoryName() == null ? "-" : item.getCategoryName() + " (id=" + item.getCategoryId() + ")"%>
+        </td>
+        <td><%=item.getBrand() == null ? "-" : item.getBrand()%>
+        </td>
+        <td style="border: none; width: 34px">
+            <a style="text-decoration: none;" href="#" class="delete-link" data-item-id="<%=item.getId()%>">
+                <div class="delete-icon">&#10006;</div>
+            </a>
+        </td>
+    </tr>
+    <% } %>
+    </tbody>
+    <% } %>
 </table>
 
 </body>

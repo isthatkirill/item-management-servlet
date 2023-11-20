@@ -10,35 +10,7 @@
     <link rel="stylesheet" type="text/css" href="/styles/main.css">
     <link rel="stylesheet" type="text/css" href="/styles/form.css">
     <script src="/scripts/theme.js" defer></script>
-    <script>
-        function showCheckboxes() {
-            var reportType = document.getElementById("reportType").value;
-            var checkboxGroup1 = document.getElementById("checkboxGroup1");
-            var checkboxGroup2 = document.getElementById("checkboxGroup2");
-
-            // Скрываем все группы чекбоксов
-            checkboxGroup1.style.display = "none";
-            checkboxGroup2.style.display = "none";
-
-            // Сбрасываем состояние всех чекбоксов в обеих группах
-            resetCheckboxes(checkboxGroup1);
-            resetCheckboxes(checkboxGroup2);
-
-            // Отображаем выбранную группу чекбоксов
-            if (reportType === "Отчет по каждому товару") {
-                checkboxGroup1.style.display = "block";
-            } else if (reportType === "Отчет по категориям") {
-                checkboxGroup2.style.display = "block";
-            }
-        }
-
-        function resetCheckboxes(checkboxGroup) {
-            var checkboxes = checkboxGroup.querySelectorAll("input[type='checkbox']");
-            checkboxes.forEach(function (checkbox) {
-                checkbox.checked = false;
-            });
-        }
-    </script>
+    <script src="/scripts/checkboxes.js" defer></script>
 </head>
 <body>
 
@@ -46,11 +18,11 @@
 
 <div class="container-form">
     <h4>Сгенерировать отчет</h4>
-    <form action="/report?action=stock" method="post">
-        <select id="reportType" name="itemId" onchange="showCheckboxes()" required>
+    <form action="/report" method="post">
+        <select style="width: 100%" id="reportType" name="reportType" onchange="showCheckboxes()" required>
             <option value="" selected>Выберите тип отчета</option>
-            <option value="Отчет по каждому товару">Отчет по каждому товару</option>
-            <option value="Отчет по категориям">Отчет по категориям</option>
+            <option value="itemStockReport">Отчет по каждому товару</option>
+            <option value="categoryStockReport">Отчет по категориям</option>
         </select>
 
         <div id="checkboxGroup1" class="checkbox-group">
@@ -65,23 +37,26 @@
                 <input type="checkbox" id="option3" name="brand" value="1"/>
                 <label for="option3">Производитель</label>
 
-                <input type="checkbox" id="option4" name="stockUnits" value="1"/>
+                <input type="checkbox" id="option4" name="stock_units" value="1"/>
                 <label for="option4">Остаток на складе</label>
 
-                <input type="checkbox" id="option5" name="averagePurchasePrice" value="1"/>
-                <label for="option5">Средняя цена закупки</label>
+                <input type="checkbox" id="option5" name="purchase_price" value="1"/>
+                <label for="option5">Средняя стоимость закупки</label>
 
-                <input type="checkbox" id="option6" name="categoryId" value="1"/>
-                <label for="option6">Категория товара</label>
+                <input type="checkbox" id="option6" name="stock_purchase_price" value="1"/>
+                <label for="option6">Стоимость товаров на складе</label>
 
-                <input type="checkbox" id="option7" name="supplyCount" value="1"/>
-                <label for="option7">Количество поступлений</label>
+                <input type="checkbox" id="option7" name="category_name" value="1"/>
+                <label for="option7">Категория товара</label>
 
-                <input type="checkbox" id="option8" name="lastSupplyDate" value="1"/>
-                <label for="option8">Дата последнего поступления</label>
+                <input type="checkbox" id="option9" name="last_supply_date" value="1"/>
+                <label for="option9">Дата последнего поступления</label>
 
-                <input type="checkbox" id="option9" name="commonStock" value="1"/>
-                <label for="option9">Общий остаток</label>
+                <input type="checkbox" id="option10" name="common_stock" value="1"/>
+                <label for="option10">Остаток (все товары)</label>
+
+                <input type="checkbox" id="option11" name="common_price" value="1"/>
+                <label for="option11">Стоимость (все товары)</label>
             </fieldset>
         </div>
 
@@ -100,11 +75,14 @@
                 <input type="checkbox" id="categoryOption5" name="stockPerCategory" value="1"/>
                 <label for="categoryOption5">Остаток на складе</label>
 
-                <input type="checkbox" id="categoryOption6" name="allPrice" value="1"/>
-                <label for="categoryOption6">Стоимость товаров</label>
+                <input type="checkbox" id="categoryOption6" name="stockAveragePurchasePrice" value="1"/>
+                <label for="categoryOption6">Стоимость товаров на складе</label>
 
                 <input type="checkbox" id="categoryOption7" name="commonStock" value="1"/>
-                <label for="categoryOption7">Общий остаток</label>
+                <label for="categoryOption7">Остаток (все категории)</label>
+
+                <input type="checkbox" id="categoryOption8" name="commonPrice" value="1"/>
+                <label for="categoryOption8">Стомость (все категории)</label>
             </fieldset>
         </div>
 
@@ -112,11 +90,13 @@
         <input type="submit" value="Сгенерировать"/>
     </form>
 
-    <% if (request.getAttribute("generatedId") != null) { %>
-    <div class="ok-message" id="popupMessage">
-        Новая продажа успешно добавлена. Присвоенный идентификатор id = <%=request.getAttribute("generatedId")%>.
-    </div>
+    <% if (request.getAttribute("path") != null) { %>
+    <br/>
+    <a id="download-a" href="<%=request.getAttribute("path")%>">Клик</a>
     <% } %>
+    <script>
+        document.getElementById('download-a').submit();
+    </script>
 
 </div>
 

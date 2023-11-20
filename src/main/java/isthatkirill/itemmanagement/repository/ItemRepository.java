@@ -1,6 +1,7 @@
 package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.ItemMapper;
+import isthatkirill.itemmanagement.mapper.ReportDataMapper;
 import isthatkirill.itemmanagement.model.item.Item;
 import isthatkirill.itemmanagement.model.item.ItemExtended;
 import isthatkirill.itemmanagement.model.item.ItemShort;
@@ -211,6 +212,40 @@ public class ItemRepository {
             e.printStackTrace();
         }
     }
+
+    public List<String[]> getItemStockReport(List<String> selectedFields) {
+        String query = """
+                SELECT
+                    i.id,
+                    i.name,
+                    i.description,
+                    i.brand,
+                    i.stock_units,
+                    CAST(i.purchase_price AS DECIMAL(10, 2)),
+                    CAST((i.stock_units * i.purchase_price) AS DECIMAL(10, 2)) AS stock_purchase_price,
+                    c.name as category_name,
+                    MAX(s.created_at) as last_supply_date
+                FROM
+                    items i
+                LEFT JOIN
+                    categories c ON c.id = i.category_id
+                LEFT JOIN
+                    supplies s ON i.id = s.item_id
+                GROUP BY
+                    i.id, i.name, i.description, i.brand, i.stock_units, i.purchase_price, c.name
+                ORDER BY i.id;
+                """;
+
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            return ReportDataMapper.extractRows(selectedFields, resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     private Connection getNewConnection() throws SQLException {
         return dataSource.getConnection();
