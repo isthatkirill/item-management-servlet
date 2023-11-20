@@ -12,8 +12,7 @@ h4 {
 
 input[type="text"],
 input[type="number"],
-select,
-.dialog-button {
+select {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
@@ -27,6 +26,13 @@ input[type="text"]::placeholder,
 input[type="number"]::placeholder,
 select::placeholder {
     color: white;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    background-color: #4A90E2;
+    transition: background-color 0.5s ease;
 }
 
 select {
@@ -43,7 +49,8 @@ hr {
     margin: 10px 0;
 }
 
-input[type="submit"] {
+input[type="submit"],
+.dialog-button {
     background-color: #84ccea;
     color: white;
     padding: 10px 20px;
@@ -53,11 +60,11 @@ input[type="submit"] {
     transition: background-color 0.3s;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+.dialog-button:hover {
     background-color: #4A90E2;
     color: white;
 }
-
 
 .checkbox-group {
     margin-top: 10px;
@@ -128,8 +135,7 @@ legend {
 
 .dark-theme input[type="text"],
 .dark-theme input[type="number"],
-.dark-theme select,
-.dark-theme .dialog-button {
+.dark-theme select {
     background-color: #a8a8a8;
     color: white;
 }
@@ -138,13 +144,14 @@ legend {
     border-top: 1px solid #a8a8a8;
 }
 
-.dark-theme input[type="submit"] {
+.dark-theme input[type="submit"],
+.dark-theme .dialog-button {
     background-color: #a8a8a8;
-
 }
 
-.dark-theme input[type="submit"]:hover {
-    background-color: #6a6a6a;
+.dark-theme input[type="submit"]:hover,
+.dark-theme .dialog-button:hover {
+    background-color: goldenrod;
 }
 
 .dark-theme label {
@@ -154,6 +161,12 @@ legend {
 .dark-theme .checkbox-group label:before {
     border: 2px solid #a7a7a7;
     background-color: black;
+}
+
+.dark-theme input[type="text"]:focus,
+.dark-theme input[type="number"]:focus,
+.dark-theme select:focus-visible {
+    background-color: goldenrod;
 }
 
 .dark-theme .checkbox-group input[type="checkbox"]:checked + label:before {

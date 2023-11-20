@@ -75,10 +75,15 @@ th, td {
 }
 
 th {
-    background-color: #e6d6ff;
+    background-color: lightblue;
+    transition: background-color 0.5s ease;
 }
 
 th:hover {
+    background-color: #4A90E2;
+}
+
+.th-main {
     cursor: pointer;
 }
 
@@ -299,11 +304,27 @@ input:checked + .slider:before {
     background-color: #A9A9A9;
 }
 
+.dark-theme th:hover {
+    background-color: goldenrod;
+}
+
 .dark-theme .delete-icon {
     color: white;
 }
 
 .dark-theme .ok-message {
     color: white;
+}
+
+.dark-theme input:checked + .slider {
+    background-color: goldenrod;
+}
+
+.dark-theme input:focus + .slider {
+    box-shadow: 0 0 1px goldenrod;
+}
+
+.dark-theme .navbar a:hover, .dark-theme .dropdown:hover .dropbtn {
+    background-color: goldenrod;
 }
 
