@@ -213,27 +213,30 @@ public class ItemRepository {
         }
     }
 
-    public List<String[]> getItemStockReport(List<String> selectedFields) {
+    public List<String[]> getCategoryStockReport(List<String> selectedFields) {
         String query = """
                 SELECT
-                    i.id,
-                    i.name,
-                    i.description,
-                    i.brand,
-                    i.stock_units,
-                    CAST(i.purchase_price AS DECIMAL(10, 2)),
-                    CAST((i.stock_units * i.purchase_price) AS DECIMAL(10, 2)) AS stock_purchase_price,
-                    c.name as category_name,
-                    MAX(s.created_at) as last_supply_date
-                FROM
-                    items i
-                LEFT JOIN
-                    categories c ON c.id = i.category_id
-                LEFT JOIN
-                    supplies s ON i.id = s.item_id
-                GROUP BY
-                    i.id, i.name, i.description, i.brand, i.stock_units, i.purchase_price, c.name
-                ORDER BY i.id;
+                    c.id,
+                    c.name,
+                    c.description,
+                    COUNT(i.id) as items_in_category,
+                    SUM(i.stock_units) as stock_units,
+                    CAST(SUM(i.stock_units * i.purchase_price) AS DECIMAL(13, 2)) as stock_price,
+                    COUNT(s) as supplies_count,
+                    MAX(s.created_at) as last_supply_date,
+                    (SELECT i_inner.name FROM items i_inner WHERE i_inner.category_id = c.id
+                        ORDER BY i_inner.stock_units DESC LIMIT 1) as most_units_item,\s
+                	(SELECT i_inner.name FROM items i_inner WHERE i_inner.category_id = c.id
+                        ORDER BY i_inner.stock_units ASC LIMIT 1) as less_units_item,\s
+                	(SELECT i_inner.name FROM items i_inner WHERE i_inner.category_id = c.id
+                        ORDER BY i_inner.purchase_price DESC LIMIT 1) as most_expensive_item,
+                	(SELECT i_inner.name FROM items i_inner WHERE i_inner.category_id = c.id
+                        ORDER BY i_inner.purchase_price ASC LIMIT 1) as most_cheap_item
+                FROM categories c
+                LEFT JOIN items i ON c.id = i.category_id
+                LEFT JOIN supplies s ON i.id = s.item_id
+                GROUP BY c.id, c.name, c.description
+                ORDER BY c.id;
                 """;
 
         try (Connection connection = getNewConnection();
@@ -243,7 +246,33 @@ public class ItemRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return Collections.emptyList();
+    }
+
+    public List<String[]> getItemStockReport(List<String> selectedFields) {
+        String query = """
+        SELECT
+            i.id, i.name, i.description, i.brand, i.stock_units,
+            CAST(i.purchase_price AS DECIMAL(13, 2)),
+            CAST((i.stock_units * i.purchase_price) AS DECIMAL(13, 2)) AS stock_price,
+            c.name as category_name,
+            MAX(s.created_at) as last_supply_date,
+        	COUNT(s) as supplies_count
+        FROM items i
+        LEFT JOIN categories c ON c.id = i.category_id
+        LEFT JOIN supplies s ON i.id = s.item_id
+        GROUP BY i.id, i.name, i.description, i.brand, i.stock_units, i.purchase_price, c.name
+        ORDER BY i.id
+                """;
+
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            return ReportDataMapper.extractRows(selectedFields, resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
     }
 
 

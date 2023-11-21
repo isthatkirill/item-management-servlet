@@ -9,10 +9,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static isthatkirill.itemmanagement.util.Constants.FORMATTER_FILE;
 
 /**
  * @author Kirill Emelyanov
@@ -27,14 +30,17 @@ public class ReportServiceImpl implements ReportService {
         add("description");
         add("brand");
         add("stock_units");
+        add("items_in_category");
         add("purchase_price");
-        add("stock_purchase_price");
+        add("less_units_item");
+        add("most_cheap_item");
+        add("stock_price");
         add("category_name");
+        add("supplies_count");
+        add("supplies_count");
         add("last_supply_date");
-        add("common_stock");
-        add("common_price");
-        add("amountPerCategory");
-        add("stockPerCategory");
+        add("most_units_item");
+        add("most_expensive_item");
     }};
 
     public ReportServiceImpl(ItemRepository itemRepository) {
@@ -66,14 +72,23 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private String processCategoryStockReport(List<String> selectedFields) {
-        return null;
+        List<String[]> rows = itemRepository.getCategoryStockReport(selectedFields);
+        return write(selectedFields, rows);
     }
 
     @SneakyThrows
     private String processItemStockReport(List<String> selectedFields) {
         List<String[]> rows = itemRepository.getItemStockReport(selectedFields);
-        String csvFilePath = "C:/Users/user/Desktop/spring/apache-tomcat-10.1.7/bin/file.csv";
+        return write(selectedFields, rows);
+    }
+
+    private String write(List<String> selectedFields, List<String[]> rows) {
+        String csvFilePath = LocalDateTime.now().format(FORMATTER_FILE) + ".csv";
         try (FileWriter writer = new FileWriter(csvFilePath, false)) {
+            selectedFields.add(0, "id");
+            String header = String.join(",", selectedFields.toArray(new String[0]));
+            writer.write(header);
+            writer.write("\n");
             for (String[] rawRow : rows) {
                 String row = String.join(",", rawRow);
                 writer.write(row);
@@ -84,6 +99,8 @@ public class ReportServiceImpl implements ReportService {
         }
         return csvFilePath;
     }
+
+
 
 
 

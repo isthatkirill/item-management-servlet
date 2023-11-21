@@ -10,9 +10,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.*;
 
 /**
  * @author Kirill Emelyanov
@@ -38,7 +36,18 @@ public class ReportServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = reportService.process(request);
-        request.setAttribute("path", path);
-        request.getRequestDispatcher("/jsp/report/reportStock.jsp").forward(request, response);
+        response.setContentType("text/plain");
+        response.setHeader("Content-disposition", "attachment; filename=" + path);
+        File file = new File(path);
+        try (InputStream is = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buffer = new byte[2048];
+            int numBytesRead;
+            while ((numBytesRead = is.read(buffer)) > 0) {
+                os.write(buffer, 0, numBytesRead);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
