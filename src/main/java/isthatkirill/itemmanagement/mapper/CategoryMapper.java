@@ -2,6 +2,8 @@ package isthatkirill.itemmanagement.mapper;
 
 import isthatkirill.itemmanagement.model.category.Category;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.net.URLDecoder;
@@ -15,6 +17,7 @@ import java.util.Optional;
  * @author Kirill Emelyanov
  */
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class CategoryMapper {
 
     public static Category extractCategoryFromRequest(HttpServletRequest request) {

@@ -12,6 +12,8 @@ import isthatkirill.itemmanagement.service.CategoryService;
 import isthatkirill.itemmanagement.service.ItemService;
 import isthatkirill.itemmanagement.service.impl.CategoryServiceImpl;
 import isthatkirill.itemmanagement.service.impl.ItemServiceImpl;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -24,24 +26,19 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@ApplicationScoped
 @WebServlet(urlPatterns = "/item/*")
 public class ItemServlet extends HttpServlet {
 
-    private final Logger logger = Logger.getLogger(ItemServlet.class.getName());
+    @Inject
     private ItemService itemService;
-    private CategoryService categoryService;
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        itemService = new ItemServiceImpl(new ItemRepository(), new CategoryRepository());
-        categoryService = new CategoryServiceImpl(new CategoryRepository());
-    }
+    @Inject
+    private CategoryService categoryService;
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
-        logger.log(Level.INFO, "Get request was received with parameter action = {0}", action);
         if (action == null) {
             String sortBy = request.getParameter("sortBy");
             String sortOrder = request.getParameter("sortOrder");
@@ -68,7 +65,6 @@ public class ItemServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
             List<ItemExtended> items = itemService.getAllExtended(null, null);
             request.setAttribute("items", items);

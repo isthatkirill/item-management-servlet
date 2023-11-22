@@ -1,5 +1,7 @@
 package isthatkirill.itemmanagement.mapper;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.sql.ResultSet;
@@ -10,11 +12,8 @@ import java.util.List;
  * @author Kirill Emelyanov
  */
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ReportDataMapper {
-
-    private ReportDataMapper() {
-
-    }
 
     @SneakyThrows
     public static List<String[]> extractRows(List<String> selectedFields, ResultSet resultSet) {
@@ -25,7 +24,6 @@ public class ReportDataMapper {
         }
         return rows;
     }
-
 
     @SneakyThrows
     private static String[] extractRow(List<String> selectedFields, ResultSet resultSet) {

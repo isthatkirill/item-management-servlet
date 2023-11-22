@@ -28,7 +28,7 @@
             <fieldset>
                 <legend>Поля в отчете</legend>
                 <input type="checkbox" id="option1" name="name" value="1"/>
-                <label for="option1">Имя товара</label>
+                <label for="option1">Название товара</label>
 
                 <input type="checkbox" id="option2" name="description" value="1"/>
                 <label for="option2">Описание товара</label>
@@ -60,7 +60,7 @@
             <fieldset>
                 <legend>Поля в отчете</legend>
                 <input type="checkbox" id="categoryOption1" name="name" value="1"/>
-                <label for="categoryOption1">Имя категории</label>
+                <label for="categoryOption1">Название категории</label>
 
                 <input type="checkbox" id="categoryOption2" name="description" value="1"/>
                 <label for="categoryOption2">Описание категории</label>
@@ -98,7 +98,7 @@
             <fieldset>
                 <legend>Поля в отчете</legend>
                 <input type="checkbox" id="optionSale1" name="name" value="1"/>
-                <label for="optionSale1">Имя товара</label>
+                <label for="optionSale1">Название товара</label>
 
                 <input type="checkbox" id="optionSale2" name="description" value="1"/>
                 <label for="optionSale2">Описание товара</label>
@@ -106,32 +106,29 @@
                 <input type="checkbox" id="optionSale3" name="brand" value="1"/>
                 <label for="optionSale3">Производитель</label>
 
-                <input type="checkbox" id="optionSale4" name="stock_units" value="1"/>
+                <input type="checkbox" id="optionSale4" name="supply_price" value="1"/>
                 <label for="optionSale4">Стоимость закупок</label>
 
-                <input type="checkbox" id="optionSale5" name="purchase_price" value="1"/>
+                <input type="checkbox" id="optionSale5" name="sale_price" value="1"/>
                 <label for="optionSale5">Стоимость продаж</label>
 
-                <input type="checkbox" id="optionSale7" name="category_name" value="1"/>
+                <input type="checkbox" id="optionSale7" name="profit" value="1"/>
                 <label for="optionSale7">Прибыль</label>
 
-                <input type="checkbox" id="optionSale8" name="supplies_count" value="1"/>
+                <input type="checkbox" id="optionSale8" name="profit_percentage" value="1"/>
                 <label for="optionSale8">Процент прибыли</label>
 
-                <input type="checkbox" id="optionSale11" name="purchase_price" value="1"/>
+                <input type="checkbox" id="optionSale11" name="sold" value="1"/>
                 <label for="optionSale11">Продано (шт.)</label>
 
-                <input type="checkbox" id="optionSale6" name="stock_price" value="1"/>
+                <input type="checkbox" id="optionSale6" name="last_sale_date" value="1"/>
                 <label for="optionSale6">Дата последней продажи</label>
 
-                <input type="checkbox" id="optionSale12" name="stock_price" value="1"/>
+                <input type="checkbox" id="optionSale12" name="sales_count" value="1"/>
                 <label for="optionSale12">Количество продаж</label>
 
-                <input type="checkbox" id="optionSale9" name="last_supply_date" value="1"/>
-                <label for="optionSale9">Самая крупная продажа (шт.) (id)</label>
-
-                <input type="checkbox" id="optionSale10" name="last_supply_date" value="1"/>
-                <label for="optionSale10">Самая прибыльная продажа (id)</label>
+                <input type="checkbox" id="optionSale10" name="most_big_sale_ttl_price" value="1"/>
+                <label for="optionSale10">Самая крупная продажа (руб.)</label>
             </fieldset>
         </div>
 
@@ -139,43 +136,31 @@
             <fieldset>
                 <legend>Поля в отчете</legend>
                 <input type="checkbox" id="categoryOptionSale1" name="name" value="1"/>
-                <label for="categoryOptionSale1">Имя категории</label>
+                <label for="categoryOptionSale1">Название категории</label>
 
                 <input type="checkbox" id="categoryOptionSale2" name="description" value="1"/>
                 <label for="categoryOptionSale2">Описание категории</label>
 
-                <input type="checkbox" id="categoryOptionSale3" name="items_in_category" value="1"/>
+                <input type="checkbox" id="categoryOptionSale3" name="supply_price" value="1"/>
                 <label for="categoryOptionSale3">Стоимость закупок</label>
 
-                <input type="checkbox" id="categoryOptionSale5" name="stock_units" value="1"/>
+                <input type="checkbox" id="categoryOptionSale5" name="sale_price" value="1"/>
                 <label for="categoryOptionSale5">Стоимость продаж</label>
 
-                <input type="checkbox" id="categoryOptionSale6" name="stock_price" value="1"/>
+                <input type="checkbox" id="categoryOptionSale6" name="profit" value="1"/>
                 <label for="categoryOptionSale6">Прибыль</label>
 
-                <input type="checkbox" id="categoryOptionSale4" name="supplies_count" value="1"/>
+                <input type="checkbox" id="categoryOptionSale4" name="profit_percentage" value="1"/>
                 <label for="categoryOptionSale4">Процент прибыли</label>
 
-                <input type="checkbox" id="categoryOptionSale11" name="last_supply_date" value="1"/>
+                <input type="checkbox" id="categoryOptionSale11" name="sold" value="1"/>
                 <label for="categoryOptionSale11">Продано (шт.)</label>
 
-                <input type="checkbox" id="categoryOptionSale12" name="most_units_item" value="1"/>
+                <input type="checkbox" id="categoryOptionSale12" name="last_sale_date" value="1"/>
                 <label for="categoryOptionSale12">Дата последней продажи</label>
 
-                <input type="checkbox" id="categoryOptionSale13" name="most_units_item" value="1"/>
+                <input type="checkbox" id="categoryOptionSale13" name="sales_count" value="1"/>
                 <label for="categoryOptionSale13">Количество продаж</label>
-
-                <input type="checkbox" id="categoryOptionSale7" name="most_units_item" value="1"/>
-                <label for="categoryOptionSale7">Самая крупная продажа (шт.) (id)</label>
-
-                <input type="checkbox" id="categoryOptionSale9" name="less_units_item" value="1"/>
-                <label for="categoryOptionSale9">Самая прибыльная продажа (id)</label>
-
-                <input type="checkbox" id="categoryOptionSale10" name="most_cheap_item" value="1"/>
-                <label for="categoryOptionSale10">Самый прибыльный товар в категории</label>
-
-                <input type="checkbox" id="categoryOptionSale8" name="most_expensive_item" value="1"/>
-                <label for="categoryOptionSale8">Самый убыточный товар в категории</label>
             </fieldset>
         </div>
 

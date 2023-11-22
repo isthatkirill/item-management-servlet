@@ -5,6 +5,8 @@ import isthatkirill.itemmanagement.mapper.CategoryMapper;
 import isthatkirill.itemmanagement.model.category.Category;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.service.CategoryService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -13,13 +15,11 @@ import java.util.List;
  * @author Kirill Emelyanov
  */
 
+@ApplicationScoped
 public class CategoryServiceImpl implements CategoryService {
 
-    private final CategoryRepository categoryRepository;
-
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    @Inject
+    private CategoryRepository categoryRepository;
 
     @Override
     public Long create(HttpServletRequest request) {

@@ -4,6 +4,8 @@ import isthatkirill.itemmanagement.model.item.Item;
 import isthatkirill.itemmanagement.model.item.ItemExtended;
 import isthatkirill.itemmanagement.model.item.ItemShort;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.net.URLDecoder;
@@ -17,11 +19,8 @@ import java.util.Optional;
  * @author Kirill Emelyanov
  */
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ItemMapper {
-
-    private ItemMapper() {
-
-    }
 
     public static Item extractItemFromRequest(HttpServletRequest request) {
         Item item = new Item();

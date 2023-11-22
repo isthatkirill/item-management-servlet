@@ -6,6 +6,9 @@ import isthatkirill.itemmanagement.model.item.Item;
 import isthatkirill.itemmanagement.model.item.ItemExtended;
 import isthatkirill.itemmanagement.model.item.ItemShort;
 import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Singleton;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -18,6 +21,8 @@ import java.util.Optional;
  * @author Kirill Emelyanov
  */
 
+
+@ApplicationScoped
 public class ItemRepository {
 
     private final DataSource dataSource;
@@ -222,19 +227,38 @@ public class ItemRepository {
                     COUNT(i.id) as items_in_category,
                     SUM(i.stock_units) as stock_units,
                     CAST(SUM(i.stock_units * i.purchase_price) AS DECIMAL(13, 2)) as stock_price,
-                    COUNT(s) as supplies_count,
-                    MAX(s.created_at) as last_supply_date,
-                    (SELECT i_inner.name FROM items i_inner WHERE i_inner.category_id = c.id
+                    COUNT(s.item_id) as supplies_count,
+                    MAX(s.last_supply_date) as last_supply_date,
+                    (SELECT
+                        CONCAT(i_inner.name, ' (id = ', i_inner.id, ' stock = ', i_inner.stock_units, ')')
+                        FROM items i_inner
+                        WHERE i_inner.category_id = c.id
                         ORDER BY i_inner.stock_units DESC LIMIT 1) as most_units_item,\s
-                	(SELECT i_inner.name FROM items i_inner WHERE i_inner.category_id = c.id
+                    (SELECT
+                        CONCAT(i_inner.name, ' (id = ', i_inner.id, ' stock = ', i_inner.stock_units, ')')
+                        FROM items i_inner
+                        WHERE i_inner.category_id = c.id
                         ORDER BY i_inner.stock_units ASC LIMIT 1) as less_units_item,\s
-                	(SELECT i_inner.name FROM items i_inner WHERE i_inner.category_id = c.id
+                    (SELECT
+                        CONCAT(i_inner.name, ' (id = ', i_inner.id, ' price = ', CAST(i_inner.purchase_price AS DECIMAL(13, 2)), ')')
+                        FROM items i_inner
+                        WHERE i_inner.category_id = c.id
                         ORDER BY i_inner.purchase_price DESC LIMIT 1) as most_expensive_item,
-                	(SELECT i_inner.name FROM items i_inner WHERE i_inner.category_id = c.id
+                    (SELECT
+                        CONCAT(i_inner.name, ' (id = ', i_inner.id, ' price = ', CAST(i_inner.purchase_price AS DECIMAL(13, 2)), ')')
+                        FROM items i_inner
+                        WHERE i_inner.category_id = c.id
                         ORDER BY i_inner.purchase_price ASC LIMIT 1) as most_cheap_item
                 FROM categories c
                 LEFT JOIN items i ON c.id = i.category_id
-                LEFT JOIN supplies s ON i.id = s.item_id
+                LEFT JOIN (
+                    SELECT
+                        s.item_id,
+                        COUNT(s.id) as supplies_count,
+                        MAX(s.created_at) as last_supply_date
+                    FROM supplies s
+                    GROUP BY s.item_id
+                ) s ON i.id = s.item_id
                 GROUP BY c.id, c.name, c.description
                 ORDER BY c.id;
                 """;
@@ -249,20 +273,105 @@ public class ItemRepository {
         return Collections.emptyList();
     }
 
+    public List<String[]> getCategorySaleReport(List<String> selectedFields) {
+        String query = """
+        SELECT
+            c.id,
+            c.name,
+            c.description,
+            SUM(sup.supply_price) AS supply_price,
+            SUM(sal.sale_price) AS sale_price,
+            SUM(sal.sale_price - sup.supply_price) AS profit,
+            CAST(SUM(sal.sale_price - sup.supply_price) / SUM(sup.supply_price) * 100 AS DECIMAL(13, 2)) AS profit_percentage,
+            SUM(sal.sold) AS sold,
+            MAX(sal.last_sale_date) AS last_sale_date,
+            SUM(sal.sales_count) AS sales_count
+        FROM categories c
+        LEFT JOIN items i ON c.id = i.category_id
+        LEFT JOIN (
+            SELECT
+                item_id,
+                CAST(SUM(amount * price) AS DECIMAL(13, 2)) AS supply_price
+            FROM supplies
+            GROUP BY item_id
+        ) sup ON i.id = sup.item_id
+        LEFT JOIN (
+            SELECT
+                item_id,
+                CAST(SUM(amount * price) AS DECIMAL(13, 2)) AS sale_price,
+                SUM(amount) AS sold,
+                MAX(created_at) AS last_sale_date,
+                COUNT(sales) AS sales_count
+            FROM sales
+            GROUP BY item_id
+        ) sal ON i.id = sal.item_id
+        GROUP BY c.id, c.name, c.description
+        ORDER BY c.id;
+                """;
+
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            return ReportDataMapper.extractRows(selectedFields, resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public List<String[]> getItemSaleReport(List<String> selectedFields) {
+        String query = """
+        SELECT
+            i.id,
+            i.name,
+            i.description,
+            i.brand,
+            sup.supply_price,
+            sal.sale_price,
+            sal.sale_price - sup.supply_price AS profit,
+            CAST((sal.sale_price - sup.supply_price) / sup.supply_price * 100 AS DECIMAL(13, 2)) as profit_percentage,
+            sal.sold,
+            sal.last_sale_date,
+            sal.sales_count,
+            sal.most_big_sale_ttl_price
+        FROM items i
+        LEFT JOIN ( SELECT item_id, CAST(SUM(amount * price) AS DECIMAL(13, 2)) AS supply_price
+                    FROM supplies GROUP BY item_id) sup ON i.id = sup.item_id
+        LEFT JOIN ( SELECT item_id, CAST(SUM(amount * price) AS DECIMAL(13, 2)) AS sale_price,
+                    SUM(amount) as sold, MAX(created_at) as last_sale_date, COUNT(sales) as sales_count,
+                    CAST(MAX(amount * price) AS DECIMAL(13, 2)) as most_big_sale_ttl_price\s
+                    FROM sales GROUP BY item_id) sal ON i.id = sal.item_id
+        ORDER BY i.id      
+                """;
+        try (Connection connection = getNewConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+            return ReportDataMapper.extractRows(selectedFields, resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
     public List<String[]> getItemStockReport(List<String> selectedFields) {
         String query = """
         SELECT
-            i.id, i.name, i.description, i.brand, i.stock_units,
-            CAST(i.purchase_price AS DECIMAL(13, 2)),
-            CAST((i.stock_units * i.purchase_price) AS DECIMAL(13, 2)) AS stock_price,
-            c.name as category_name,
-            MAX(s.created_at) as last_supply_date,
-        	COUNT(s) as supplies_count
-        FROM items i
-        LEFT JOIN categories c ON c.id = i.category_id
-        LEFT JOIN supplies s ON i.id = s.item_id
-        GROUP BY i.id, i.name, i.description, i.brand, i.stock_units, i.purchase_price, c.name
-        ORDER BY i.id
+             i.id,
+             i.name,
+             i.description,
+             i.brand,
+             i.stock_units,
+             CAST(i.purchase_price AS DECIMAL(10, 2)),\s
+             CAST((i.stock_units * i.purchase_price) AS DECIMAL(10, 2)) AS stock_price,
+             c.name as category_name,
+             s.last_supply_date,
+             s.supplies_count
+         FROM items i
+         LEFT JOIN categories c ON c.id = i.category_id
+         LEFT JOIN ( SELECT item_id, MAX(created_at) as last_supply_date,
+                    COUNT(id) as supplies_count FROM supplies GROUP BY
+                     item_id) s ON i.id = s.item_id
+         ORDER BY i.id
                 """;
 
         try (Connection connection = getNewConnection();

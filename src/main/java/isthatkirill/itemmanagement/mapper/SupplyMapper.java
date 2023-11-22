@@ -3,6 +3,8 @@ package isthatkirill.itemmanagement.mapper;
 import isthatkirill.itemmanagement.model.supply.Supply;
 import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.net.URLDecoder;
@@ -17,11 +19,8 @@ import java.util.Optional;
  * @author Kirill Emelyanov
  */
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SupplyMapper {
-
-    private SupplyMapper() {
-
-    }
 
     public static Supply extractSupplyFromRequest(HttpServletRequest request) {
         Supply supply = new Supply();

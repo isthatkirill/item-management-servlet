@@ -5,6 +5,8 @@ import isthatkirill.itemmanagement.model.category.Category;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.service.CategoryService;
 import isthatkirill.itemmanagement.service.impl.CategoryServiceImpl;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,22 +23,16 @@ import java.util.logging.Logger;
  * @author Kirill Emelyanov
  */
 
+@ApplicationScoped
 @WebServlet(urlPatterns = "/category/*")
 public class CategoryServlet extends HttpServlet {
 
-    private final Logger logger = Logger.getLogger(CategoryServlet.class.getName());
+    @Inject
     private CategoryService categoryService;
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        categoryService = new CategoryServiceImpl(new CategoryRepository());
-    }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String action = request.getParameter("action");
-        logger.log(Level.INFO, "Get request was received with parameter action = {0}", action);
         if (action == null) {
             request.getRequestDispatcher("/jsp/category/cCategory.jsp").forward(request, response);
             return;
@@ -54,7 +50,6 @@ public class CategoryServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
-        logger.log(Level.INFO, "Post request was received with parameter action = {0}", action);
         if (action == null) {
             request.getRequestDispatcher("/jsp/category/cCategory.jsp").forward(request, response);
             return;

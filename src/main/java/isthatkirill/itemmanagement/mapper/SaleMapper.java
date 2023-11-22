@@ -5,6 +5,8 @@ import isthatkirill.itemmanagement.model.sale.SaleExtended;
 import isthatkirill.itemmanagement.model.supply.Supply;
 import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.sql.ResultSet;
@@ -17,11 +19,8 @@ import java.util.Optional;
  * @author Kirill Emelyanov
  */
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SaleMapper {
-
-    private SaleMapper() {
-
-    }
 
     public static Sale extractSaleFromRequest(HttpServletRequest request) {
         Sale sale = new Sale();

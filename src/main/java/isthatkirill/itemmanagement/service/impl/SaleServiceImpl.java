@@ -10,6 +10,8 @@ import isthatkirill.itemmanagement.model.supply.Supply;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.repository.SaleRepository;
 import isthatkirill.itemmanagement.service.SaleService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -18,15 +20,14 @@ import java.util.List;
  * @author Kirill Emelyanov
  */
 
+@ApplicationScoped
 public class SaleServiceImpl implements SaleService {
 
-    private final SaleRepository saleRepository;
-    private final ItemRepository itemRepository;
+    @Inject
+    private SaleRepository saleRepository;
 
-    public SaleServiceImpl(SaleRepository saleRepository, ItemRepository itemRepository) {
-        this.saleRepository = saleRepository;
-        this.itemRepository = itemRepository;
-    }
+    @Inject
+    private ItemRepository itemRepository;
 
     @Override
     public Long create(HttpServletRequest request) {

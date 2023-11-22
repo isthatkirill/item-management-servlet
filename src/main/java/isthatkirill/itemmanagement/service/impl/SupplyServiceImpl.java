@@ -7,6 +7,8 @@ import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.repository.SupplyRepository;
 import isthatkirill.itemmanagement.service.SupplyService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -15,15 +17,14 @@ import java.util.List;
  * @author Kirill Emelyanov
  */
 
+@ApplicationScoped
 public class SupplyServiceImpl implements SupplyService {
 
-    private final SupplyRepository supplyRepository;
-    private final ItemRepository itemRepository;
+    @Inject
+    private SupplyRepository supplyRepository;
 
-    public SupplyServiceImpl(SupplyRepository supplyRepository, ItemRepository itemRepository) {
-        this.supplyRepository = supplyRepository;
-        this.itemRepository = itemRepository;
-    }
+    @Inject
+    private ItemRepository itemRepository;
 
     @Override
     public Long create(HttpServletRequest request) {

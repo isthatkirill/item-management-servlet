@@ -4,6 +4,7 @@ import isthatkirill.itemmanagement.mapper.SupplyMapper;
 import isthatkirill.itemmanagement.model.supply.Supply;
 import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -17,6 +18,7 @@ import java.util.Optional;
  * @author Kirill Emelyanov
  */
 
+@ApplicationScoped
 public class SupplyRepository {
 
     private final DataSource dataSource;

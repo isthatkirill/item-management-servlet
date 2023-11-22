@@ -8,6 +8,8 @@ import isthatkirill.itemmanagement.model.item.ItemShort;
 import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.ItemService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.time.LocalDateTime;
@@ -17,16 +19,14 @@ import java.util.List;
  * @author Kirill Emelyanov
  */
 
-
+@ApplicationScoped
 public class ItemServiceImpl implements ItemService {
 
-    private final ItemRepository itemRepository;
-    private final CategoryRepository categoryRepository;
+    @Inject
+    private ItemRepository itemRepository;
 
-    public ItemServiceImpl(ItemRepository itemRepository, CategoryRepository categoryRepository) {
-        this.itemRepository = itemRepository;
-        this.categoryRepository = categoryRepository;
-    }
+    @Inject
+    private CategoryRepository categoryRepository;
 
     @Override
     public Long create(HttpServletRequest request) {

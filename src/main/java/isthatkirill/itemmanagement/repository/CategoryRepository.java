@@ -3,6 +3,7 @@ package isthatkirill.itemmanagement.repository;
 import isthatkirill.itemmanagement.mapper.CategoryMapper;
 import isthatkirill.itemmanagement.model.category.Category;
 import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
+import jakarta.enterprise.context.ApplicationScoped;
 import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
@@ -16,6 +17,7 @@ import java.util.Optional;
  * @author Kirill Emelyanov
  */
 
+@ApplicationScoped
 public class CategoryRepository {
 
     private final DataSource dataSource;
