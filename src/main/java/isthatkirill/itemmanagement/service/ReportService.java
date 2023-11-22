@@ -8,6 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface ReportService {
 
-    String process(HttpServletRequest request);
+    byte[] process(HttpServletRequest request);
 
 }

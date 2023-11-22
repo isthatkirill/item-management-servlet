@@ -11,6 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.*;
+import java.time.LocalDateTime;
+
+import static isthatkirill.itemmanagement.util.Constants.FORMATTER_FILE;
 
 /**
  * @author Kirill Emelyanov
@@ -34,17 +37,13 @@ public class ReportServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String path = reportService.process(request);
+        byte[] data = reportService.process(request);
         response.setContentType("text/plain");
-        response.setHeader("Content-disposition", "attachment; filename=" + path);
-        File file = new File(path);
-        try (InputStream is = new FileInputStream(file);
-             OutputStream os = response.getOutputStream()) {
-            byte[] buffer = new byte[2048];
-            int numBytesRead;
-            while ((numBytesRead = is.read(buffer)) > 0) {
-                os.write(buffer, 0, numBytesRead);
-            }
+        response.setContentLength(data.length);
+        response.setHeader("Content-disposition", "attachment; filename=" + LocalDateTime.now()
+                .format(FORMATTER_FILE) + ".csv");
+        try (OutputStream os = response.getOutputStream()) {
+            os.write(data);
         } catch (IOException e) {
             e.printStackTrace();
         }
