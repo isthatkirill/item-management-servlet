@@ -1,7 +1,5 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
-<%@ page import="isthatkirill.itemmanagement.model.supply.Supply" %>
 <%@ page import="java.util.List" %>
-<%@ page import="isthatkirill.itemmanagement.model.supply.SupplyExtended" %>
 <%@ page import="isthatkirill.itemmanagement.model.sale.SaleExtended" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -26,7 +24,9 @@
             <% if (request.getAttribute("sales") != null) { %>
             <% List<SaleExtended> sales = (List<SaleExtended>) request.getAttribute("sales"); %>
             <% for (SaleExtended sale : sales) { %>
-            <option value="<%=sale.getId()%>">Продажа id=<%=sale.getId()%> (Товар: <%=sale.getItemName()%>, id=<%=sale.getItemId()%>)</option>
+            <option value="<%=sale.getId()%>">Продажа id=<%=sale.getId()%> (Товар: <%=sale.getItemName()%>,
+                id=<%=sale.getItemId()%>)
+            </option>
             <% } %>
             <% } %>
         </select>

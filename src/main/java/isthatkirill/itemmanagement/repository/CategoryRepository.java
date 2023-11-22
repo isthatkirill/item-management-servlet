@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static isthatkirill.itemmanagement.util.Constants.*;
+
 /**
  * @author Kirill Emelyanov
  */
@@ -28,9 +30,8 @@ public class CategoryRepository {
 
 
     public Long create(Category category) {
-        String query = "INSERT INTO categories (name, description) VALUES (?, ?)";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement(CREATE_CATEGORY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, category.getName());
             statement.setString(2, category.getDescription());
             statement.executeUpdate();
@@ -46,9 +47,8 @@ public class CategoryRepository {
     }
 
     public Optional<Category> findById(Long id) {
-        String query = "SELECT * FROM categories WHERE id = ?";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_CATEGORY_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             return CategoryMapper.extractCategoryFromResultSet(resultSet);
@@ -60,9 +60,8 @@ public class CategoryRepository {
     }
 
     public boolean existsById(Long id) {
-        String query = "SELECT 1 FROM categories WHERE id = ?";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(EXISTS_CATEGORY_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             return resultSet.next();
@@ -108,9 +107,8 @@ public class CategoryRepository {
 
     @SneakyThrows
     public List<Category> findAll() {
-        String query = "SELECT * FROM categories ORDER BY id ASC";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL_CATEGORIES)) {
             ResultSet resultSet = statement.executeQuery();
             return CategoryMapper.extractCategoriesFromResultSet(resultSet);
         } catch (SQLException e) {
@@ -121,9 +119,8 @@ public class CategoryRepository {
 
     @SneakyThrows
     public void delete(Long id) {
-        String query = "DELETE FROM categories WHERE id = ?";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(DELETE_CATEGORY_BY_ID)) {
             statement.setLong(1, id);
             statement.executeUpdate();
         }

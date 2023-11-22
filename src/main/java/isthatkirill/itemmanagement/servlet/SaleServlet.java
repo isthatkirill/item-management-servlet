@@ -4,16 +4,10 @@ import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.exception.NotEnoughItemException;
 import isthatkirill.itemmanagement.model.item.ItemShort;
 import isthatkirill.itemmanagement.model.sale.SaleExtended;
-import isthatkirill.itemmanagement.repository.CategoryRepository;
-import isthatkirill.itemmanagement.repository.ItemRepository;
-import isthatkirill.itemmanagement.repository.SaleRepository;
 import isthatkirill.itemmanagement.service.ItemService;
 import isthatkirill.itemmanagement.service.SaleService;
-import isthatkirill.itemmanagement.service.impl.ItemServiceImpl;
-import isthatkirill.itemmanagement.service.impl.SaleServiceImpl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -22,8 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Kirill Emelyanov
@@ -55,9 +47,7 @@ public class SaleServlet extends HttpServlet {
             request.setAttribute("sales", sales);
         }
 
-
         forwardRequest(action, request, response);
-
     }
 
     @Override
@@ -111,4 +101,5 @@ public class SaleServlet extends HttpServlet {
             }
         }
     }
+
 }

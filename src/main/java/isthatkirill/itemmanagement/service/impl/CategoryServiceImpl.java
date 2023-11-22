@@ -11,6 +11,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
+import static isthatkirill.itemmanagement.util.Constants.CHECK_DATA;
+
 /**
  * @author Kirill Emelyanov
  */
@@ -53,13 +55,13 @@ public class CategoryServiceImpl implements CategoryService {
     private Category checkIfCategoryExistsAndGet(Long id) {
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Категория с id = %s " +
-                        "не найдена. Проверьте правильность вводимых данных.", id)));
+                        "не найдена. %s", CHECK_DATA, id)));
     }
 
     private void checkIfCategoryExists(Long id) {
         if (!categoryRepository.existsById(id)) {
             throw new EntityNotFoundException(String.format("Категория с id = %s " +
-                    "не найдена. Проверьте правильность вводимых данных.", id));
+                    "не найдена. %s", CHECK_DATA, id));
         }
     }
 

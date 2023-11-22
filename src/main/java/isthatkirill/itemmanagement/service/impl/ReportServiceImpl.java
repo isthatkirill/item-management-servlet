@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static isthatkirill.itemmanagement.util.Constants.*;
+
 /**
  * @author Kirill Emelyanov
  */
@@ -24,58 +26,6 @@ public class ReportServiceImpl implements ReportService {
 
     @Inject
     private ItemRepository itemRepository;
-
-    private final List<String> possibleStockItemFields = new ArrayList<>() {{
-        add("name");
-        add("description");
-        add("brand");
-        add("stock_units");
-        add("purchase_price");
-        add("stock_price");
-        add("category_name");
-        add("supplies_count");
-        add("last_supply_date");
-    }};
-
-    private final List<String> possibleStockCategoryFields = new ArrayList<>() {{
-        add("name");
-        add("description");
-        add("items_in_category");
-        add("stock_units");
-        add("stock_price");
-        add("supplies_count");
-        add("last_supply_date");
-        add("most_units_item");
-        add("less_units_item");
-        add("most_cheap_item");
-        add("most_expensive_item");
-    }};
-
-    private final List<String> possibleProfitItemFields = new ArrayList<>() {{
-        add("name");
-        add("description");
-        add("brand");
-        add("supply_price");
-        add("sale_price");
-        add("profit");
-        add("profit_percentage");
-        add("sold");
-        add("last_sale_date");
-        add("sales_count");
-        add("most_big_sale_ttl_price");
-    }};
-
-    private final List<String> possibleProfitCategoryFields = new ArrayList<>() {{
-        add("name");
-        add("description");
-        add("supply_price");
-        add("sale_price");
-        add("profit");
-        add("profit_percentage");
-        add("sold");
-        add("last_sale_date");
-        add("sales_count");
-    }};
 
     @Override
     public byte[] process(HttpServletRequest request) {
@@ -88,22 +38,22 @@ public class ReportServiceImpl implements ReportService {
 
         switch (reportType) {
             case "itemStockReport" -> {
-                if (new HashSet<>(possibleStockItemFields).containsAll(selectedFields)) {
+                if (new HashSet<>(POSSIBLE_STOCK_ITEM_FIELDS).containsAll(selectedFields)) {
                     return processItemStockReport(selectedFields);
                 }
             }
             case "categoryStockReport" -> {
-                if (new HashSet<>(possibleStockCategoryFields).containsAll(selectedFields)) {
+                if (new HashSet<>(POSSIBLE_STOCK_CATEGORY_FIELDS).containsAll(selectedFields)) {
                     return processCategoryStockReport(selectedFields);
                 }
             }
             case "itemSaleReport" -> {
-                if (new HashSet<>(possibleProfitItemFields).containsAll(selectedFields)) {
+                if (new HashSet<>(POSSIBLE_PROFIT_ITEM_FIELDS).containsAll(selectedFields)) {
                     return processItemSaleReport(selectedFields);
                 }
             }
             case "categorySaleReport" -> {
-                if (new HashSet<>(possibleProfitCategoryFields).containsAll(selectedFields)) {
+                if (new HashSet<>(POSSIBLE_PROFIT_CATEGORY_FIELDS).containsAll(selectedFields)) {
                     return processCategorySaleReport(selectedFields);
                 }
             }

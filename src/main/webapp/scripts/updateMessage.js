@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
     function showPopup() {
         let popup = document.getElementById("popupMessage");
@@ -6,14 +6,14 @@ document.addEventListener('DOMContentLoaded', function() {
         popup.style.opacity = "0";
         popup.style.width = "300px";
 
-        setTimeout(function() {
+        setTimeout(function () {
             popup.style.transition = "opacity 0.5s ease-in-out";
             popup.style.opacity = "1";
         }, 100);
 
-        setTimeout(function() {
+        setTimeout(function () {
             popup.style.opacity = "0";
-            setTimeout(function() {
+            setTimeout(function () {
                 popup.style.display = "none";
             }, 500);
         }, 5000);

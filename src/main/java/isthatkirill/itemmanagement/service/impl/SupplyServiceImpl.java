@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 
+import static isthatkirill.itemmanagement.util.Constants.CHECK_DATA;
+
 /**
  * @author Kirill Emelyanov
  */
@@ -57,14 +59,14 @@ public class SupplyServiceImpl implements SupplyService {
     private void checkIfItemExists(Long id) {
         if (!itemRepository.existsById(id)) {
             throw new EntityNotFoundException(String.format("Товар с id = %s " +
-                    "не найден. Проверьте правильность вводимых данных.", id));
+                    "не найден. %s", CHECK_DATA, id));
         }
     }
 
     private Supply checkIfSupplyExistsAndGet(Long id) {
         return supplyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Поступление с id = %s " +
-                        "не найдено. Проверьте правильность вводимых данных.", id)));
+                        "не найдено. %s", CHECK_DATA, id)));
     }
 
 }

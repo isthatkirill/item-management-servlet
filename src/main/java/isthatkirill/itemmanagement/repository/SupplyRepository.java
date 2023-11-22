@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static isthatkirill.itemmanagement.util.Constants.*;
+
 /**
  * @author Kirill Emelyanov
  */
@@ -28,9 +30,8 @@ public class SupplyRepository {
     }
 
     public Long create(Supply supply) {
-        String query = "INSERT INTO supplies (company, amount, price, item_id, created_at) VALUES (?, ?, ?, ?, ?)";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement(CREATE_SUPPLY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, supply.getCompany());
             statement.setLong(2, supply.getAmount());
             statement.setDouble(3, supply.getPrice());
@@ -49,9 +50,8 @@ public class SupplyRepository {
     }
 
     public Double findAveragePurchasePrice(Long itemId) {
-        String query = "SELECT CAST(SUM(amount * price) AS DECIMAL(10, 2)) / SUM(amount) AS average_price FROM supplies WHERE item_id = ?";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_AVERAGE_SUPPLY_PRICE)) {
             statement.setLong(1, itemId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) return resultSet.getDouble("average_price");
@@ -63,30 +63,14 @@ public class SupplyRepository {
     }
 
     public List<SupplyExtended> findAllExtended() {
-        String query = "SELECT s.*, i.name as item_name FROM supplies s LEFT JOIN items i ON i.id = s.item_id ORDER BY s.id ASC;";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL_SUPPLIES_EXTENDED)) {
             ResultSet resultSet = statement.executeQuery();
             return SupplyMapper.extractSuppliesExtendedFromResultSet(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return Collections.emptyList();
-    }
-
-    public Integer findAllUnits(Long itemId) {
-        String query = "SELECT SUM(amount) AS stock_units FROM supplies WHERE item_id = ?";
-        try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setLong(1, itemId);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return resultSet.getInt("stock_units");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return 0;
     }
 
     public void update(Supply supply) {
@@ -123,9 +107,8 @@ public class SupplyRepository {
     }
 
     public Optional<Supply> findById(Long id) {
-        String query = "SELECT * FROM supplies WHERE id = ?";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_SUPPLY_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             return SupplyMapper.extractSupplyFromResultSet(resultSet);

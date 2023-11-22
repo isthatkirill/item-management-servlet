@@ -1,5 +1,4 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
-<%@ page import="isthatkirill.itemmanagement.model.supply.Supply" %>
 <%@ page import="java.util.List" %>
 <%@ page import="isthatkirill.itemmanagement.model.supply.SupplyExtended" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -24,7 +23,9 @@
             <% if (request.getAttribute("supplies") != null) { %>
             <% List<SupplyExtended> supplies = (List<SupplyExtended>) request.getAttribute("supplies"); %>
             <% for (SupplyExtended supply : supplies) { %>
-            <option value="<%=supply.getId()%>">Поступление id=<%=supply.getId()%> (Товар: <%=supply.getItemName()%>, id=<%=supply.getItemId()%>)</option>
+            <option value="<%=supply.getId()%>">Поступление id=<%=supply.getId()%> (Товар: <%=supply.getItemName()%>,
+                id=<%=supply.getItemId()%>)
+            </option>
             <% } %>
             <% } %>
         </select>
@@ -61,25 +62,25 @@
         <th>Товар</th>
     </tr>
     </thead>
-<% if (request.getAttribute("supplies") != null) { %>
-<% List<SupplyExtended> supplies = (List<SupplyExtended>) request.getAttribute("supplies"); %>
-<tbody>
-<% for (SupplyExtended supply : supplies) { %>
-<tr>
-    <td><%=supply.getId()%>
-    </td>
-    <td><%=supply.getCompany() == null ? "-" : supply.getCompany()%>
-    </td>
-    <td><%=supply.getAmount()%>
-    </td>
-    <td><%=String.format("%.2f", supply.getPrice())%>
-    </td>
-    <td><%=supply.getItemName()%> (id=<%=supply.getItemId()%>)
-    </td>
-</tr>
-<% } %>
-</tbody>
-<% } %>
+    <% if (request.getAttribute("supplies") != null) { %>
+    <% List<SupplyExtended> supplies = (List<SupplyExtended>) request.getAttribute("supplies"); %>
+    <tbody>
+    <% for (SupplyExtended supply : supplies) { %>
+    <tr>
+        <td><%=supply.getId()%>
+        </td>
+        <td><%=supply.getCompany() == null ? "-" : supply.getCompany()%>
+        </td>
+        <td><%=supply.getAmount()%>
+        </td>
+        <td><%=String.format("%.2f", supply.getPrice())%>
+        </td>
+        <td><%=supply.getItemName()%> (id=<%=supply.getItemId()%>)
+        </td>
+    </tr>
+    <% } %>
+    </tbody>
+    <% } %>
 </table>
 
 </body>

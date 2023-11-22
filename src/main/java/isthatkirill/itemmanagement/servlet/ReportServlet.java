@@ -2,9 +2,7 @@ package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.service.ReportService;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

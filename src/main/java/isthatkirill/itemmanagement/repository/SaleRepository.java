@@ -1,11 +1,8 @@
 package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.SaleMapper;
-import isthatkirill.itemmanagement.mapper.SupplyMapper;
 import isthatkirill.itemmanagement.model.sale.Sale;
 import isthatkirill.itemmanagement.model.sale.SaleExtended;
-import isthatkirill.itemmanagement.model.supply.Supply;
-import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -16,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import static isthatkirill.itemmanagement.util.Constants.*;
 
 /**
  * @author Kirill Emelyanov
@@ -31,9 +30,8 @@ public class SaleRepository {
     }
 
     public Long create(Sale sale) {
-        String query = "INSERT INTO sales (amount, price, item_id, created_at) VALUES (?, ?, ?, ?)";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement(CREATE_SALE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, sale.getAmount());
             statement.setDouble(2, sale.getPrice());
             statement.setLong(3, sale.getItemId());
@@ -51,9 +49,8 @@ public class SaleRepository {
     }
 
     public Double findAverageSalePrice(Long itemId) {
-        String query = "SELECT CAST(SUM(amount * price) AS DECIMAL(10, 2)) / SUM(amount) AS average_price FROM sales WHERE item_id = ?";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_AVERAGE_SALE_PRICE)) {
             statement.setLong(1, itemId);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) return resultSet.getDouble("average_price");
@@ -65,9 +62,8 @@ public class SaleRepository {
     }
 
     public List<SaleExtended> findAllExtended() {
-        String query = "SELECT s.*, i.name as item_name FROM sales s LEFT JOIN items i ON i.id = s.item_id ORDER BY s.id ASC;";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_ALL_SALES_EXTENDED)) {
             ResultSet resultSet = statement.executeQuery();
             return SaleMapper.extractSalesExtendedFromResultSet(resultSet);
         } catch (SQLException e) {
@@ -77,9 +73,8 @@ public class SaleRepository {
     }
 
     public Optional<Sale> findById(Long id) {
-        String query = "SELECT * FROM sales WHERE id = ?";
         try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(query)) {
+             PreparedStatement statement = connection.prepareStatement(FIND_SALE_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             return SaleMapper.extractSaleFromResultSet(resultSet);

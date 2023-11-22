@@ -2,8 +2,6 @@ package isthatkirill.itemmanagement.mapper;
 
 import isthatkirill.itemmanagement.model.sale.Sale;
 import isthatkirill.itemmanagement.model.sale.SaleExtended;
-import isthatkirill.itemmanagement.model.supply.Supply;
-import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

@@ -6,15 +6,10 @@ import isthatkirill.itemmanagement.model.item.Item;
 import isthatkirill.itemmanagement.model.item.ItemExtended;
 import isthatkirill.itemmanagement.model.item.enums.SortOrder;
 import isthatkirill.itemmanagement.model.item.enums.SortType;
-import isthatkirill.itemmanagement.repository.CategoryRepository;
-import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.CategoryService;
 import isthatkirill.itemmanagement.service.ItemService;
-import isthatkirill.itemmanagement.service.impl.CategoryServiceImpl;
-import isthatkirill.itemmanagement.service.impl.ItemServiceImpl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -23,8 +18,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 @ApplicationScoped
 @WebServlet(urlPatterns = "/item/*")

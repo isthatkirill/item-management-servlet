@@ -59,26 +59,26 @@
         <th>Описание</th>
     </tr>
     </thead>
-<% if (request.getAttribute("categories") != null)  { %>
-<% List<Category> categories = (List<Category>) request.getAttribute("categories"); %>
-<tbody>
-<% for (Category category : categories) { %>
-<tr>
-    <td><%=category.getId()%>
-    </td>
-    <td><%=category.getName()%>
-    </td>
-    <td><%=category.getDescription()%>
-    </td>
-    <td style="border: none; width: 34px">
-        <a style="text-decoration: none;" href="#" class="delete-link" data-category-id="<%=category.getId()%>">
-            <div class="delete-icon">&#10006;</div>
-        </a>
-    </td>
-</tr>
-<% } %>
-</tbody>
-<% } %>
+    <% if (request.getAttribute("categories") != null) { %>
+    <% List<Category> categories = (List<Category>) request.getAttribute("categories"); %>
+    <tbody>
+    <% for (Category category : categories) { %>
+    <tr>
+        <td><%=category.getId()%>
+        </td>
+        <td><%=category.getName()%>
+        </td>
+        <td><%=category.getDescription()%>
+        </td>
+        <td style="border: none; width: 34px">
+            <a style="text-decoration: none;" href="#" class="delete-link" data-category-id="<%=category.getId()%>">
+                <div class="delete-icon">&#10006;</div>
+            </a>
+        </td>
+    </tr>
+    <% } %>
+    </tbody>
+    <% } %>
 </table>
 
 

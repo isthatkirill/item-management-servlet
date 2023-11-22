@@ -40,9 +40,12 @@
     </thead>
     <tbody>
     <tr>
-        <td><%=category.getId()%></td>
-        <td><%=category.getName()%></td>
-        <td><%=category.getDescription()%></td>
+        <td><%=category.getId()%>
+        </td>
+        <td><%=category.getName()%>
+        </td>
+        <td><%=category.getDescription()%>
+        </td>
     </tr>
     </tbody>
 </table>

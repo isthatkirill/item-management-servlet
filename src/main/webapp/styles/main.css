@@ -282,6 +282,7 @@ body::-webkit-scrollbar-thumb {
     background: linear-gradient(90deg, #A9A9A9, #808080, #696969);
     color: white;
 }
+
 .dark-theme .body-cl {
     background-color: black;
 }

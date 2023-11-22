@@ -2,12 +2,9 @@ package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.model.category.Category;
-import isthatkirill.itemmanagement.repository.CategoryRepository;
 import isthatkirill.itemmanagement.service.CategoryService;
-import isthatkirill.itemmanagement.service.impl.CategoryServiceImpl;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,8 +13,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Kirill Emelyanov
@@ -44,7 +39,6 @@ public class CategoryServlet extends HttpServlet {
         request.setAttribute("categories", categories);
 
         forwardRequest(action, request, response);
-
     }
 
     @Override

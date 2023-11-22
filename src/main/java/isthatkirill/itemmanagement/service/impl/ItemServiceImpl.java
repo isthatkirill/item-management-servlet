@@ -15,6 +15,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static isthatkirill.itemmanagement.util.Constants.CHECK_DATA;
+
 /**
  * @author Kirill Emelyanov
  */
@@ -72,20 +74,20 @@ public class ItemServiceImpl implements ItemService {
     private void checkIfCategoryExists(Long id) {
         if (!categoryRepository.existsById(id)) {
             throw new EntityNotFoundException(String.format("Категория с id = %s " +
-                    "не найдена. Проверьте правильность вводимых данных.", id));
+                    "не найдена. %s", CHECK_DATA, id));
         }
     }
 
     private ItemExtended checkIfItemExistsAndGet(Long id) {
         return itemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Товар с id = %s " +
-                        "не найден. Проверьте правильность вводимых данных.", id)));
+                        "не найден. %s", CHECK_DATA, id)));
     }
 
     private void checkIfItemExists(Long id) {
         if (!itemRepository.existsById(id)) {
             throw new EntityNotFoundException(String.format("Товар с id = %s " +
-                    "не найден. Проверьте правильность вводимых данных.", id));
+                    "не найден. %s", CHECK_DATA, id));
         }
     }
 

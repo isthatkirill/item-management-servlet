@@ -3,10 +3,8 @@ package isthatkirill.itemmanagement.service.impl;
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.exception.NotEnoughItemException;
 import isthatkirill.itemmanagement.mapper.SaleMapper;
-import isthatkirill.itemmanagement.mapper.SupplyMapper;
 import isthatkirill.itemmanagement.model.sale.Sale;
 import isthatkirill.itemmanagement.model.sale.SaleExtended;
-import isthatkirill.itemmanagement.model.supply.Supply;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.repository.SaleRepository;
 import isthatkirill.itemmanagement.service.SaleService;
@@ -15,6 +13,8 @@ import jakarta.inject.Inject;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
+
+import static isthatkirill.itemmanagement.util.Constants.CHECK_DATA;
 
 /**
  * @author Kirill Emelyanov
@@ -73,14 +73,14 @@ public class SaleServiceImpl implements SaleService {
 
     private Sale checkIfSaleExistsAndGet(Long saleId) {
         return saleRepository.findById(saleId)
-                .orElseThrow(() ->  new EntityNotFoundException(String.format("Продажа с id = %s " +
-                        "не найден. Проверьте правильность вводимых данных.", saleId)));
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Продажа с id = %s " +
+                        "не найден. %s", CHECK_DATA, saleId)));
     }
 
     private void checkIfItemExists(Long itemId) {
         if (!itemRepository.existsById(itemId)) {
             throw new EntityNotFoundException(String.format("Товар с id = %s " +
-                    "не найден. Проверьте правильность вводимых данных.", itemId));
+                    "не найден. %s", CHECK_DATA, itemId));
         }
     }
 }

@@ -3,10 +3,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Добавить товар</title>
-  <link rel="stylesheet" type="text/css" href="/styles/main.css">
-  <link rel="stylesheet" type="text/css" href="/styles/error.css">
-  <script src="/scripts/theme.js" defer></script>
+    <title>Добавить товар</title>
+    <link rel="stylesheet" type="text/css" href="/styles/main.css">
+    <link rel="stylesheet" type="text/css" href="/styles/error.css">
+    <script src="/scripts/theme.js" defer></script>
 </head>
 <body>
 
