@@ -29,8 +29,7 @@ public class ReportServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/jsp/report/reportStock.jsp").forward(request, response);
-
+        request.getRequestDispatcher("/jsp/report/report.jsp").forward(request, response);
     }
 
     @Override

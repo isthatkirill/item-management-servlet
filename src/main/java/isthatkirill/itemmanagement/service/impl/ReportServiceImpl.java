@@ -10,9 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static isthatkirill.itemmanagement.util.Constants.FORMATTER_FILE;
@@ -37,7 +35,6 @@ public class ReportServiceImpl implements ReportService {
         add("stock_price");
         add("category_name");
         add("supplies_count");
-        add("supplies_count");
         add("last_supply_date");
         add("most_units_item");
         add("most_expensive_item");
@@ -53,7 +50,7 @@ public class ReportServiceImpl implements ReportService {
         List<String> selectedFields = request.getParameterMap()
                 .keySet().stream().skip(1).collect(Collectors.toList());
         String reportType = request.getParameter("reportType");
-        if (reportType == null) {
+        if (reportType == null || new HashSet<>(selectedFields).containsAll(possibleFields)) {
             return processEmptyFile();
         }
 
@@ -68,10 +65,11 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private String processEmptyFile() {
-        return null;
+        return write(new ArrayList<>(), List.<String[]>of(new String[]{"No data"}));
     }
 
     private String processCategoryStockReport(List<String> selectedFields) {
+
         List<String[]> rows = itemRepository.getCategoryStockReport(selectedFields);
         return write(selectedFields, rows);
     }

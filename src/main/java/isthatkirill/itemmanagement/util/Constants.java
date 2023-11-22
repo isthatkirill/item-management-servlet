@@ -52,15 +52,7 @@ public class Constants {
                         <a href="/sale?action=update">Изменить продажу</a>
                     </div>
                 </div>
-                <div class="dropdown">
-                    <button class="dropbtn">Отчеты
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    <div class="dropdown-content">
-                        <a href="/report">Сгенерировать отчет о продажах</a>
-                        <a href="/report">Сгенерировать отчет о наличии</a>
-                    </div>
-                </div>
+                <a href="/report">Отчеты</a>
                 <div class="theme-toggle">
                         <label class="switch">
                             <input type="checkbox" onclick="toggleTheme()" id="themeToggle">
