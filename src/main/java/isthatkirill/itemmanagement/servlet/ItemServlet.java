@@ -113,7 +113,7 @@ public class ItemServlet extends HttpServlet {
                 return "/jsp/item/uItem.jsp";
             }
             default -> {
-                return "/jsp/error/error.jsp";
+                return "/jsp/init/error.jsp";
             }
         }
     }

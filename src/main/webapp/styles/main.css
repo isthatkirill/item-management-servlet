@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
 .navbar {
     overflow: hidden;
     background: linear-gradient(90deg, #87CEEB, #6BB7E6, #4A90E2);
-    font-family: Arial;
 }
 
 .navbar a {
@@ -95,7 +100,6 @@ h4 {
     text-align: center;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.34);
     color: black;
-    font-family: Arial, sans-serif;
     font-size: 18px;
     font-weight: bold;
 }
@@ -275,7 +279,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .light-theme {
-    background-color: white;
+    background-color: #f2f2f2;
 }
 
 .dark-theme .navbar {

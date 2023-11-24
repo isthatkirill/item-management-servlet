@@ -95,7 +95,7 @@ public class CategoryServlet extends HttpServlet {
                 return "/jsp/category/uCategory.jsp";
             }
             default -> {
-                return "/jsp/error/error.jsp";
+                return "/jsp/init/error.jsp";
             }
         }
     }

@@ -91,7 +91,7 @@ public class SupplyServlet extends HttpServlet {
                 return "/jsp/supply/uSupply.jsp";
             }
             default -> {
-                return "/jsp/error/error.jsp";
+                return "/jsp/init/error.jsp";
             }
         }
     }

@@ -97,7 +97,7 @@ public class SaleServlet extends HttpServlet {
                 return "/jsp/sale/uSale.jsp";
             }
             default -> {
-                return "/jsp/error/error.jsp";
+                return "/jsp/init/error.jsp";
             }
         }
     }
