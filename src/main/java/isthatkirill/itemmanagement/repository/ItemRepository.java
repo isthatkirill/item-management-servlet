@@ -2,13 +2,13 @@ package isthatkirill.itemmanagement.repository;
 
 import isthatkirill.itemmanagement.mapper.ItemMapper;
 import isthatkirill.itemmanagement.mapper.ReportDataMapper;
+import isthatkirill.itemmanagement.model.enums.ReportType;
 import isthatkirill.itemmanagement.model.item.Item;
 import isthatkirill.itemmanagement.model.item.ItemExtended;
 import isthatkirill.itemmanagement.model.item.ItemShort;
 import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,15 +25,9 @@ import static isthatkirill.itemmanagement.util.Constants.*;
 @ApplicationScoped
 public class ItemRepository {
 
-    private final DataSource dataSource;
-
-    public ItemRepository() {
-        dataSource = ConnectionHelper.getDataSource();
-    }
-
 
     public Long create(Item item) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_ITEM, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, item.getName());
             statement.setString(2, item.getDescription());
@@ -64,7 +58,7 @@ public class ItemRepository {
     }
 
     public Optional<ItemExtended> findById(Long id) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ITEM_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -77,7 +71,7 @@ public class ItemRepository {
     }
 
     public Long findStockById(Long id) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_STOCK_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -92,7 +86,7 @@ public class ItemRepository {
     }
 
     public boolean existsById(Long id) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(EXISTS_ITEM_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -111,7 +105,7 @@ public class ItemRepository {
         } else {
             query.append("ORDER BY ").append(sortBy).append(" ").append(sortOrder);
         }
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(query.toString())) {
             ResultSet resultSet = statement.executeQuery();
             return ItemMapper.extractItemsExtendedFromResultSet(resultSet);
@@ -122,7 +116,7 @@ public class ItemRepository {
     }
 
     public List<ItemShort> findAllShort() {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_ITEMS_SHORT)) {
             ResultSet resultSet = statement.executeQuery();
             return ItemMapper.extractItemsShortFromResultSet(resultSet);
@@ -164,7 +158,7 @@ public class ItemRepository {
         query.append(" WHERE id = ?");
         values.add(item.getId());
 
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(query.toString())) {
             for (int i = 0; i < values.size(); i++) {
                 statement.setObject(i + 1, values.get(i));
@@ -176,7 +170,7 @@ public class ItemRepository {
     }
 
     public void updateWithNewSupplyData(Double currentAveragePrice, Integer stockUnits, Long itemId) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_ITEM_SUPPLY)) {
             statement.setDouble(1, currentAveragePrice);
             statement.setInt(2, stockUnits);
@@ -188,7 +182,7 @@ public class ItemRepository {
     }
 
     public void updateWithNewSaleData(Double currentAveragePrice, Integer stockUnits, Long itemId) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_ITEM_SALE)) {
             statement.setDouble(1, currentAveragePrice);
             statement.setInt(2, stockUnits);
@@ -200,7 +194,7 @@ public class ItemRepository {
     }
 
     public void delete(Long id) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_ITEM_BY_ID)) {
             statement.setLong(1, id);
             statement.executeUpdate();
@@ -209,52 +203,15 @@ public class ItemRepository {
         }
     }
 
-    public List<String[]> getCategoryStockReport(List<String> selectedFields) {
-        try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_CATEGORY_STOCK_REPORT)) {
+    public List<String[]> getReport(ReportType type, List<String> selectedFields) {
+        try (Connection connection = ConnectionHelper.getConnection();
+             PreparedStatement statement = connection.prepareStatement(type.getValue())) {
             ResultSet resultSet = statement.executeQuery();
             return ReportDataMapper.extractRows(selectedFields, resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return Collections.emptyList();
-    }
-
-    public List<String[]> getCategorySaleReport(List<String> selectedFields) {
-        try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_CATEGORY_SALE_REPORT)) {
-            ResultSet resultSet = statement.executeQuery();
-            return ReportDataMapper.extractRows(selectedFields, resultSet);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-
-    public List<String[]> getItemSaleReport(List<String> selectedFields) {
-        try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_ITEM_SALE_REPORT)) {
-            ResultSet resultSet = statement.executeQuery();
-            return ReportDataMapper.extractRows(selectedFields, resultSet);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-
-    public List<String[]> getItemStockReport(List<String> selectedFields) {
-        try (Connection connection = getNewConnection();
-             PreparedStatement statement = connection.prepareStatement(GET_ITEM_STOCK_REPORT)) {
-            ResultSet resultSet = statement.executeQuery();
-            return ReportDataMapper.extractRows(selectedFields, resultSet);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Collections.emptyList();
-    }
-
-    private Connection getNewConnection() throws SQLException {
-        return dataSource.getConnection();
     }
 
 }

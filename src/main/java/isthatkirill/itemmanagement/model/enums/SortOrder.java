@@ -1,4 +1,4 @@
-package isthatkirill.itemmanagement.model.item.enums;
+package isthatkirill.itemmanagement.model.enums;
 
 /**
  * @author Kirill Emelyanov

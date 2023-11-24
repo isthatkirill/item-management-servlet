@@ -1,7 +1,7 @@
 <%@ page import="isthatkirill.itemmanagement.util.Constants" %>
 <%@ page import="java.util.List" %>
 <%@ page import="isthatkirill.itemmanagement.model.item.ItemExtended" %>
-<%@ page import="isthatkirill.itemmanagement.model.item.enums.SortType" %>
+<%@ page import="isthatkirill.itemmanagement.model.enums.SortType" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>

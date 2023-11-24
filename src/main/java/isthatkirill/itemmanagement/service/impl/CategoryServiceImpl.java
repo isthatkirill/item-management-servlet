@@ -20,8 +20,12 @@ import static isthatkirill.itemmanagement.util.Constants.CHECK_DATA;
 @ApplicationScoped
 public class CategoryServiceImpl implements CategoryService {
 
+    private final CategoryRepository categoryRepository;
+
     @Inject
-    private CategoryRepository categoryRepository;
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public Long create(HttpServletRequest request) {

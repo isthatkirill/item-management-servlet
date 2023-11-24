@@ -5,8 +5,8 @@ import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import org.postgresql.ds.PGSimpleDataSource;
 
-import javax.sql.DataSource;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.util.Properties;
 
 /**
@@ -19,9 +19,9 @@ public class ConnectionHelper {
     private static PGSimpleDataSource dataSource;
 
     @SneakyThrows
-    public static DataSource getDataSource() {
+    public static Connection getConnection() {
         if (dataSource != null) {
-            return dataSource;
+            return dataSource.getConnection();
         }
         dataSource = new PGSimpleDataSource();
         Properties prop = new Properties();
@@ -33,7 +33,7 @@ public class ConnectionHelper {
         dataSource.setPassword(prop.getProperty("db.password"));
         dataSource.setPortNumbers(new int[]{5432});
 
-        return dataSource;
+        return dataSource.getConnection();
     }
 
 }

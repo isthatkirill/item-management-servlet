@@ -6,7 +6,6 @@ import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 import jakarta.enterprise.context.ApplicationScoped;
 import lombok.SneakyThrows;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,15 +21,8 @@ import static isthatkirill.itemmanagement.util.Constants.*;
 @ApplicationScoped
 public class CategoryRepository {
 
-    private final DataSource dataSource;
-
-    public CategoryRepository() {
-        dataSource = ConnectionHelper.getDataSource();
-    }
-
-
     public Long create(Category category) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_CATEGORY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, category.getName());
             statement.setString(2, category.getDescription());
@@ -47,7 +39,7 @@ public class CategoryRepository {
     }
 
     public Optional<Category> findById(Long id) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_CATEGORY_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -60,7 +52,7 @@ public class CategoryRepository {
     }
 
     public boolean existsById(Long id) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(EXISTS_CATEGORY_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -94,7 +86,7 @@ public class CategoryRepository {
         query.append(" WHERE id = ?");
         values.add(category.getId());
 
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(query.toString())) {
             for (int i = 0; i < values.size(); i++) {
                 statement.setObject(i + 1, values.get(i));
@@ -107,7 +99,7 @@ public class CategoryRepository {
 
     @SneakyThrows
     public List<Category> findAll() {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_CATEGORIES)) {
             ResultSet resultSet = statement.executeQuery();
             return CategoryMapper.extractCategoriesFromResultSet(resultSet);
@@ -119,15 +111,11 @@ public class CategoryRepository {
 
     @SneakyThrows
     public void delete(Long id) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_CATEGORY_BY_ID)) {
             statement.setLong(1, id);
             statement.executeUpdate();
         }
-    }
-
-    private Connection getNewConnection() throws SQLException {
-        return dataSource.getConnection();
     }
 
 }

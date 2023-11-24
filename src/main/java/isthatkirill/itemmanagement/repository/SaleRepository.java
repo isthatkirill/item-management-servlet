@@ -6,7 +6,6 @@ import isthatkirill.itemmanagement.model.sale.SaleExtended;
 import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,14 +22,8 @@ import static isthatkirill.itemmanagement.util.Constants.*;
 @ApplicationScoped
 public class SaleRepository {
 
-    private final DataSource dataSource;
-
-    public SaleRepository() {
-        dataSource = ConnectionHelper.getDataSource();
-    }
-
     public Long create(Sale sale) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_SALE, Statement.RETURN_GENERATED_KEYS)) {
             statement.setLong(1, sale.getAmount());
             statement.setDouble(2, sale.getPrice());
@@ -49,7 +42,7 @@ public class SaleRepository {
     }
 
     public Double findAverageSalePrice(Long itemId) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_AVERAGE_SALE_PRICE)) {
             statement.setLong(1, itemId);
             ResultSet resultSet = statement.executeQuery();
@@ -62,7 +55,7 @@ public class SaleRepository {
     }
 
     public List<SaleExtended> findAllExtended() {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_SALES_EXTENDED)) {
             ResultSet resultSet = statement.executeQuery();
             return SaleMapper.extractSalesExtendedFromResultSet(resultSet);
@@ -73,7 +66,7 @@ public class SaleRepository {
     }
 
     public Optional<Sale> findById(Long id) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_SALE_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -107,7 +100,7 @@ public class SaleRepository {
         query.append(" WHERE id = ?");
         values.add(sale.getId());
 
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(query.toString())) {
             for (int i = 0; i < values.size(); i++) {
                 statement.setObject(i + 1, values.get(i));
@@ -116,10 +109,6 @@ public class SaleRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-
-    private Connection getNewConnection() throws SQLException {
-        return dataSource.getConnection();
     }
 
 }

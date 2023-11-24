@@ -2,10 +2,10 @@ package isthatkirill.itemmanagement.servlet;
 
 import isthatkirill.itemmanagement.exception.EntityNotFoundException;
 import isthatkirill.itemmanagement.model.category.Category;
+import isthatkirill.itemmanagement.model.enums.SortOrder;
+import isthatkirill.itemmanagement.model.enums.SortType;
 import isthatkirill.itemmanagement.model.item.Item;
 import isthatkirill.itemmanagement.model.item.ItemExtended;
-import isthatkirill.itemmanagement.model.item.enums.SortOrder;
-import isthatkirill.itemmanagement.model.item.enums.SortType;
 import isthatkirill.itemmanagement.service.CategoryService;
 import isthatkirill.itemmanagement.service.ItemService;
 import jakarta.enterprise.context.ApplicationScoped;

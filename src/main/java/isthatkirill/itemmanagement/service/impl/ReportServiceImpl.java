@@ -1,5 +1,6 @@
 package isthatkirill.itemmanagement.service.impl;
 
+import isthatkirill.itemmanagement.model.enums.ReportType;
 import isthatkirill.itemmanagement.repository.ItemRepository;
 import isthatkirill.itemmanagement.service.ReportService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -24,8 +25,12 @@ import static isthatkirill.itemmanagement.util.Constants.*;
 @ApplicationScoped
 public class ReportServiceImpl implements ReportService {
 
+    private final ItemRepository itemRepository;
+
     @Inject
-    private ItemRepository itemRepository;
+    public ReportServiceImpl(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
 
     @Override
     public byte[] process(HttpServletRequest request) {
@@ -69,22 +74,22 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private byte[] processCategoryStockReport(List<String> selectedFields) {
-        List<String[]> rows = itemRepository.getCategoryStockReport(selectedFields);
+        List<String[]> rows = itemRepository.getReport(ReportType.CATEGORY_STOCK, selectedFields);
         return write(selectedFields, rows);
     }
 
     private byte[] processItemStockReport(List<String> selectedFields) {
-        List<String[]> rows = itemRepository.getItemStockReport(selectedFields);
+        List<String[]> rows = itemRepository.getReport(ReportType.ITEM_STOCK, selectedFields);
         return write(selectedFields, rows);
     }
 
     private byte[] processCategorySaleReport(List<String> selectedFields) {
-        List<String[]> rows = itemRepository.getCategorySaleReport(selectedFields);
+        List<String[]> rows = itemRepository.getReport(ReportType.CATEGORY_SALE, selectedFields);
         return write(selectedFields, rows);
     }
 
     private byte[] processItemSaleReport(List<String> selectedFields) {
-        List<String[]> rows = itemRepository.getItemSaleReport(selectedFields);
+        List<String[]> rows = itemRepository.getReport(ReportType.ITEM_SALE, selectedFields);
         return write(selectedFields, rows);
     }
 

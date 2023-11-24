@@ -22,11 +22,14 @@ import static isthatkirill.itemmanagement.util.Constants.CHECK_DATA;
 @ApplicationScoped
 public class SupplyServiceImpl implements SupplyService {
 
-    @Inject
-    private SupplyRepository supplyRepository;
+    private final SupplyRepository supplyRepository;
+    private final ItemRepository itemRepository;
 
     @Inject
-    private ItemRepository itemRepository;
+    public SupplyServiceImpl(SupplyRepository supplyRepository, ItemRepository itemRepository) {
+        this.supplyRepository = supplyRepository;
+        this.itemRepository = itemRepository;
+    }
 
     @Override
     public Long create(HttpServletRequest request) {

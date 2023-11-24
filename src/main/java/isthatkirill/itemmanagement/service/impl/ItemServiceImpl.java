@@ -24,11 +24,14 @@ import static isthatkirill.itemmanagement.util.Constants.CHECK_DATA;
 @ApplicationScoped
 public class ItemServiceImpl implements ItemService {
 
-    @Inject
-    private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+    private final CategoryRepository categoryRepository;
 
     @Inject
-    private CategoryRepository categoryRepository;
+    public ItemServiceImpl(ItemRepository itemRepository, CategoryRepository categoryRepository) {
+        this.itemRepository = itemRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public Long create(HttpServletRequest request) {

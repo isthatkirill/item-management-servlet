@@ -6,7 +6,6 @@ import isthatkirill.itemmanagement.model.supply.SupplyExtended;
 import isthatkirill.itemmanagement.repository.util.ConnectionHelper;
 import jakarta.enterprise.context.ApplicationScoped;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,14 +22,8 @@ import static isthatkirill.itemmanagement.util.Constants.*;
 @ApplicationScoped
 public class SupplyRepository {
 
-    private final DataSource dataSource;
-
-    public SupplyRepository() {
-        dataSource = ConnectionHelper.getDataSource();
-    }
-
     public Long create(Supply supply) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(CREATE_SUPPLY, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, supply.getCompany());
             statement.setLong(2, supply.getAmount());
@@ -50,7 +43,7 @@ public class SupplyRepository {
     }
 
     public Double findAveragePurchasePrice(Long itemId) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_AVERAGE_SUPPLY_PRICE)) {
             statement.setLong(1, itemId);
             ResultSet resultSet = statement.executeQuery();
@@ -63,7 +56,7 @@ public class SupplyRepository {
     }
 
     public List<SupplyExtended> findAllExtended() {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_ALL_SUPPLIES_EXTENDED)) {
             ResultSet resultSet = statement.executeQuery();
             return SupplyMapper.extractSuppliesExtendedFromResultSet(resultSet);
@@ -95,7 +88,7 @@ public class SupplyRepository {
         query.append(" WHERE id = ?");
         values.add(supply.getId());
 
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(query.toString())) {
             for (int i = 0; i < values.size(); i++) {
                 statement.setObject(i + 1, values.get(i));
@@ -107,7 +100,7 @@ public class SupplyRepository {
     }
 
     public Optional<Supply> findById(Long id) {
-        try (Connection connection = getNewConnection();
+        try (Connection connection = ConnectionHelper.getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_SUPPLY_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
@@ -117,10 +110,6 @@ public class SupplyRepository {
         }
 
         return Optional.empty();
-    }
-
-    private Connection getNewConnection() throws SQLException {
-        return dataSource.getConnection();
     }
 
 }
