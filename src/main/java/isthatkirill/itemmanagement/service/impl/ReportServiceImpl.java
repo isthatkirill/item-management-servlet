@@ -94,7 +94,7 @@ public class ReportServiceImpl implements ReportService {
     }
 
     private byte[] write(List<String> selectedFields, List<String[]> rows) {
-        try (ByteArrayOutputStream os = new ByteArrayOutputStream();
+        try (ByteArrayOutputStream os = new ByteArrayOutputStream(); // windows-1251
              OutputStreamWriter osw = new OutputStreamWriter(os, StandardCharsets.UTF_8)) {
             selectedFields.add(0, "id");
             String header = String.join(",", selectedFields.toArray(new String[0]));

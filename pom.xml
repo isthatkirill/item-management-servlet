@@ -23,6 +23,8 @@
         <jakarta.inject.version>2.0.0</jakarta.inject.version>
         <jakarta.cdi.version>4.0.0</jakarta.cdi.version>
         <weld.version>5.1.0.Final</weld.version>
+        <asserj.version>3.24.2</asserj.version>
+        <mockito.version>5.2.0</mockito.version>
     </properties>
 
     <dependencies>
@@ -84,19 +86,19 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.24.2</version>
+            <version>${asserj.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>5.2.0</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.2.0</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -117,6 +117,4 @@ public class ItemServlet extends HttpServlet {
             }
         }
     }
-
-
 }
